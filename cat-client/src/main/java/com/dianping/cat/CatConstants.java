@@ -18,6 +18,9 @@
  */
 package com.dianping.cat;
 
+/**
+ * cat常量设置
+ */
 public class CatConstants {
 	/**
 		* Cat Json length

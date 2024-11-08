@@ -23,6 +23,10 @@ import org.unidal.helper.Properties.PropertyAccessor;
 
 import com.dianping.cat.CatPropertyProvider;
 
+/**
+ * unidal 快速获取系统的环境变量
+ */
+
 public class CatPropertyProviderDefaultImpl implements CatPropertyProvider {
 	
 	private PropertyAccessor<String> config;

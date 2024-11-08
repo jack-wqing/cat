@@ -27,6 +27,10 @@ import java.util.ServiceLoader;
  * @author qxo
  *
  */
+
+/**
+ * cat属性自动实现机制
+ */
 public interface CatPropertyProvider {
 	
 	public static final CatPropertyProvider INST = ServiceLoader.load(CatPropertyProvider.class).iterator().next();

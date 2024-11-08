@@ -1,6 +1,7 @@
 ## CAT 配置说明地址 
 ```
-   https://www.slankka.com/CatCookbook/zh/guide/config/router.html
+   文档: https://www.slankka.com/CatCookbook/zh/guide/config/router.html
+   官网: https://github.com/dianping/cat/wiki/readme_server
 ```
 
 ### 1、客户端路由配置: /cat/s/config?op=routerConfigUpdate
