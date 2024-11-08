@@ -32,3 +32,9 @@ _book
 *.epub
 *.mobi
 *.pdf
+/cat-alarm/target/
+/cat-client/target/
+/cat-consumer/target/
+/cat-core/target/
+/cat-hadoop/target/
+/cat-home/target/

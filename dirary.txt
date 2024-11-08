@@ -1,0 +1,19 @@
+安装:
+  1、初始化Mysql数据库，一套CAT集群需要部署一个数据库，数据库脚本script/CatApplication.sql
+  2、准备集群机器:初始化/data/目录，配置几个配置文件/data/appdatas/cat/*.xml 几个配置文件
+  3、打包并重命名为cat.war，放入tomcat容器webapps根目录下，并启动tomcat
+  4、修改服务器配置、及路由配置，重启Tomcat
+
+ 部署Tomcat:
+    bin目录新增:setenv.sh; CMS 测试环境 2G, 正式环境10G以上
+        export CAT_HOME=/data/appdatas/cat/
+        CATALINA_OPTS="$CATALINA_OPTS -server -DCAT_HOME=$CAT_HOME -Djava.awt.headless=true -Xms25G -Xmx25G -XX:PermSize=256m -XX:MaxPermSize=256m -XX:NewSize=10144m -XX:MaxNewSize=10144m -XX:SurvivorRatio=10 -XX:+UseParNewGC -XX:ParallelGCThreads=4 -XX:MaxTenuringThreshold=13 -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC -XX:+UseCMSInitiatingOccupancyOnly -XX:+ScavengeBeforeFullGC -XX:+UseCMSCompactAtFullCollection -XX:+CMSParallelRemarkEnabled -XX:CMSFullGCsBeforeCompaction=9 -XX:CMSInitiatingOccupancyFraction=60 -XX:+CMSClassUnloadingEnabled -XX:SoftRefLRUPolicyMSPerMB=0 -XX:-ReduceInitialCardMarks -XX:+CMSPermGenSweepingEnabled -XX:CMSInitiatingPermOccupancyFraction=70 -XX:+ExplicitGCInvokesConcurrent -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.EPollSelectorProvider -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationConcurrentTime -XX:+PrintHeapAtGC -Xloggc:/data/applogs/heap_trace.txt -XX:-HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/applogs/HeapDumpOnOutOfMemoryError -Djava.util.Arrays.useLegacyMergeSort=true"
+    <Connector port="8080" protocol="HTTP/1.1"
+               URIEncoding="utf-8"    connectionTimeout="20000"
+                   redirectPort="8443" />  <!-- 增加  URIEncoding="utf-8"  -->
+    程序对于/data/目录具体读写权限
+    配置/data/appdatas/cat/client.xml ($CAT_HOME/client.xml)
+
+    tomcat得Context需要配置/cat路径
+
+
