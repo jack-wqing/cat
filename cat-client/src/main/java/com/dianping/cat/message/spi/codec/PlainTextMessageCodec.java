@@ -51,6 +51,9 @@ import com.dianping.cat.message.spi.MessageCodec;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 
+/**
+ * PlainTextCodec
+ */
 public class PlainTextMessageCodec implements MessageCodec {
 	public static final String ID = "plain-text";
 

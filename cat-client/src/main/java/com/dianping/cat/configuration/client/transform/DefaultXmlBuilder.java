@@ -29,6 +29,9 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * ClientConfig to XML
+ */
 public class DefaultXmlBuilder implements IVisitor {
 
    private IVisitor m_visitor = this;

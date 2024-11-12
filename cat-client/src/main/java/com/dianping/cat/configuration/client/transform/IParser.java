@@ -6,6 +6,10 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * 直接解析 ClientConfig
+ * @param <T>
+ */
 public interface IParser<T> {
    public ClientConfig parse(IMaker<T> maker, ILinker linker, T node);
 

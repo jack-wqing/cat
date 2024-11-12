@@ -7,6 +7,9 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * Base Visitor
+ */
 public abstract class BaseVisitor implements IVisitor {
    @Override
    public void visitBind(Bind bind) {

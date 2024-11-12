@@ -21,6 +21,9 @@ package com.dianping.cat;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * 应用配置设置 app.properties
+ */
 public class ApplicationSettings {
 
 	private static final String PROPERTIES_FILE = "/META-INF/app.properties";

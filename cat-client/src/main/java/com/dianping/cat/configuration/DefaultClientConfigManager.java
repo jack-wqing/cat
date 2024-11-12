@@ -44,6 +44,9 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.site.helper.JsonBuilder;
 import com.site.helper.Splitters;
 
+/**
+ * 默认的客户端配置
+ */
 @Named(type = ClientConfigManager.class)
 public class DefaultClientConfigManager implements LogEnabled, ClientConfigManager {
 	private static final String PROPERTIES_FILE = "/META-INF/app.properties";

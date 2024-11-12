@@ -50,6 +50,10 @@ import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 
+/**
+ * Default Message Manager
+ */
+
 @Named(type = MessageManager.class)
 public class DefaultMessageManager extends ContainerHolder implements MessageManager, Initializable, LogEnabled {
 

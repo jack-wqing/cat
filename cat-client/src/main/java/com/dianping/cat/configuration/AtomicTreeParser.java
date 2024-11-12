@@ -27,6 +27,9 @@ import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 
+/**
+ * Message Tree 消息匹配
+ */
 public class AtomicTreeParser {
 
 	private List<String> m_startTypes = new ArrayList<String>();

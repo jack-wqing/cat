@@ -5,6 +5,10 @@ import java.util.Formatter;
 
 import com.dianping.cat.configuration.client.transform.DefaultXmlBuilder;
 
+/**
+ * 基本实体属性
+ * @param <T>
+ */
 public abstract class BaseEntity<T> implements IEntity<T>, Formattable {
 
    public static final String XML = "%.3s";

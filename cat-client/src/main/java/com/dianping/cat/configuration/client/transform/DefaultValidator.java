@@ -20,6 +20,9 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * 对ClientConfig的组件进行验证
+ */
 public class DefaultValidator implements IVisitor {
 
    private Path m_path = new Path();

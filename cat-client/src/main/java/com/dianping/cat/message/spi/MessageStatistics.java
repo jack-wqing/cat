@@ -18,6 +18,9 @@
  */
 package com.dianping.cat.message.spi;
 
+/**
+ * message Statistics
+ */
 public interface MessageStatistics {
 	public long getBytes();
 

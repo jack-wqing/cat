@@ -25,6 +25,9 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Server;
 import com.dianping.cat.message.spi.MessageTree;
 
+/**
+ * ClientConfig Manager
+ */
 public interface ClientConfigManager {
 	public Domain getDomain();
 

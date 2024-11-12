@@ -35,6 +35,10 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
 	* Created by yj.huang on 15-8-4.
 	*/
+
+/**
+ * default tree
+ */
 public class NullMessageTree implements MessageTree {
 	public static final NullMessageTree NULL_MESSAGE_TREE = new NullMessageTree();
 

@@ -30,6 +30,9 @@ import com.dianping.cat.message.Trace;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.internal.NullMessageTree;
 
+/**
+ * Null Message Producer
+ */
 public class NullMessageProducer implements MessageProducer {
 	public static final NullMessageProducer NULL_MESSAGE_PRODUCER = new NullMessageProducer();
 

@@ -37,6 +37,9 @@ import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 
+/**
+ * Message Producer
+ */
 @Named(type = MessageProducer.class)
 public class DefaultMessageProducer implements MessageProducer {
 	@Inject

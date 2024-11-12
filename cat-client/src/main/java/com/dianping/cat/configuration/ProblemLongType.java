@@ -18,6 +18,9 @@
  */
 package com.dianping.cat.configuration;
 
+/**
+ * 长时间执行的操作，阈值设置
+ */
 public enum ProblemLongType {
 
 	LONG_CACHE("long-cache", 25) {

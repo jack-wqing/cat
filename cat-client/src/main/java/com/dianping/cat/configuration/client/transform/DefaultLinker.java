@@ -8,7 +8,11 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * Default Linker
+ */
 public class DefaultLinker implements ILinker {
+
    private boolean m_deferrable;
 
    private List<Runnable> m_deferedJobs = new ArrayList<Runnable>();

@@ -21,6 +21,9 @@ package com.dianping.cat.message.internal;
 import com.dianping.cat.message.Metric;
 import com.dianping.cat.message.spi.MessageManager;
 
+/**
+ * 默认Metric
+ */
 public class DefaultMetric extends AbstractMessage implements Metric {
 	private MessageManager m_manager;
 

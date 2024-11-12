@@ -18,6 +18,9 @@
  */
 package com.dianping.cat.message;
 
+/**
+ * Tag Transaction信息
+ */
 public interface TaggedTransaction extends Transaction {
 	public void bind(String tag, String childMessageId, String title);
 

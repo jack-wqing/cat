@@ -30,6 +30,9 @@ import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.NullMessageTree;
 
+/**
+ * Null Message Manager
+ */
 public class NullMessageManager implements MessageManager, Initializable, LogEnabled {
 
 	public static final NullMessageManager NULL_MESSAGE_MANAGER = new NullMessageManager();

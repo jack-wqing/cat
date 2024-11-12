@@ -21,8 +21,12 @@ package com.dianping.cat.message.internal;
 import java.util.concurrent.locks.LockSupport;
 
 /**
-	* This timer provides milli-second precise system time.
-	*/
+ * This timer provides milli-second precise system time.
+ */
+
+/**
+ * 不同的平台获取毫秒数
+ */
 public class MilliSecondTimer {
 	private static long m_baseTime;
 

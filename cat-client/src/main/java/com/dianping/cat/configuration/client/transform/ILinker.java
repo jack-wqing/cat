@@ -6,6 +6,9 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * client config 与 Component得关系
+ */
 public interface ILinker {
 
    public boolean onBind(ClientConfig parent, Bind bind);

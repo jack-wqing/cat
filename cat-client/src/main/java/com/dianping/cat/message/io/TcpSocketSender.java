@@ -49,6 +49,10 @@ import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 import com.dianping.cat.status.StatusExtension;
 import com.dianping.cat.status.StatusExtensionRegister;
 
+/**
+ * Tcp Message Sender
+ */
+
 @Named
 public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 

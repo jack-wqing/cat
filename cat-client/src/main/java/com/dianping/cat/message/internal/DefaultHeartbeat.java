@@ -21,6 +21,9 @@ package com.dianping.cat.message.internal;
 import com.dianping.cat.message.Heartbeat;
 import com.dianping.cat.message.spi.MessageManager;
 
+/**
+ * 默认 HeartBeat
+ */
 public class DefaultHeartbeat extends AbstractMessage implements Heartbeat {
 	private MessageManager m_manager;
 

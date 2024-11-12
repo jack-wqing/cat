@@ -45,6 +45,9 @@ import org.unidal.tuple.Pair;
 import com.dianping.cat.configuration.ClientConfigManager;
 import com.dianping.cat.message.internal.MessageIdFactory;
 
+/**
+ * Netty Channel
+ */
 public class ChannelManager implements Task {
 
 	private ClientConfigManager m_configManager;
@@ -394,6 +397,7 @@ public class ChannelManager implements Task {
 	}
 
 	public static class ChannelHolder {
+
 		private ChannelFuture m_activeFuture;
 
 		private int m_activeIndex = -1;

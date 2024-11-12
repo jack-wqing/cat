@@ -35,6 +35,9 @@ import com.dianping.cat.message.internal.MilliSecondTimer;
 import com.dianping.cat.message.io.TransportManager;
 import com.dianping.cat.status.StatusUpdateTask;
 
+/**
+ * unidal 模块初始化器
+ */
 @Named(type = Module.class, value = CatClientModule.ID)
 public class CatClientModule extends AbstractModule {
 	public static final String ID = "cat-client";

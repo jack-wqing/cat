@@ -31,6 +31,11 @@ package com.dianping.cat.message;
 	*
 	* @author Frankie Wu
 	*/
+
+/**
+ * debug 或者info信息
+ */
 public interface Trace extends Message {
+
 
 }

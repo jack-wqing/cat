@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 网络地址获取
+ */
 public enum NetworkInterfaceManager {
 	INSTANCE;
 

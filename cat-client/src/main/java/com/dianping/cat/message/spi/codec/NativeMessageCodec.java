@@ -41,6 +41,9 @@ import com.dianping.cat.message.spi.MessageCodec;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 
+/**
+ * Native Message Codec
+ */
 public class NativeMessageCodec implements MessageCodec {
 
 	public static final String ID = "NT1"; // native message tree version 1

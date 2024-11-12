@@ -19,6 +19,9 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * Sax xml流构建 Client Config组件
+ */
 public class DefaultSaxMaker implements IMaker<Attributes> {
 
    @Override

@@ -33,6 +33,9 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
+/**
+ * 对客户端文件进行解析
+ */
 public class DefaultSaxParser extends DefaultHandler {
 
    private DefaultLinker m_linker = new DefaultLinker(true);

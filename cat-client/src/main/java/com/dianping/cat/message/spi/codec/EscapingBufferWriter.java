@@ -20,6 +20,9 @@ package com.dianping.cat.message.spi.codec;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * 转义字符处理
+ */
 public class EscapingBufferWriter implements BufferWriter {
 	public static final String ID = "escape";
 

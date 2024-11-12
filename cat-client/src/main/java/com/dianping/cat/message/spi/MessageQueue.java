@@ -18,6 +18,9 @@
  */
 package com.dianping.cat.message.spi;
 
+/**
+ * 消息队列
+ */
 public interface MessageQueue {
 	public boolean offer(MessageTree tree);
 
@@ -28,3 +31,9 @@ public interface MessageQueue {
 	// the current size of the queue
 	public int size();
 }
+
+
+
+
+
+

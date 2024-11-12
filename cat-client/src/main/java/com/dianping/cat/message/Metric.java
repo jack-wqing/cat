@@ -37,6 +37,10 @@ package com.dianping.cat.message;
 	*
 	* @author Frankie Wu
 	*/
+
+/**
+ * 与 event的区别
+ */
 public interface Metric extends Message {
 
 }

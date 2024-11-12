@@ -27,6 +27,9 @@ import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageManager;
 
+/**
+ * 默认Transaction实现
+ */
 public class DefaultTransaction extends AbstractMessage implements Transaction {
 	private long m_durationInMicro = -1; // must be less than 0
 

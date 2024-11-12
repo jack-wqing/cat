@@ -20,6 +20,9 @@ package com.dianping.cat.message.spi;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * Message Tree Codec
+ */
 public interface MessageCodec {
 	/**
 		* decode buf to message tree

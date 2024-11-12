@@ -26,6 +26,9 @@ import io.netty.buffer.ByteBufAllocator;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.spi.codec.PlainTextMessageCodec;
 
+/**
+ * 统一的消息抽象
+ */
 public abstract class AbstractMessage implements Message {
 	protected String m_status = "unset";
 

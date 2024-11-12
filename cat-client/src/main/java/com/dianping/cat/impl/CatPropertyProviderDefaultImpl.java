@@ -25,6 +25,7 @@ import com.dianping.cat.CatPropertyProvider;
 
 /**
  * unidal 快速获取系统的环境变量
+ *  system + env 环境属性
  */
 
 public class CatPropertyProviderDefaultImpl implements CatPropertyProvider {

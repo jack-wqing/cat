@@ -31,6 +31,10 @@ package com.dianping.cat.message;
 	* @author Frankie Wu
 	* @see Event, Heartbeat, Transaction
 	*/
+
+/**
+ * 消息抽象
+ */
 public interface Message {
 	public static final String SUCCESS = "0";
 

@@ -48,6 +48,10 @@ import java.util.List;
 	*
 	* @author Frankie Wu
 	*/
+
+/**
+ * 涉及边界的记录
+ */
 public interface Transaction extends Message {
 	/**
 		* Add one nested child message to current transaction.

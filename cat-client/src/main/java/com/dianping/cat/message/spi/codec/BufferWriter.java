@@ -20,6 +20,9 @@ package com.dianping.cat.message.spi.codec;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * Writer
+ */
 public interface BufferWriter {
 	public int writeTo(ByteBuf buf, byte[] data);
 }

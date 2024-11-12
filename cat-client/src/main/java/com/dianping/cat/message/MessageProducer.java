@@ -134,6 +134,10 @@ package com.dianping.cat.message;
 	*
 	* @author Frankie Wu
 	*/
+
+/**
+ * 消息生产者
+ */
 public interface MessageProducer {
 	/**
 		* Create rpc server message id.

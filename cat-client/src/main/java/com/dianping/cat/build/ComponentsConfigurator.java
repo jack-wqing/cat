@@ -34,6 +34,9 @@ import com.dianping.cat.message.io.TcpSocketSender;
 import com.dianping.cat.message.spi.internal.DefaultMessageStatistics;
 import com.dianping.cat.status.StatusUpdateTask;
 
+/**
+ * unidal configuration
+ */
 public class ComponentsConfigurator extends AbstractResourceConfigurator {
 	public static void main(String[] args) {
 		generatePlexusComponentsXmlFile(new ComponentsConfigurator());

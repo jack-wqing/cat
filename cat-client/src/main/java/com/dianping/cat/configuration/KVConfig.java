@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * kv value
+ */
 public class KVConfig {
 
 	private Map<String, String> m_kvs = new HashMap<String, String>();

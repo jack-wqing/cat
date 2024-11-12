@@ -35,6 +35,9 @@ import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.codec.PlainTextMessageCodec;
 
+/**
+ * default message
+ */
 public class DefaultMessageTree implements MessageTree {
 
 	private ByteBuf m_buf;
