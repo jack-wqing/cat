@@ -100,6 +100,8 @@ public final class TcpSocketReceiver implements LogEnabled {
 
 	public synchronized void startServer(int port) throws InterruptedException {
 		boolean linux = getOSMatches("Linux") || getOSMatches("LINUX");
+		// 测试环境手动修改源码
+		linux = false;
 		int threads = 24;
 		ServerBootstrap bootstrap = new ServerBootstrap();
 

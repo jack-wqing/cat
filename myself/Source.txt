@@ -1,0 +1,5 @@
+源码更新:
+    1、修改当前系统判断
+        类:com.dianping.cat.analysis.TcpSocketReceiver
+        代码: startServer方法 -> 新增:linux = false;
+

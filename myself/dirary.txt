@@ -22,5 +22,10 @@
     tomcat得Context需要配置/cat路径
 
 
+部署注意点:
+    1、在mac系统[arm64]搭建的虚拟机部署Linux系统,然后搭建Cat集群
+        Cat中通过系统变量os.name来简单的判断是否为Linux开头，从而选择Netty中的NIO或Epoll模式；在mac[arm64]部署的Linux系统不支持Epoll所致端口2280起不来
+        解决:可以简单的修改com.dianping.cat.analysis.TcpSocketReceiver 中boolean linux = getOSMatches("Linux") || getOSMatches("LINUX");
+        这句代码的判断，从而在该环境部署
 
 
