@@ -27,6 +27,10 @@ import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.util.Threads.Task;
 
+/**
+ * Local Aggregator
+ * 本地对于 Transaction 和 Event 进行定期聚合操作
+ */
 public class LocalAggregator {
 
 	public static void aggregate(MessageTree tree) {

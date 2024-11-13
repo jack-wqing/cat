@@ -18,6 +18,9 @@
  */
 package com.dianping.cat.analyzer;
 
+/**
+ * 持续周期比较
+ */
 public class DurationComputer {
 
 	public static int computeDuration(int duration) {

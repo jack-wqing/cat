@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Event Aggregator
+ */
 public class EventAggregator {
 
 	private static EventAggregator s_instance = new EventAggregator();
