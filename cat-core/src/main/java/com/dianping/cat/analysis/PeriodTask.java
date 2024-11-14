@@ -31,6 +31,9 @@ import com.dianping.cat.CatConstants;
 import com.dianping.cat.message.spi.MessageQueue;
 import com.dianping.cat.message.spi.MessageTree;
 
+/**
+ * 周期日志
+ */
 public class PeriodTask implements Task, LogEnabled {
 
 	private MessageAnalyzer m_analyzer;

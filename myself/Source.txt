@@ -3,3 +3,9 @@
         类:com.dianping.cat.analysis.TcpSocketReceiver
         代码: startServer方法 -> 新增:linux = false;
 
+
+    2、代码分析: 服务端消息统计是基于服务短时间的，所以需要客户端和服务端的时间一致进行统计
+
+
+    3、
+

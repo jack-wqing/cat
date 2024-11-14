@@ -22,6 +22,9 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.statistic.ServerStatistic.Statistic;
 
+/**
+ * 简单的服务端统计
+ */
 @Named
 public class ServerStatisticManager {
 

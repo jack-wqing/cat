@@ -18,6 +18,9 @@
  */
 package com.dianping.cat.analysis;
 
+/**
+ * 周期计算策略
+ */
 public class PeriodStrategy {
 	private long m_duration;
 

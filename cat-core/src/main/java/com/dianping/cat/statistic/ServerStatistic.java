@@ -23,7 +23,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * 服务端统计
+ */
 public class ServerStatistic {
+
 	private Map<Long, Statistic> m_statistics = new ConcurrentHashMap<Long, Statistic>(100);
 
 	public synchronized Statistic findOrCreate(Long time) {

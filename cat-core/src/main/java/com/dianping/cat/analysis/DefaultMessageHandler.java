@@ -26,6 +26,9 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.message.spi.MessageTree;
 
+/**
+ * 简单 MessageTree 转发到 MessageConsumer
+ */
 @Named(type = MessageHandler.class)
 public class DefaultMessageHandler extends ContainerHolder implements MessageHandler, LogEnabled {
 	@Inject
@@ -43,7 +46,6 @@ public class DefaultMessageHandler extends ContainerHolder implements MessageHan
 		if (m_consumer == null) {
 			m_consumer = lookup(MessageConsumer.class);
 		}
-
 		try {
 			m_consumer.consume(tree);
 		} catch (Throwable e) {

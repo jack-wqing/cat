@@ -29,6 +29,9 @@ import org.unidal.lookup.annotation.Inject;
 import com.dianping.cat.Cat;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
+/**
+ * Period Manager 周期管理器
+ */
 public class PeriodManager implements Task {
 	public static long EXTRATIME = 3 * 60 * 1000L;
 

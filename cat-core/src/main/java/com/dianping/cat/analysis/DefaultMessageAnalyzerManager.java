@@ -35,6 +35,9 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 
+/**
+ * Default Message Analyzer Manager
+ */
 @Named(type = MessageAnalyzerManager.class)
 public class DefaultMessageAnalyzerManager extends ContainerHolder
 						implements MessageAnalyzerManager, Initializable,	LogEnabled {

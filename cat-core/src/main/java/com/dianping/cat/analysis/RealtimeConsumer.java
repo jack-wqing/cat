@@ -36,6 +36,9 @@ import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
+/**
+ * 实时 Consumer
+ */
 @Named(type = MessageConsumer.class)
 public class RealtimeConsumer extends ContainerHolder implements MessageConsumer, Initializable, LogEnabled {
 
@@ -64,7 +67,9 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 			m_serverStateManager.addNetworkTimeError(1);
 		}
 	}
-
+	/**
+	 * 检查点操作
+	 */
 	public void doCheckpoint() {
 		m_logger.info("starting do checkpoint.");
 		MessageProducer cat = Cat.getProducer();
