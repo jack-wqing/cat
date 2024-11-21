@@ -1,10 +1,23 @@
-源码更新:
-    1、修改当前系统判断
-        类:com.dianping.cat.analysis.TcpSocketReceiver
+源码注意点:
+    1、Netty网络IO判断:
+         类:com.dianping.cat.analysis.TcpSocketReceiver
         代码: startServer方法 -> 新增:linux = false;
+        注: 在mac系统[arm64]搭建的虚拟机部署Linux系统,然后搭建Cat集群
+            Cat中通过系统变量os.name来简单的判断是否为Linux开头，从而选择Netty中的NIO或Epoll模式；在mac[arm64]部署的Linux系统不支持Epoll所致端口2280起不来
+            解决:可以简单的修改com.dianping.cat.analysis.TcpSocketReceiver 中boolean linux = getOSMatches("Linux") || getOSMatches("LINUX");
+            这句代码的判断，手动选择Netty的IO模型
+    2、mac arm64环境: Cat使用Snappy-Java进行日志压缩，Cat3.1.0的版本使用的Snappy-Java:1.1.2需要升级到1.1.8.4,才能支持arch64；不然会Message保存不成功
+        出现: cat sorry, the message is not there. it could be missing or archived.
 
     2、代码分析: 服务端消息统计是基于服务短时间的，所以需要客户端和服务端的时间一致进行统计
 
 
     3、
 
+
+
+部署注意点:
+    1、
+    2、需要snappy-devel,snappy压缩算法
+        sudo yum install snappy-devel
+    3、注意服务器时间的与网络的同步，保持一致；不然丢失数据
