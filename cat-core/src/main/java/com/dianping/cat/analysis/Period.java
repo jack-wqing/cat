@@ -37,7 +37,7 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
 /**
- * Period
+ * Period 每个小时的线程周期
  */
 public class Period {
 	private static final int QUEUE_SIZE = 30000;

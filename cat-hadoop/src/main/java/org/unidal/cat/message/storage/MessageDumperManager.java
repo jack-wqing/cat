@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package org.unidal.cat.message.storage;
-
+// hour MessageDumper
 public interface MessageDumperManager {
 	public abstract void close(int hour);
 

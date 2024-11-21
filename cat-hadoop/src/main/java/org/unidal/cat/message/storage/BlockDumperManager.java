@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package org.unidal.cat.message.storage;
-
+// hour block dumper
 public interface BlockDumperManager {
 	public void close(int hour);
 

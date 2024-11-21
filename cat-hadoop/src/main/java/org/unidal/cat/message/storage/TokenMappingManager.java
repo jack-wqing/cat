@@ -19,7 +19,7 @@
 package org.unidal.cat.message.storage;
 
 import java.io.IOException;
-
+// hour ip find token mapping
 public interface TokenMappingManager {
 	public void close(int hour);
 

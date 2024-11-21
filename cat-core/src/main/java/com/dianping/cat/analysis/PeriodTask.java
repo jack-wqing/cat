@@ -32,7 +32,7 @@ import com.dianping.cat.message.spi.MessageQueue;
 import com.dianping.cat.message.spi.MessageTree;
 
 /**
- * 周期日志
+ * 启动Analyzer去处理队列消息
  */
 public class PeriodTask implements Task, LogEnabled {
 

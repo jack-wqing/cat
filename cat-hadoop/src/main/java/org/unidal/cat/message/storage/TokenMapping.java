@@ -19,7 +19,7 @@
 package org.unidal.cat.message.storage;
 
 import java.io.IOException;
-
+//token mapping
 public interface TokenMapping {
 	public void close();
 

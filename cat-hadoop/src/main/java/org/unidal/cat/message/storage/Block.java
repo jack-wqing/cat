@@ -24,7 +24,7 @@ import java.util.Map;
 import io.netty.buffer.ByteBuf;
 
 import com.dianping.cat.message.internal.MessageId;
-
+//Block
 public interface Block {
 	public void clear();
 

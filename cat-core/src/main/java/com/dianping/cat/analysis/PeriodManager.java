@@ -30,7 +30,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
 /**
- * Period Manager 周期管理器
+ * Period Manager小时周期管理器
  */
 public class PeriodManager implements Task {
 	public static long EXTRATIME = 3 * 60 * 1000L;

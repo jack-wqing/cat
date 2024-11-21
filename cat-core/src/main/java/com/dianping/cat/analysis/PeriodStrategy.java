@@ -19,7 +19,10 @@
 package com.dianping.cat.analysis;
 
 /**
- * 周期计算策略
+ * 当前统计小时区间计算
+ *  m_duration: 一小时的毫米数
+ *  m_extraTime: 3 minute
+ *  m_aheadTime: 3 minute
  */
 public class PeriodStrategy {
 	private long m_duration;
@@ -46,13 +49,14 @@ public class PeriodStrategy {
 
 	public long next(long now) {
 		long startTime = now - now % m_duration;
-
+		//如果当前小时已经是下一个小时，则更新当期记录的小时为新的小时数
 		// for current period
 		if (startTime > m_lastStartTime) {
 			m_lastStartTime = startTime;
 			return startTime;
 		}
 
+		//如果当前小时进入下一个小时得剩余毫秒小于 m_aheadTime 则进入下一个小时
 		// prepare next period ahead
 		if (now - m_lastStartTime >= m_duration - m_aheadTime) {
 			m_lastStartTime = startTime + m_duration;

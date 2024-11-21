@@ -19,7 +19,7 @@
 package org.unidal.cat.message.storage;
 
 import java.io.IOException;
-
+//bucket
 public interface BucketManager {
 	public void closeBuckets(int hour);
 

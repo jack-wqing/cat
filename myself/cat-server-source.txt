@@ -1,0 +1,11 @@
+Period模块:
+    PeriodManager: 管理每个小时的Period,每秒一次计算当前的Period，并结束过期的上一个小时
+    PeriodStrategy: Cat以小时进行分析，该类用于计算当前小时
+    Period: 控制每个小时得各种PeriodTask
+        每个小时一个Period，每个Period管理当前每种类型的Analyzer
+        启动每个PeriodTask 任务线程执行
+    PeriodTask:管理Analyzer.analyze去处理消息队列
+Analyzer模块:
+    AbstractMessageAnalyzer:
+        initialize: loadReports
+        循环处理队列中的消息

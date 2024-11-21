@@ -37,6 +37,7 @@ import com.dianping.cat.config.server.ServerConfigManager;
 
 /**
  * Default Message Analyzer Manager
+ * 通过时间 和 设置的并发数，可以控制某种类型的Analyzer的数量
  */
 @Named(type = MessageAnalyzerManager.class)
 public class DefaultMessageAnalyzerManager extends ContainerHolder

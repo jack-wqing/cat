@@ -18,6 +18,7 @@
  */
 package org.unidal.cat.message.storage;
 
+//File Type
 public enum FileType {
 	MAPPING("map"),
 

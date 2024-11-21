@@ -21,7 +21,7 @@ package org.unidal.cat.message.storage;
 import io.netty.buffer.ByteBuf;
 
 import com.dianping.cat.message.internal.MessageId;
-
+// hour message finder manager
 public interface MessageFinderManager {
 	public void close(int hour);
 

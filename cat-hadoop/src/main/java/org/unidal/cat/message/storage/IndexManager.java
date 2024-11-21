@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage;
 
 import java.io.IOException;
 
+// IndexManager
 public interface IndexManager {
 	public void close(int hour);
 

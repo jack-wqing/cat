@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.dianping.cat.message.internal.MessageId;
-
+// Index
 public interface Index {
 
 	public void close();
