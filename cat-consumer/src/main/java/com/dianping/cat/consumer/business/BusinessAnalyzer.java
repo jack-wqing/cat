@@ -37,7 +37,7 @@ import org.unidal.lookup.annotation.Named;
 import org.unidal.lookup.util.StringUtils;
 
 import java.util.List;
-
+// 对于metric 指标的解析
 @Named(type = MessageAnalyzer.class, value = BusinessAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class BusinessAnalyzer extends AbstractMessageAnalyzer<BusinessReport> implements LogEnabled {
 

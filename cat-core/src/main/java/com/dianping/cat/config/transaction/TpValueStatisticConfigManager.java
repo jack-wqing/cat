@@ -37,7 +37,7 @@ import com.dianping.cat.core.config.Config;
 import com.dianping.cat.core.config.ConfigDao;
 import com.dianping.cat.core.config.ConfigEntity;
 import com.dianping.cat.task.TimerSyncTask;
-
+// TpValue
 @Named
 public class TpValueStatisticConfigManager implements Initializable {
 

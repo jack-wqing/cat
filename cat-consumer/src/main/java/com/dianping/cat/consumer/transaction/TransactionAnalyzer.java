@@ -41,7 +41,7 @@ import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
 import java.util.*;
-
+//transaction analyzer
 @Named(type = MessageAnalyzer.class, value = TransactionAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionReport> implements LogEnabled {
 

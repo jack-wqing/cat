@@ -25,7 +25,7 @@ import java.util.List;
 import com.dianping.cat.consumer.problem.model.entity.Entity;
 import com.dianping.cat.consumer.problem.model.entity.Machine;
 import com.dianping.cat.consumer.problem.model.transform.BaseVisitor;
-
+// problem filter
 public class ProblemReportFilter extends BaseVisitor {
 
 	private int m_maxUrlSize = 100;

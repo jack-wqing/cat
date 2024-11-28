@@ -30,7 +30,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
-
+// ip 管理
 @Named
 public class IpService implements Initializable {
 	private static final String OTHER = "其他";

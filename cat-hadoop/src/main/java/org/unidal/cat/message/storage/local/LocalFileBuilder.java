@@ -26,7 +26,7 @@ import org.unidal.cat.message.storage.PathBuilder;
 import org.unidal.cat.message.storage.StorageConfiguration;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
-
+//local path builder
 @Named(type = PathBuilder.class, value = "local")
 public class LocalFileBuilder implements PathBuilder {
 	@Inject

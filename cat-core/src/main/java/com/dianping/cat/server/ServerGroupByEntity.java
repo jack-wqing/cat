@@ -20,7 +20,7 @@ package com.dianping.cat.server;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+//server group
 public class ServerGroupByEntity {
 
 	private String m_measurement;

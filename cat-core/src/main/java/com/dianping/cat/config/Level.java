@@ -20,7 +20,7 @@ package com.dianping.cat.config;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// log level: ERROR WARNING INFO DEV
 public enum Level {
 	ERROR(3, "ERROR"),
 	WARN(2, "WARN"),

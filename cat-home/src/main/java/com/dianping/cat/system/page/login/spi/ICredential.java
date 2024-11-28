@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login.spi;
-
+// Credential
 public interface ICredential {
 
 }

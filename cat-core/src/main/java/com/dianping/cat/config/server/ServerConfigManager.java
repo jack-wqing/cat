@@ -61,7 +61,7 @@ import com.dianping.cat.core.config.ConfigDao;
 import com.dianping.cat.core.config.ConfigEntity;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// server config
 @Named
 public class ServerConfigManager implements LogEnabled, Initializable {
 

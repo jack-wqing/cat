@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.server;
-
+// metric 指标分析
 public enum MetricType {
 
 	AVG("mean", "平均值"),

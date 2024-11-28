@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.dianping.cat.report.DefaultReportManager.StoragePolicy;
-
+//report manager
 public interface ReportManager<T> {
 
 	public void destory();

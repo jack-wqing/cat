@@ -39,7 +39,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Transaction;
-
+// default report bucket manger
 @Named(type = ReportBucketManager.class)
 public class DefaultReportBucketManager extends ContainerHolder implements ReportBucketManager, Initializable {
 

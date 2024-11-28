@@ -23,7 +23,7 @@ import com.dianping.cat.configuration.server.entity.LongConfig;
 import com.dianping.cat.configuration.server.entity.Server;
 import com.dianping.cat.configuration.server.entity.StorageConfig;
 import com.dianping.cat.configuration.server.transform.BaseVisitor;
-
+// Server Visitor
 public class ServerConfigVisitor extends BaseVisitor {
 
 	private Server m_specificServer;

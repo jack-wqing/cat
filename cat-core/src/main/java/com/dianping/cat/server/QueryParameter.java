@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.unidal.helper.Splitters;
 import org.unidal.lookup.util.StringUtils;
-
+// metric query parameter
 public class QueryParameter {
 
 	private String m_category;

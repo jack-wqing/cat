@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.consumer.problem;
-
+// problem report type
 public enum ProblemType {
 	ERROR("error"),
 

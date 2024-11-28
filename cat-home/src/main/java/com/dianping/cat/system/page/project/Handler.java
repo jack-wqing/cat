@@ -36,7 +36,7 @@ import com.dianping.cat.core.dal.Project;
 import com.dianping.cat.helper.JsonBuilder;
 import com.dianping.cat.service.ProjectService;
 import com.dianping.cat.system.SystemPage;
-
+// 项目关系: department : businessLine : domain
 public class Handler implements PageHandler<Context> {
 	@Inject
 	public ProjectService m_projectService;

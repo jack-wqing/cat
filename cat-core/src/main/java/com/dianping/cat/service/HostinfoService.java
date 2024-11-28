@@ -42,7 +42,7 @@ import com.dianping.cat.core.dal.Hostinfo;
 import com.dianping.cat.core.dal.HostinfoDao;
 import com.dianping.cat.core.dal.HostinfoEntity;
 import com.dianping.cat.helper.TimeHelper;
-
+// ip domain 映射关系
 @Named(type = HostinfoService.class)
 public class HostinfoService implements Initializable, LogEnabled {
 

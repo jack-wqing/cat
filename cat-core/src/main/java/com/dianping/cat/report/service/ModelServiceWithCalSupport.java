@@ -27,7 +27,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.DefaultEvent;
 import com.dianping.cat.message.internal.DefaultMessageProducer;
-
+// 支持会话记录
 public abstract class ModelServiceWithCalSupport extends ContainerHolder {
 	private Transaction m_current;
 

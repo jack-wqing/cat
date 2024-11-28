@@ -25,7 +25,7 @@ import com.dianping.cat.consumer.transaction.model.transform.DefaultMerger;
 import com.dianping.cat.consumer.util.StringUtils;
 
 import java.util.List;
-
+//Transaction Report Merger
 public class TransactionReportMerger extends DefaultMerger {
 
 	public TransactionReportMerger(TransactionReport transactionReport) {

@@ -37,7 +37,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.helper.TimeHelper;
-
+// TokenMapping
 /**
 	* Supports up to 64K tokens mapping from <code>String</code> to <code>int</code>, or reverse by local file system.
 	*/

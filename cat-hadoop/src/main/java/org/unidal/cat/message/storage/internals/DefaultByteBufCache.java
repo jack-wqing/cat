@@ -31,7 +31,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
-
+//ByteBuf pool
 @Named(type = ByteBufCache.class)
 public class DefaultByteBufCache implements ByteBufCache, Initializable, LogEnabled {
 

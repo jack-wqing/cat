@@ -19,7 +19,7 @@
 package com.dianping.cat.system.page.login.service;
 
 import com.dianping.cat.system.page.login.spi.ISession;
-
+// session
 public class Session implements ISession {
 
 	private LoginMember m_member;

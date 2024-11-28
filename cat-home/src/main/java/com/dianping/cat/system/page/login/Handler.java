@@ -42,7 +42,7 @@ import com.dianping.cat.system.page.login.service.LoginMember;
 import com.dianping.cat.system.page.login.service.Session;
 import com.dianping.cat.system.page.login.service.SigninContext;
 import com.dianping.cat.system.page.login.service.SigninService;
-
+// login handler: 登录，退出登录，重定向地址
 public class Handler implements PageHandler<Context> {
 	@Inject
 	private JspViewer m_jspViewer;

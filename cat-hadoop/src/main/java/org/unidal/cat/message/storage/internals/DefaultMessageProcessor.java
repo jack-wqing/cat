@@ -43,7 +43,7 @@ import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
-
+//通过 对Block的管理 从而控制消息存储
 @Named(type = MessageProcessor.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultMessageProcessor implements MessageProcessor, MessageFinder {
 	@Inject

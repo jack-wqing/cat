@@ -35,7 +35,7 @@ import org.unidal.cat.message.storage.PathBuilder;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
-
+// Index Manager
 @Named(type = IndexManager.class, value = "local")
 public class LocalIndexManager extends ContainerHolder implements IndexManager {
 	protected Logger m_logger;

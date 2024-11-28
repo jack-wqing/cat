@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login.spi;
-
+// IToken
 public interface IToken {
 	public String getName();
 }

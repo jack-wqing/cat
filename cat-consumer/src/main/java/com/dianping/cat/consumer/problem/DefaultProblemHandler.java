@@ -33,7 +33,7 @@ import com.dianping.cat.message.Heartbeat;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
-
+// transaction event long execute heartbeat
 public class DefaultProblemHandler extends ProblemHandler {
 	public static final String ID = "default-problem";
 

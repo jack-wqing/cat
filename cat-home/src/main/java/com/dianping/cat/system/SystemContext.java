@@ -36,7 +36,7 @@ import org.unidal.webres.tag.resource.ResourceTagConfigurator;
 import org.unidal.webres.taglib.basic.ResourceTagLibConfigurator;
 
 import com.dianping.cat.system.page.login.service.LoginMember;
-
+// 系统资源 Resource Runtime Context
 public class SystemContext<T extends ActionPayload<? extends Page, ? extends Action>> extends ActionContext<T> {
 
 	private LoginMember m_signinMember;

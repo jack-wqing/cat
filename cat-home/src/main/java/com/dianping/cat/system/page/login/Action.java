@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login;
-
+// 定义默认路径
 public enum Action implements org.unidal.web.mvc.Action {
 	LOGIN("login"),
 

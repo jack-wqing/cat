@@ -34,7 +34,7 @@ import com.dianping.cat.core.config.Config;
 import com.dianping.cat.core.config.ConfigDao;
 import com.dianping.cat.core.config.ConfigEntity;
 import com.dianping.cat.task.TimerSyncTask;
-
+// Atomic Message Config: Client 使用这个配置Message 是否是Atomic类型的
 @Named
 public class AtomicMessageConfigManager implements Initializable {
 

@@ -43,7 +43,7 @@ import com.dianping.cat.core.config.BusinessConfigDao;
 import com.dianping.cat.core.config.BusinessConfigEntity;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// Business Config Manager
 @Named
 public class BusinessConfigManager extends ContainerHolder implements Initializable {
 

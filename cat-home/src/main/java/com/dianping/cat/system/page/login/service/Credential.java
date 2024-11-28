@@ -19,7 +19,7 @@
 package com.dianping.cat.system.page.login.service;
 
 import com.dianping.cat.system.page.login.spi.ICredential;
-
+// account password
 public class Credential implements ICredential {
 	private String m_account;
 

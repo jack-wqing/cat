@@ -36,7 +36,7 @@ import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.report.server.RemoteServersManager;
-
+// 聚合 BaseCompositeModel
 public abstract class BaseCompositeModelService<T> extends ModelServiceWithCalSupport
 						implements ModelService<T>,	Initializable {
 

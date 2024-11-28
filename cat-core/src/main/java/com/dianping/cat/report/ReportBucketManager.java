@@ -19,7 +19,7 @@
 package com.dianping.cat.report;
 
 import java.io.IOException;
-
+// report bucket manager
 public interface ReportBucketManager {
 
 	public void closeBucket(ReportBucket bucket);

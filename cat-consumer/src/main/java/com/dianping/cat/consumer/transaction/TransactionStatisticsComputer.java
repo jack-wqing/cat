@@ -30,7 +30,7 @@ import com.dianping.cat.consumer.transaction.model.entity.Range2;
 import com.dianping.cat.consumer.transaction.model.entity.TransactionName;
 import com.dianping.cat.consumer.transaction.model.entity.TransactionType;
 import com.dianping.cat.consumer.transaction.model.transform.BaseVisitor;
-
+// transaction statistics computer
 public class TransactionStatisticsComputer extends BaseVisitor {
 
 	public final static double PERCENT_50 = 50.0;

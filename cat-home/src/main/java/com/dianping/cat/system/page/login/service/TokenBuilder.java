@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
 import com.dianping.cat.system.page.login.spi.ITokenBuilder;
-
+// realname username  加有效期 ONE_DAY
 public class TokenBuilder implements ITokenBuilder<SigninContext, Token> {
 	private static final String SP = "|";
 

@@ -39,7 +39,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.statistic.ServerStatisticManager;
-
+// default Block Dumper管理
 @Named(type = BlockDumper.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultBlockDumper extends ContainerHolder implements BlockDumper, LogEnabled {
 

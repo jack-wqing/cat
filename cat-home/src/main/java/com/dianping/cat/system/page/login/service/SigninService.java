@@ -21,7 +21,7 @@ package com.dianping.cat.system.page.login.service;
 import org.unidal.lookup.annotation.Inject;
 
 import com.dianping.cat.system.page.login.spi.ISigninService;
-
+// TokenManger, SessionManger
 public class SigninService implements ISigninService<SigninContext, Credential, Session> {
 
 	@Inject

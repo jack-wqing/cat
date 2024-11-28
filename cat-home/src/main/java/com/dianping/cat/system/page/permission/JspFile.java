@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.permission;
-
+// jsp 映射
 public enum JspFile {
 
 	USER("/jsp/system/permission/userConfigUpdate.jsp"),

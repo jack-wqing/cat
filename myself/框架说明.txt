@@ -1,0 +1,19 @@
+1、一个路径对应一个 Handler: SystemModule指定系统端的路径映射
+    system: 目录
+        1、login: Handler + Action + JspViewer + Payload
+        2、permission: Handler + Action + JspViewer + Payload [可以通过接口定义用户，资源]
+        3、project: Handler + Action + JspViewer + Payload [业务为找到]
+
+
+
+
+
+
+
+
+
+
+
+
+
+

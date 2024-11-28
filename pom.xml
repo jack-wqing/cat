@@ -37,6 +37,7 @@
 		<module>cat-hadoop</module>
 		<module>cat-home</module>
 		<module>cat-alarm</module>
+		<module>source-test</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

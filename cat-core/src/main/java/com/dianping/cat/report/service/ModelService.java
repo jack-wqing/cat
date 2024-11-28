@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.report.service;
-
+// model Service
 public interface ModelService<M> {
 
 	public String getName();

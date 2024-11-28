@@ -24,7 +24,7 @@ import com.dianping.cat.configuration.server.entity.Server;
 import com.dianping.cat.configuration.server.entity.ServerConfig;
 import com.dianping.cat.configuration.server.entity.StorageConfig;
 import com.dianping.cat.configuration.server.transform.DefaultValidator;
-
+// 对于默认配置验证
 public class ServerConfigValidator extends DefaultValidator {
 
 	@Override

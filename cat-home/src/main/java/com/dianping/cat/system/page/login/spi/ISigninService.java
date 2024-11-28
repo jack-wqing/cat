@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login.spi;
-
+// signin 登录服务
 public interface ISigninService<C extends IContext, T extends ICredential, S extends ISession> {
 	public S signin(C ctx, T credential);
 

@@ -19,7 +19,7 @@
 package com.dianping.cat.system.page.login.service;
 
 import com.dianping.cat.system.page.login.spi.IToken;
-
+// token
 public class Token implements IToken {
 
 	public static final String TOKEN = "ct";

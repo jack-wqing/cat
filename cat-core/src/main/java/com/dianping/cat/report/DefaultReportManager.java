@@ -49,6 +49,7 @@ import static com.dianping.cat.Constants.HOUR;
 	* Hourly report manager by domain of one report type(such as Transaction, Event, Problem, Heartbeat etc.) produced in one machine
 	* for a couple of hours.
 	*/
+// Default Report Manager
 public class DefaultReportManager<T> extends ContainerHolder implements ReportManager<T>, Initializable, LogEnabled {
 	@Inject
 	private ReportDelegate<T> m_reportDelegate;

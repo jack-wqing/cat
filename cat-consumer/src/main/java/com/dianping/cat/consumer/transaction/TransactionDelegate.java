@@ -35,7 +35,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.Date;
 import java.util.Map;
-
+// transaction Delegate
 @Named(type = ReportDelegate.class, value = TransactionAnalyzer.ID)
 public class TransactionDelegate implements ReportDelegate<TransactionReport> {
 

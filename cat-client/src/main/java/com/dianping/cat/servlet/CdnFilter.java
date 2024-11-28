@@ -31,7 +31,7 @@ import org.unidal.lookup.util.StringUtils;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.Metric;
-
+// 解析具体的业务cdn 业务统计信息
 public class CdnFilter implements Filter {
 
 	private static final String DI_LIAN = "DiLian";

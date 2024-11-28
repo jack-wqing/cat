@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.config;
-
+//log level: NORMAL ERROR
 public enum LogLevel {
 
 	NORMAL(1, "normal"),

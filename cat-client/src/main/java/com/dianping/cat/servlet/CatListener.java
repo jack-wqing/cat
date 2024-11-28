@@ -24,7 +24,7 @@ import javax.servlet.ServletContextListener;
 import java.io.File;
 
 import com.dianping.cat.Cat;
-
+// cat-client listener
 public class CatListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {

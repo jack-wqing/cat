@@ -46,7 +46,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.internal.MessageId;
-
+//local bucket
 @Named(type = Bucket.class, value = "local", instantiationStrategy = Named.PER_LOOKUP)
 public class LocalBucket implements Bucket {
 
@@ -219,7 +219,7 @@ public class LocalBucket implements Bucket {
 			m_offset += len + 4;
 		}
 	}
-
+	// 索引文件的操作
 	private class IndexHelper {
 
 		private RandomAccessFile m_file;

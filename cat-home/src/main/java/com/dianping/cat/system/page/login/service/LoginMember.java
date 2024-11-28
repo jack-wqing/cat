@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login.service;
-
+// login member
 public class LoginMember {
 
 	private String m_userName;

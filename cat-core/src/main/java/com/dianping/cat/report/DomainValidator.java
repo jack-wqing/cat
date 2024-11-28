@@ -21,7 +21,7 @@ package com.dianping.cat.report;
 import org.unidal.lookup.annotation.Named;
 
 import java.util.concurrent.ConcurrentHashMap;
-
+// Domain Validator: ASCII 码: 32 < char < 126
 @Named
 public class DomainValidator {
 

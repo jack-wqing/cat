@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
-
+// 服务端统计
 @Named(type = MessageAnalyzer.class, value = StateAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class StateAnalyzer extends AbstractMessageAnalyzer<StateReport> implements LogEnabled {
 	public static final String ID = "state";

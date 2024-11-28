@@ -38,7 +38,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.List;
 import java.util.Set;
-
+// event analyzer
 @Named(type = MessageAnalyzer.class, value = EventAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class EventAnalyzer extends AbstractMessageAnalyzer<EventReport> implements LogEnabled {
 

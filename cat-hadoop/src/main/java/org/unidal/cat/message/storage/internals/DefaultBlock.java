@@ -37,7 +37,7 @@ import org.xerial.snappy.SnappyOutputStream;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.internal.MessageId;
-
+//Default Block size 256 * 1024 256kb
 public class DefaultBlock implements Block {
 
 	private static final int MAX_SIZE = 256 * 1024;

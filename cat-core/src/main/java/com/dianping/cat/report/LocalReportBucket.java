@@ -43,7 +43,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.PathBuilder;
-
+// local report Bucket
 @Named(type = ReportBucket.class, instantiationStrategy = Named.PER_LOOKUP)
 public class LocalReportBucket implements ReportBucket, LogEnabled {
 	@Inject

@@ -21,7 +21,7 @@ package com.dianping.cat.system.page.login.service;
 import org.unidal.lookup.annotation.Inject;
 
 import com.dianping.cat.system.page.login.spi.ITokenManager;
-
+// ct token
 public class TokenManager implements ITokenManager<SigninContext, Token> {
 	@Inject
 	private CookieManager m_cookieManager;

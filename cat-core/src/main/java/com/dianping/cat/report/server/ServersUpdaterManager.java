@@ -31,7 +31,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// servers updater manager: ServerUpdater -> RemoteServersManger
 @Named
 public class ServersUpdaterManager implements Initializable {
 

@@ -24,7 +24,7 @@ import org.unidal.helper.Files;
 import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
-
+// local /config文件下的默认内容
 @Named(type = ContentFetcher.class)
 public class LocalResourceContentFetcher implements ContentFetcher, LogEnabled {
 	private final String PATH = "/config/";

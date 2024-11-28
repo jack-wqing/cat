@@ -27,7 +27,7 @@ import org.unidal.helper.Threads.Task;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-
+// 定时同步器
 public class TimerSyncTask implements Task {
 
 	private static final long DURATION = TimeHelper.ONE_MINUTE;

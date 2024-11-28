@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.project;
-
+// action
 public enum Action implements org.unidal.web.mvc.Action {
 	DOMAINS("domains"),
 

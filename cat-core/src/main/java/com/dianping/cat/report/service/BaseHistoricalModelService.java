@@ -25,7 +25,7 @@ import org.unidal.lookup.annotation.Inject;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
-
+// Base Historical Model Service 历史报表
 public abstract class BaseHistoricalModelService<T> extends ModelServiceWithCalSupport
 						implements ModelService<T>,	Initializable {
 

@@ -35,7 +35,8 @@ import org.unidal.lookup.annotation.Named;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+// problem handler进行处理
+// event 错误不会记录，transaction 错误会记录 herbert会记录 long execute会记录
 @Named(type = MessageAnalyzer.class, value = ProblemAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class ProblemAnalyzer extends AbstractMessageAnalyzer<ProblemReport> implements LogEnabled, Initializable {
 	public static final String ID = "problem";

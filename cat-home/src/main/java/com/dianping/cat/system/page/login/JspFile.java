@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login;
-
+// login jsp
 public enum JspFile {
 	LOGIN("/jsp/system/login.jsp"),;
 

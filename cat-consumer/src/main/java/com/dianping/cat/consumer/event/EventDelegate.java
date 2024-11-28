@@ -36,7 +36,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.Date;
 import java.util.Map;
-
+// Event Delegate
 @Named(type = ReportDelegate.class, value = EventAnalyzer.ID)
 public class EventDelegate implements ReportDelegate<EventReport> {
 

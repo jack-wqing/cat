@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dianping.cat.system.page.login.spi.IContext;
-
+// request response context
 public class SigninContext implements IContext {
 	private HttpServletRequest m_request;
 

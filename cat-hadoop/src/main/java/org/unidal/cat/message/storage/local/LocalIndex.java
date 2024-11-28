@@ -44,7 +44,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.internal.MessageId;
-
+// local Index
 @Named(type = Index.class, value = "local", instantiationStrategy = Named.PER_LOOKUP)
 public class LocalIndex implements Index {
 	private static final int SEGMENT_SIZE = 32 * 1024;

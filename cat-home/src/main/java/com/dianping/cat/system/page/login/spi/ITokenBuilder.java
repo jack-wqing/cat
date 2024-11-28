@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login.spi;
-
+// token Builder
 public interface ITokenBuilder<C extends IContext, T extends IToken> {
 	public T parse(C ctx, String str);
 

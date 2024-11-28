@@ -34,7 +34,7 @@ import com.dianping.cat.consumer.event.model.entity.EventType;
 import com.dianping.cat.consumer.event.model.entity.Machine;
 import com.dianping.cat.consumer.event.model.transform.BaseVisitor;
 import com.dianping.cat.consumer.util.InvidStringBuilder;
-
+// type:100 name:200 得个数限制
 public class EventReportCountFilter extends BaseVisitor {
 
 	private int m_maxTypeLimit;

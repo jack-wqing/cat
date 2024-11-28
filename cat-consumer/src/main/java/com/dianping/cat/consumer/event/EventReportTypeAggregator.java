@@ -24,7 +24,7 @@ import com.dianping.cat.consumer.event.model.entity.EventReport;
 import com.dianping.cat.consumer.event.model.entity.EventType;
 import com.dianping.cat.consumer.event.model.entity.Machine;
 import com.dianping.cat.consumer.event.model.transform.BaseVisitor;
-
+//Event Report Type Aggregator
 public class EventReportTypeAggregator extends BaseVisitor {
 
 	public String m_currentDomain;

@@ -21,7 +21,7 @@ package com.dianping.cat.consumer.event;
 import com.dianping.cat.consumer.event.model.entity.EventName;
 import com.dianping.cat.consumer.event.model.entity.EventType;
 import com.dianping.cat.consumer.event.model.transform.BaseVisitor;
-
+// Event Tps统计
 public class EventTpsStatisticsComputer extends BaseVisitor {
 
 	public double m_duration = 3600;

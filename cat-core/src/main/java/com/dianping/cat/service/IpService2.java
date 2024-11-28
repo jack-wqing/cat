@@ -32,7 +32,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.service.IpService.IpInfo;
-
+// 国家区域ip管理
 @Named
 public class IpService2 implements Initializable {
 

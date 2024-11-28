@@ -19,7 +19,7 @@
 package com.dianping.cat.system.page.login;
 
 import com.dianping.cat.system.SystemContext;
-
+// context 对应请求负载
 public class Context extends SystemContext<Payload> {
 
 }

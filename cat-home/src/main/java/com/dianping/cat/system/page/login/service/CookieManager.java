@@ -19,7 +19,7 @@
 package com.dianping.cat.system.page.login.service;
 
 import javax.servlet.http.Cookie;
-
+// cookie manager
 public class CookieManager {
 	protected Cookie createCookie(String name, String value) {
 		Cookie cookie = new Cookie(name, value);

@@ -36,7 +36,7 @@ import org.unidal.lookup.ContainerLoader;
 import com.dianping.cat.system.page.login.service.SigninContext;
 import com.dianping.cat.system.page.login.service.Token;
 import com.dianping.cat.system.page.login.service.TokenManager;
-
+// cat permission filter : simple path role控制
 public class PermissionFilter implements Filter {
 
 	private static final String LOG_IN_URL = "/cat/s/login";

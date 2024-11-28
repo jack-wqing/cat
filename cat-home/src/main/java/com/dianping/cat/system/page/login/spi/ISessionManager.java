@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.system.page.login.spi;
-
+// session manager
 public interface ISessionManager<S extends ISession, T extends IToken, C extends ICredential> {
 	public T authenticate(C credential);
 

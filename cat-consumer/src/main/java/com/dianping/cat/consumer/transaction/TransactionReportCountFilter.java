@@ -34,7 +34,7 @@ import com.dianping.cat.consumer.transaction.model.entity.TransactionReport;
 import com.dianping.cat.consumer.transaction.model.entity.TransactionType;
 import com.dianping.cat.consumer.transaction.model.transform.BaseVisitor;
 import com.dianping.cat.consumer.util.InvidStringBuilder;
-
+// transaction report count
 public class TransactionReportCountFilter extends BaseVisitor {
 
 	private int m_maxTypeLimit;

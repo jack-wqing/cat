@@ -34,7 +34,7 @@ import com.dianping.cat.home.user.entity.UserConfig;
 import com.dianping.cat.home.user.transform.DefaultSaxParser;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// user config: user - role
 @Named
 public class UserConfigManager implements Initializable {
 

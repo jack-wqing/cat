@@ -30,7 +30,7 @@ import org.unidal.cat.message.storage.BlockDumper;
 import org.unidal.cat.message.storage.BlockDumperManager;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
-
+//简单的管理 BlockDumper,这是的操作是lBockDumper的管理
 @Named(type = BlockDumperManager.class)
 public class DefaultBlockDumperManager extends ContainerHolder implements LogEnabled, BlockDumperManager {
 	private Map<Integer, BlockDumper> m_map = new LinkedHashMap<Integer, BlockDumper>();

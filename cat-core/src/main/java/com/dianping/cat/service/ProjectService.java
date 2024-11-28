@@ -32,7 +32,7 @@ import org.unidal.lookup.annotation.Named;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-
+// department business line: 机构映射关系 // 项目关系: department : businessLine : domain
 @Named
 public class ProjectService implements Initializable {
 

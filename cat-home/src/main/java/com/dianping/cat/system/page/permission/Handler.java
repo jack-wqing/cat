@@ -30,7 +30,7 @@ import org.unidal.web.mvc.annotation.PayloadMeta;
 
 import com.dianping.cat.system.SystemPage;
 import com.dianping.cat.system.page.config.ConfigHtmlParser;
-
+// permission handler
 public class Handler implements PageHandler<Context> {
 
 	@Inject

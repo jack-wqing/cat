@@ -19,7 +19,7 @@
 package org.unidal.cat.message.storage.internals;
 
 import java.nio.ByteBuffer;
-
+// ByteBuffer pool
 public interface ByteBufCache {
 
 	public ByteBuffer get();

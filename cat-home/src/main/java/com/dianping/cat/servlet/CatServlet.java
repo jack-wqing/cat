@@ -33,6 +33,11 @@ import org.unidal.web.AbstractContainerServlet;
 
 import com.dianping.cat.Cat;
 
+/**
+ * cat servlet支持配置 名为cat-client.xml的客户端配置 名为cat-server-xml的服务端配置
+ *  功能: 1.初始化ModuleInitializer 组件
+ *  MVCServlet: 主要是mvc初始化客户端cat和mvc功能
+ */
 public class CatServlet extends AbstractContainerServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -21,7 +21,7 @@ package com.dianping.cat.system;
 import org.unidal.web.mvc.AbstractModule;
 import org.unidal.web.mvc.annotation.ModuleMeta;
 import org.unidal.web.mvc.annotation.ModulePagesMeta;
-
+// path -> handler
 @ModuleMeta(name = "s", defaultInboundAction = "config", defaultTransition = "default", defaultErrorAction = "default")
 @ModulePagesMeta({
 

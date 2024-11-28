@@ -38,7 +38,7 @@ import org.unidal.lookup.annotation.Named;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
+// heartbeat analyzer
 @Named(type = MessageAnalyzer.class, value = HeartbeatAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class HeartbeatAnalyzer extends AbstractMessageAnalyzer<HeartbeatReport> implements LogEnabled {
 	public static final String ID = "heartbeat";

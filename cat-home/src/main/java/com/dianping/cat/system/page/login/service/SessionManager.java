@@ -30,7 +30,7 @@ import javax.naming.ldap.InitialLdapContext;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+// session manager: 支持 NOP: 只要输入就可以，LDAP服务器，ADMIN_PWD: 用户名admin: 可以通过系统变量CAT_ADMIN_PWD指定
 public class SessionManager implements ISessionManager<Session, Token, Credential> {
 
 	enum AuthType {

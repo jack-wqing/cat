@@ -36,7 +36,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.statistic.ServerStatisticManager;
-
+//find a bucket by domain,ip,hour put操作
 @Named(type = BlockWriter.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultBlockWriter implements BlockWriter {
 

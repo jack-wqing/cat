@@ -20,7 +20,7 @@ package com.dianping.cat.server;
 
 import java.util.List;
 import java.util.Map;
-
+// metric service
 public interface MetricService {
 
 	public boolean insert(List<MetricEntity> entities);

@@ -33,7 +33,7 @@ import com.dianping.cat.sample.entity.SampleConfig;
 import com.dianping.cat.sample.transform.DefaultSaxParser;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// Sample Config
 @Named
 public class SampleConfigManager implements Initializable {
 

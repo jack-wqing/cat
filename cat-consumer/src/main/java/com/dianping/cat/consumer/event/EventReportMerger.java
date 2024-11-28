@@ -30,7 +30,7 @@ import com.dianping.cat.consumer.event.model.entity.GraphTrend;
 import com.dianping.cat.consumer.event.model.entity.Machine;
 import com.dianping.cat.consumer.event.model.entity.Range;
 import com.dianping.cat.consumer.event.model.transform.DefaultMerger;
-
+//event report merger
 public class EventReportMerger extends DefaultMerger {
 	public EventReportMerger(EventReport eventReport) {
 		super(eventReport);

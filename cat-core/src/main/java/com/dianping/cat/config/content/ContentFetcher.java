@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.config.content;
-
+// fetch default config content
 public interface ContentFetcher {
 
 	public String getConfigContent(String configName);

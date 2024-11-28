@@ -31,7 +31,7 @@ import java.io.IOException;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.Event;
-
+// 为什么要拼接多个domain呢
 public class DomainFilter implements Filter {
 
 	private static final String DOMAIN = "CAT_DOMAINS";

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dianping.cat.Constants;
-
+// metric entity
 public class MetricEntity {
 
 	private String m_category;

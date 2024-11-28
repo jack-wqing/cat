@@ -37,7 +37,7 @@ import com.dianping.cat.home.resource.entity.ResourceConfig;
 import com.dianping.cat.home.resource.transform.DefaultSaxParser;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// resource config: path - op - role
 @Named
 public class ResourceConfigManager implements Initializable {
 

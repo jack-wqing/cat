@@ -40,7 +40,7 @@ import com.dianping.cat.core.config.ConfigDao;
 import com.dianping.cat.core.config.ConfigEntity;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// server filter config
 @Named(type = ServerFilterConfigManager.class)
 public class ServerFilterConfigManager implements Initializable {
 

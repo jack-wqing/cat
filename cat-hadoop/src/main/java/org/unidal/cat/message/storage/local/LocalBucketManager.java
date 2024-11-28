@@ -46,7 +46,7 @@ public class LocalBucketManager extends ContainerHolder implements BucketManager
 
 	@Inject("local")
 	private PathBuilder m_builder;
-
+	// hour -> domain:bucket
 	private Map<Integer, Map<String, Bucket>> m_buckets = new LinkedHashMap<Integer, Map<String, Bucket>>();
 
 	private boolean bucketFilesExists(String domain, String ip, int hour) {

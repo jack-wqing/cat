@@ -30,7 +30,7 @@ import org.unidal.cat.message.storage.TokenMappingManager;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
 import org.unidal.tuple.Pair;
-
+// hour ip -> TokenMapping
 @Named(type = TokenMappingManager.class, value = "local")
 public class LocalTokenMappingManager extends ContainerHolder implements TokenMappingManager {
 	private Map<Pair<Integer, String>, TokenMapping> m_cache = new HashMap<Pair<Integer, String>, TokenMapping>();
