@@ -30,7 +30,7 @@ import com.dianping.cat.system.page.config.Action;
 import com.dianping.cat.system.page.config.ConfigHtmlParser;
 import com.dianping.cat.system.page.config.Model;
 import com.dianping.cat.system.page.config.Payload;
-
+// topology Dependency: config
 public class DependencyConfigProcessor {
 
 	@Inject

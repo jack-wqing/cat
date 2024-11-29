@@ -46,7 +46,7 @@ import com.dianping.cat.core.config.BusinessConfigEntity;
 import com.dianping.cat.helper.MetricType;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// business rule config
 @Named
 public class BusinessRuleConfigManager implements Initializable {
 

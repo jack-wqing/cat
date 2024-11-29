@@ -30,7 +30,7 @@ import com.dianping.cat.report.alert.exception.ExceptionRuleConfigManager;
 import com.dianping.cat.system.page.config.Action;
 import com.dianping.cat.system.page.config.Model;
 import com.dianping.cat.system.page.config.Payload;
-
+// exception config
 public class ExceptionConfigProcessor {
 
 	@Inject

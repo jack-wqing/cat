@@ -38,7 +38,7 @@ import com.dianping.cat.home.business.entity.BusinessItem;
 import com.dianping.cat.home.business.entity.BusinessTagConfig;
 import com.dianping.cat.home.business.entity.Tag;
 import com.dianping.cat.home.business.transform.DefaultSaxParser;
-
+// business tag config
 public class BusinessTagConfigManager implements Initializable {
 
 	public final static String TAG_CONFIG = "tag";

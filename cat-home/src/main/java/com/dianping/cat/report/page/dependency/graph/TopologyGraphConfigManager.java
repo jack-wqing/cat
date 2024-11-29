@@ -46,7 +46,7 @@ import com.dianping.cat.home.dependency.config.entity.EdgeConfig;
 import com.dianping.cat.home.dependency.config.entity.NodeConfig;
 import com.dianping.cat.home.dependency.config.entity.TopologyGraphConfig;
 import com.dianping.cat.home.dependency.config.transform.DefaultSaxParser;
-
+// TopologyGraphConfig
 @Named
 public class TopologyGraphConfigManager implements Initializable {
 	private static final String AVG_STR = Chinese.RESPONSE_TIME;

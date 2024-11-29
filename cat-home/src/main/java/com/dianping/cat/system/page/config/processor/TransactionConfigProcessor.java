@@ -27,7 +27,7 @@ import com.dianping.cat.report.alert.transaction.TransactionRuleConfigManager;
 import com.dianping.cat.system.page.config.Action;
 import com.dianping.cat.system.page.config.Model;
 import com.dianping.cat.system.page.config.Payload;
-
+// transaction config
 public class TransactionConfigProcessor extends BaseProcesser {
 
 	@Inject

@@ -27,7 +27,7 @@ import com.dianping.cat.report.alert.event.EventRuleConfigManager;
 import com.dianping.cat.system.page.config.Action;
 import com.dianping.cat.system.page.config.Model;
 import com.dianping.cat.system.page.config.Payload;
-
+// event config
 public class EventConfigProcessor extends BaseProcesser {
 
 	@Inject

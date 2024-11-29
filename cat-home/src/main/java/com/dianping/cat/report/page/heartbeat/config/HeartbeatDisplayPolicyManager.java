@@ -39,7 +39,7 @@ import com.dianping.cat.home.heartbeat.entity.Group;
 import com.dianping.cat.home.heartbeat.entity.HeartbeatDisplayPolicy;
 import com.dianping.cat.home.heartbeat.entity.Metric;
 import com.dianping.cat.home.heartbeat.transform.DefaultSaxParser;
-
+// heartbeat display policy
 public class HeartbeatDisplayPolicyManager implements Initializable {
 
 	private static final int K = 1024;

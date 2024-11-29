@@ -24,7 +24,7 @@ import com.dianping.cat.system.page.config.Payload;
 
 public class StorageConfigProcessor extends BaseProcesser {
 
-
+// 功能暂时未实现
 	public void process(Action action, Payload payload, Model model) {
 
 		switch (action) {
