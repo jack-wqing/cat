@@ -26,9 +26,9 @@
 						<li id="dashbord_metric"><a href="/cat/r/business?name=业务大盘&type=tag">
 							<i class="menu-icon fa fa-caret-right"></i>业务大盘</a>
 							<b class="arrow"></b></li>
-						 <li id="dashbord_network"><a href="/cat/r/network?op=dashboard&domain=${model.domain}">
+						 <%--<li id="dashbord_network"><a href="/cat/r/network?op=dashboard&domain=${model.domain}">
 							<i class="menu-icon fa fa-caret-right"></i>网络大盘</a>
-							<b class="arrow"></b></li>
+							<b class="arrow"></b></li>--%>
 						<li id="dashbord_rpc"><a href="/cat/r/storage?op=dashboard&domain=${model.domain}&type=RPC">
 							<i class="menu-icon fa fa-caret-right"></i>服务大盘</a>
 							<b class="arrow"></b></li>
@@ -40,12 +40,12 @@
 							<b class="arrow"></b></li>
 					</ul>
 				</li>
-                <li id="Dashboard_report"  class="hsub">
+                <%--<li id="Dashboard_report"  class="hsub">
                     <a href="/cat/r/top?op=view&domain=${model.domain}">
                         <i class="menu-icon fa fa-tachometer"></i>
                         <span class="menu-text">Dashboard</span>
                     </a>
-                </li>
+                </li>--%>
 				<li id="Transaction_report" >
 					<a href="/cat/r/t?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">
 						<i class="menu-icon glyphicon glyphicon-time"></i>
