@@ -44,7 +44,7 @@ import com.dianping.cat.system.page.config.ConfigHtmlParser;
 import com.dianping.cat.system.page.config.Model;
 import com.dianping.cat.system.page.config.Payload;
 import com.dianping.cat.system.page.router.config.RouterConfigManager;
-
+// global config
 public class GlobalConfigProcessor {
 
 	@Inject

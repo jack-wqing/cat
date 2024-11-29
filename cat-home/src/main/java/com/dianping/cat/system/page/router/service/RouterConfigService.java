@@ -38,7 +38,7 @@ import com.dianping.cat.home.router.entity.RouterConfig;
 import com.dianping.cat.home.router.transform.DefaultNativeParser;
 import com.dianping.cat.report.service.AbstractReportService;
 import com.dianping.cat.system.page.router.config.RouterConfigManager;
-
+// Router Config
 @Named
 public class RouterConfigService extends AbstractReportService<RouterConfig> {
 

@@ -43,7 +43,7 @@ import org.unidal.web.mvc.annotation.PayloadMeta;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.*;
-
+// 路由信息的获取
 public class Handler implements PageHandler<Context> {
 
 	@Inject

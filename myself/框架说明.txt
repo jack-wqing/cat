@@ -2,10 +2,12 @@
     system: 目录
         1、login: Handler + Action + JspViewer + Payload
         2、permission: Handler + Action + JspViewer + Payload [可以通过接口定义用户，资源]
-        3、project: Handler + Action + JspViewer + Payload [业务为找到]
+        3、project[代码冗余]: Handler + Action + JspViewer + Payload
+        4、config: Handler + Action + JspViewer + Payload
 
-
-
+        5、router[代码冗余]: Handler + Action + JspViewer + Payload
+           客户端会使用到路由策略，来连接服务端的机器：代码有问题
+           路由是可以更新的，更新的时候对于路由状态的调整
 
 
 

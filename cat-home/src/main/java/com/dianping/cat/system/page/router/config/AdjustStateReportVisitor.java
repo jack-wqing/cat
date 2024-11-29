@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.dianping.cat.consumer.state.model.entity.Machine;
 import com.dianping.cat.consumer.state.model.transform.BaseVisitor;
-
+// 路由状态报告调增
 public class AdjustStateReportVisitor extends BaseVisitor {
 
 	Map<String, Map<String, Machine>> m_datas = new HashMap<String, Map<String, Machine>>();

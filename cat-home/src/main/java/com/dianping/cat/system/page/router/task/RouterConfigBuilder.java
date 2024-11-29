@@ -33,7 +33,7 @@ import com.dianping.cat.report.task.TaskBuilder;
 import com.dianping.cat.system.page.router.config.RouterConfigAdjustor;
 import com.dianping.cat.system.page.router.config.RouterConfigHandler;
 import com.dianping.cat.system.page.router.service.RouterConfigService;
-
+// Router Config Builder ： 路由builder
 @Named(type = TaskBuilder.class, value = RouterConfigBuilder.ID)
 public class RouterConfigBuilder implements TaskBuilder {
 

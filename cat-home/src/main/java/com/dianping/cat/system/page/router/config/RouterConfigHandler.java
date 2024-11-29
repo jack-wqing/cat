@@ -50,7 +50,7 @@ import com.dianping.cat.message.Event;
 import com.dianping.cat.report.page.state.service.StateReportService;
 import com.dianping.cat.system.page.router.service.RouterConfigService;
 import com.dianping.cat.system.page.router.task.RouterConfigBuilder;
-
+// router handler: 调整路由
 @Named
 public class RouterConfigHandler implements LogEnabled {
 

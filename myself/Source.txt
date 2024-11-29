@@ -10,7 +10,8 @@
         出现: cat sorry, the message is not there. it could be missing or archived.
     3、代码分析: 服务端消息统计是基于服务段时间的，所以需要客户端和服务端的时间一致进行统计
 
-
+    4、页面系统配置的地方功能打开
+       修改该文件: src/main/webapp/WEB-INF/tags/config.tag
     
 部署注意点:
     1、注意服务器时间的与网络的同步，保持一致；不然丢失数据

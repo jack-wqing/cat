@@ -35,7 +35,7 @@ import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
 import java.util.List;
-
+// Sender config
 @Named
 public class SenderConfigManager implements Initializable {
 

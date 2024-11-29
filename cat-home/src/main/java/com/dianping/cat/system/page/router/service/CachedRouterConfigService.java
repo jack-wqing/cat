@@ -27,7 +27,7 @@ import com.dianping.cat.Constants;
 import com.dianping.cat.home.router.entity.RouterConfig;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// Last Report
 @Named
 public class CachedRouterConfigService implements Initializable {
 

@@ -52,7 +52,7 @@ import com.dianping.cat.report.page.state.StateBuilder;
 import com.dianping.cat.report.page.state.service.StateReportService;
 import com.dianping.cat.system.page.router.service.RouterConfigService;
 import com.dianping.cat.system.page.router.task.RouterConfigBuilder;
-
+// router Config adjustor
 @Named
 public class RouterConfigAdjustor {
 

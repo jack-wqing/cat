@@ -48,7 +48,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
-
+// router config manager: router为什么要日报告
 @Named
 public class RouterConfigManager implements Initializable, LogEnabled {
 
@@ -308,7 +308,7 @@ public class RouterConfigManager implements Initializable, LogEnabled {
 			}
 		}
 	}
-
+	// NetInfo
 	private void refreshNetInfo() {
 		Map<String, List<SubnetInfo>> subNetInfos = new HashMap<String, List<SubnetInfo>>();
 

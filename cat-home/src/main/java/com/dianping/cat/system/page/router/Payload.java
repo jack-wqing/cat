@@ -27,7 +27,7 @@ import org.unidal.web.mvc.payload.annotation.FieldMeta;
 
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.system.SystemPage;
-
+// op domain ip date
 public class Payload implements ActionPayload<SystemPage, Action> {
 	private SystemPage m_page;
 

@@ -18,15 +18,15 @@
  */
 package com.dianping.cat.system.page.router.config;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.dianping.cat.consumer.state.model.entity.ProcessDomain;
 import com.dianping.cat.consumer.state.model.transform.BaseVisitor;
 import com.dianping.cat.helper.SortHelper;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+// state Report visitor
 public class StateReportVisitor extends BaseVisitor {
 
 	private RouterConfigManager m_routerConfigManager;

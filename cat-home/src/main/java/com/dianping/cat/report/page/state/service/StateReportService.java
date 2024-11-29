@@ -48,7 +48,7 @@ import com.dianping.cat.core.dal.WeeklyReportContentEntity;
 import com.dianping.cat.core.dal.WeeklyReportEntity;
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.report.service.AbstractReportService;
-
+// state report处理
 @Named
 public class StateReportService extends AbstractReportService<StateReport> {
 
