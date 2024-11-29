@@ -1,5 +1,6 @@
 1、一个路径对应一个 Handler: SystemModule指定系统端的路径映射
-    system: 目录
+    system: 目录:
+        ***额外配置功能需要配置页面打开: src/main/webapp/WEB-INF/tags/config.tag
         1、login: Handler + Action + JspViewer + Payload
         2、permission: Handler + Action + JspViewer + Payload [可以通过接口定义用户，资源]
         3、project[代码冗余]: Handler + Action + JspViewer + Payload
