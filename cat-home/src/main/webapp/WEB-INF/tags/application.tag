@@ -16,30 +16,30 @@
 				try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 			</script>
 			<ul class="nav nav-list" style="top: 0px;">
-				<%--<li id="Dashboard_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>--%>
-						<%--<b class="arrow fa fa-angle-down"></b>--%>
-				<%--</a> <b class="arrow"></b>--%>
-					<%--<ul class="submenu">--%>
-						<%--<li id="dashbord_system"><a href="/cat/r/top?op=view&domain=${model.domain}">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>报错大盘</a>--%>
-							<%--<b class="arrow"></b></li>--%>
-						<%--<li id="dashbord_metric"><a href="/cat/r/business?name=业务大盘&type=tag">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>业务大盘</a>--%>
-							<%--<b class="arrow"></b></li>--%>
-						<%--&lt;%&ndash; <li id="dashbord_network"><a href="/cat/r/network?op=dashboard&domain=${model.domain}">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>网络大盘</a>--%>
-							<%--<b class="arrow"></b></li>--%>
-						<%--<li id="dashbord_rpc"><a href="/cat/r/storage?op=dashboard&domain=${model.domain}&type=RPC">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>服务大盘</a>--%>
-							<%--<b class="arrow"></b></li>--%>
-						<%--<li id="dashbord_database"><a href="/cat/r/storage?op=dashboard&domain=${model.domain}">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>数据库大盘</a>--%>
-							<%--<b class="arrow"></b></li>--%>
-						<%--<li id="dashbord_cache"><a href="/cat/r/storage?op=dashboard&domain=${model.domain}&type=Cache">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>缓存大盘</a> &ndash;%&gt;--%>
-							<%--<b class="arrow"></b></li>--%>
-					<%--</ul>--%>
-				<%--</li>--%>
+				<li id="Dashboard_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+						<b class="arrow fa fa-angle-down"></b>
+				</a> <b class="arrow"></b>
+					<ul class="submenu">
+						<li id="dashbord_system"><a href="/cat/r/top?op=view&domain=${model.domain}">
+							<i class="menu-icon fa fa-caret-right"></i>报错大盘</a>
+							<b class="arrow"></b></li>
+						<li id="dashbord_metric"><a href="/cat/r/business?name=业务大盘&type=tag">
+							<i class="menu-icon fa fa-caret-right"></i>业务大盘</a>
+							<b class="arrow"></b></li>
+						 <li id="dashbord_network"><a href="/cat/r/network?op=dashboard&domain=${model.domain}">
+							<i class="menu-icon fa fa-caret-right"></i>网络大盘</a>
+							<b class="arrow"></b></li>
+						<li id="dashbord_rpc"><a href="/cat/r/storage?op=dashboard&domain=${model.domain}&type=RPC">
+							<i class="menu-icon fa fa-caret-right"></i>服务大盘</a>
+							<b class="arrow"></b></li>
+						<li id="dashbord_database"><a href="/cat/r/storage?op=dashboard&domain=${model.domain}">
+							<i class="menu-icon fa fa-caret-right"></i>数据库大盘</a>
+							<b class="arrow"></b></li>
+						<li id="dashbord_cache"><a href="/cat/r/storage?op=dashboard&domain=${model.domain}&type=Cache">
+							<i class="menu-icon fa fa-caret-right"></i>缓存大盘</a>
+							<b class="arrow"></b></li>
+					</ul>
+				</li>
                 <li id="Dashboard_report"  class="hsub">
                     <a href="/cat/r/top?op=view&domain=${model.domain}">
                         <i class="menu-icon fa fa-tachometer"></i>
@@ -82,31 +82,31 @@
 						<span class="menu-text">Business</span>
 					</a>
 				</li>
-				<%--<li id="RPC_report" >--%>
-					<%--<a href="/cat/r/storage?id=shop-server&type=RPC&domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}">--%>
-						<%--<i class="menu-icon fa fa-cloud"></i>--%>
-						<%--<span class="menu-text">Service</span>--%>
-					<%--</a>--%>
-				<%--</li>--%>
-				<%--<li id="Database_report" >--%>
-					<%--<a href="/cat/r/storage?id=cat&domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}">--%>
-						<%--<i class="menu-icon fa fa-lemon-o"></i>--%>
-						<%--<span class="menu-text">Database</span>--%>
-					<%--</a>--%>
-				<%--</li>--%>
-				<%--<li id="Cache_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon glyphicon glyphicon-flash"></i> <span class="menu-text">Cache</span>--%>
-						<%--<b class="arrow fa fa-angle-down"></b>--%>
-					<%--</a> <b class="arrow"></b>--%>
-					<%--<ul class="submenu">--%>
-						<%--<li id="cache_operation"><a href="/cat/r/storage?id=memcached&type=Cache&domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>访问趋势</a>--%>
-							<%--<b class="arrow"></b></li>--%>
-						<%--&lt;%&ndash; <li id="cache_info"><a href="/cat/r/cache?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=view">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>访问情况</a>--%>
-							<%--<b class="arrow"></b></li> &ndash;%&gt;--%>
-					<%--</ul>--%>
-				<%--</li>--%>
-				<%-- <li id="Dependency_report" class="hsub"><a href="/cat/r/dependency?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=view&op=view" class="dropdown-toggle"> <i class="menu-icon glyphicon glyphicon-road"></i> <span class="menu-text">Dependency</span>
+				<li id="RPC_report" >
+					<a href="/cat/r/storage?id=shop-server&type=RPC&domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}">
+						<i class="menu-icon fa fa-cloud"></i>
+						<span class="menu-text">Service</span>
+					</a>
+				</li>
+				<li id="Database_report" >
+					<a href="/cat/r/storage?id=cat&domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}">
+						<i class="menu-icon fa fa-lemon-o"></i>
+						<span class="menu-text">Database</span>
+					</a>
+				</li>
+				<li id="Cache_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon glyphicon glyphicon-flash"></i> <span class="menu-text">Cache</span>
+						<b class="arrow fa fa-angle-down"></b>
+					</a> <b class="arrow"></b>
+					<ul class="submenu">
+						<li id="cache_operation"><a href="/cat/r/storage?id=memcached&type=Cache&domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}">
+							<i class="menu-icon fa fa-caret-right"></i>访问趋势</a>
+							<b class="arrow"></b></li>
+						 <li id="cache_info"><a href="/cat/r/cache?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=view">
+							<i class="menu-icon fa fa-caret-right"></i>访问情况</a>
+							<b class="arrow"></b></li>
+					</ul>
+				</li>
+				 <li id="Dependency_report" class="hsub"><a href="/cat/r/dependency?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=view&op=view" class="dropdown-toggle"> <i class="menu-icon glyphicon glyphicon-road"></i> <span class="menu-text">Dependency</span>
 						<b class="arrow fa fa-angle-down"></b>
 				</a> <b class="arrow"></b>
 					<ul class="submenu">
@@ -121,20 +121,20 @@
 							<b class="arrow"></b></li>
 						
 					</ul>
-				</li> --%>
-				<%--<li id="Matrix_report" >--%>
-					<%--<a href="/cat/r/matrix?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">--%>
-						<%--<i class="menu-icon  fa  fa-flask"></i>--%>
-						<%--<span class="menu-text">Matrix</span>--%>
-					<%--</a>--%>
-				<%--</li>--%>
+				</li>
+				<li id="Matrix_report" >
+					<a href="/cat/r/matrix?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">
+						<i class="menu-icon  fa  fa-flask"></i>
+						<span class="menu-text">Matrix</span>
+					</a>
+				</li>
 				<li id="State_report" >
 					<a href="/cat/r/state?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">
 						<i class="menu-icon fa fa-bar-chart-o"></i>
 						<span class="menu-text">State</span>
 					</a>
 				</li>
-				<%-- <li id="Offline_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-film"></i> <span class="menu-text">Offline</span>
+				 <li id="Offline_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-film"></i> <span class="menu-text">Offline</span>
 						<b class="arrow fa fa-angle-down"></b>
 					</a> <b class="arrow"></b>
 					<ul class="submenu">
@@ -181,19 +181,19 @@
 						</a>
 					</li>
 					</ul>
-				</li> --%>
-				<%--<li id="System_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-gavel"></i> <span class="menu-text">System</span>--%>
-						<%--<b class="arrow fa fa-angle-down"></b>--%>
-				<%--</a> <b class="arrow"></b>--%>
-					<%--<ul class="submenu">--%>
-						<%--&lt;%&ndash; <li id="system_alteration"><a href="/cat/r/alteration?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>线上变更</a>--%>
-							<%--<b class="arrow"></b></li> &ndash;%&gt;--%>
-						<%--<li id="system_alert"><a href="/cat/r/alert?domain=${model.domain}&op=${payload.action.name}">--%>
-							<%--<i class="menu-icon fa fa-caret-right"></i>告警信息</a>--%>
-							<%--<b class="arrow"></b></li>--%>
-					<%--</ul>--%>
-				<%--</li>--%>
+				</li>
+				<li id="System_report" class="hsub"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-gavel"></i> <span class="menu-text">System</span>
+						<b class="arrow fa fa-angle-down"></b>
+				</a> <b class="arrow"></b>
+					<ul class="submenu">
+						 <li id="system_alteration"><a href="/cat/r/alteration?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">
+							<i class="menu-icon fa fa-caret-right"></i>线上变更</a>
+							<b class="arrow"></b></li>
+						<li id="system_alert"><a href="/cat/r/alert?domain=${model.domain}&op=${payload.action.name}">
+							<i class="menu-icon fa fa-caret-right"></i>告警信息</a>
+							<b class="arrow"></b></li>
+					</ul>
+				</li>
 				</ul>
 			</ul>
 			<!-- #section:basics/sidebar.layout.minimize -->
