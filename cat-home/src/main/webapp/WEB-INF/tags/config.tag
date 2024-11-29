@@ -78,7 +78,7 @@
 							<li id="heartbeatRuleConfigList"><a href="/cat/s/config?op=heartbeatRuleConfigList">
 								<i class="menu-icon fa fa-caret-right"></i>心跳告警配置</a>
 								<b class="arrow"></b></li>
-							<li id="thirdPartyConfigUpdate"><a href="/cat/s/config?op=thirdPartyRuleConfigs">
+							<%--<li id="thirdPartyConfigUpdate"><a href="/cat/s/config?op=thirdPartyRuleConfigs">
 								<i class="menu-icon fa fa-caret-right"></i>Ping告警配置</a>
 								<b class="arrow"></b></li>
 							 <li id="storageDatabaseRule"><a href="/cat/s/config?op=storageRule&type=SQL">
@@ -89,7 +89,7 @@
 								<b class="arrow"></b></li>
 							<li id="storageRPCRule"><a href="/cat/s/config?op=storageRule&type=RPC">
 								<i class="menu-icon fa fa-caret-right"></i>服务访问告警</a>
-								<b class="arrow"></b></li>
+								<b class="arrow"></b></li>--%>
 						</ul>
 					</li>
 					<li id="overall_config" class="hsub">
