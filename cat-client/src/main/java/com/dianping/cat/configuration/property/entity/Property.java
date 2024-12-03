@@ -5,7 +5,7 @@ import static com.dianping.cat.configuration.property.Constants.ENTITY_PROPERTY;
 
 import com.dianping.cat.configuration.property.BaseEntity;
 import com.dianping.cat.configuration.property.IVisitor;
-
+// key value
 public class Property extends BaseEntity<Property> {
    private String m_id;
 

@@ -25,7 +25,7 @@ import java.util.concurrent.locks.LockSupport;
  */
 
 /**
- * 不同的平台获取毫秒数
+ * milli second timer
  */
 public class MilliSecondTimer {
 	private static long m_baseTime;

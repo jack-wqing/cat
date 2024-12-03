@@ -21,7 +21,7 @@ package com.dianping.cat.message.spi;
 import io.netty.buffer.ByteBuf;
 
 /**
- * Message Tree Codec
+ * Message Tree Codec: PT1(toString) + NT1(Sender)
  */
 public interface MessageCodec {
 	/**

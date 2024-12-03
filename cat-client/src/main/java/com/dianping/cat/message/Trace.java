@@ -33,7 +33,7 @@ package com.dianping.cat.message;
 	*/
 
 /**
- * debug 或者info信息
+ * debug + info message
  */
 public interface Trace extends Message {
 

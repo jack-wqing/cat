@@ -30,7 +30,7 @@ import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.MessageId;
 
 /**
- * Message Tree
+ * Message Tree: 每个线程都有一个消息树
  */
 public interface MessageTree extends Cloneable {
 

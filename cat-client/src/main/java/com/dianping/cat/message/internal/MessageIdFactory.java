@@ -41,7 +41,7 @@ import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.util.CleanupHelper;
 
 /**
- * MessageIdFactory
+ * MessageIdFactory: cat-domain.mark文件
  */
 @Named
 public class MessageIdFactory {

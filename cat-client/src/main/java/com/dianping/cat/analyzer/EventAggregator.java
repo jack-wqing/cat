@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Event Aggregator
+ * Default Event Aggregator
  */
 public class EventAggregator {
 

@@ -39,8 +39,7 @@ package com.dianping.cat.message;
 	*/
 
 /**
- * event 对事件的记录
- *    cat对于消息发送都是消息树的形式，只有Transaction为树节点，其它的节点是叶子节点; Transaction可以没有其它消息
+ * event: 一般是事件次数
  */
 
 public interface Event extends Message {

@@ -136,7 +136,7 @@ package com.dianping.cat.message;
 	*/
 
 /**
- * 消息生产者
+ * message producer
  */
 public interface MessageProducer {
 	/**

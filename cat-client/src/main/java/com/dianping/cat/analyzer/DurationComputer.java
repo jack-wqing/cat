@@ -19,7 +19,7 @@
 package com.dianping.cat.analyzer;
 
 /**
- * 持续周期比较
+ * Duration Computer
  */
 public class DurationComputer {
 

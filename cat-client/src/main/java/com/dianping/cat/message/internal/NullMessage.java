@@ -31,8 +31,7 @@ import com.dianping.cat.message.Trace;
 import com.dianping.cat.message.Transaction;
 
 /**
- * 默认消息，实现得常量
- * 	通过enum实现，高吞吐，提高内存使用
+ * 默认对象
  */
 public enum NullMessage implements Transaction, Event, Metric, Trace, Heartbeat, ForkedTransaction, TaggedTransaction {
 	TRANSACTION,

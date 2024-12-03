@@ -50,7 +50,7 @@ import java.util.List;
 	*/
 
 /**
- * 涉及边界的记录
+ * 涉及执行时间: 可以构造执行树
  */
 public interface Transaction extends Message {
 	/**

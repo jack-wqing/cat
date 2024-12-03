@@ -39,7 +39,7 @@ package com.dianping.cat.message;
 	*/
 
 /**
- * 与 event的区别
+ * log business data
  */
 public interface Metric extends Message {
 

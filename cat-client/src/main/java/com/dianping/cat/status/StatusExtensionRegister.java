@@ -20,7 +20,7 @@ package com.dianping.cat.status;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// 可以使用该类注册 定时的状态检测
 public class StatusExtensionRegister {
 
 	public static StatusExtensionRegister s_register = new StatusExtensionRegister();

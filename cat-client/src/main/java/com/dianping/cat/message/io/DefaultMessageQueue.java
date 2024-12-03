@@ -26,7 +26,7 @@ import com.dianping.cat.message.spi.MessageQueue;
 import com.dianping.cat.message.spi.MessageTree;
 
 /**
- * 默认队列
+ * default message queue: Default Message Queue
  */
 public class DefaultMessageQueue implements MessageQueue {
 

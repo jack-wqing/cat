@@ -42,7 +42,7 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 
 /**
- * Native Message Codec
+ * Native Message: Sender codec
  */
 public class NativeMessageCodec implements MessageCodec {
 

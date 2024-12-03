@@ -22,7 +22,7 @@ import com.dianping.cat.message.Heartbeat;
 import com.dianping.cat.message.spi.MessageManager;
 
 /**
- * 默认 HeartBeat
+ * default heartbeat
  */
 public class DefaultHeartbeat extends AbstractMessage implements Heartbeat {
 	private MessageManager m_manager;

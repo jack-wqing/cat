@@ -24,7 +24,7 @@ import com.dianping.cat.message.spi.MessageStatistics;
 import com.dianping.cat.message.spi.MessageTree;
 
 /**
- * unidal 容器管理 MessageStatistics
+ * default client message statistic
  */
 @Named(type = MessageStatistics.class)
 public class DefaultMessageStatistics implements MessageStatistics {

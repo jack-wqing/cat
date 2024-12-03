@@ -46,7 +46,7 @@ import com.dianping.cat.configuration.ClientConfigManager;
 import com.dianping.cat.message.internal.MessageIdFactory;
 
 /**
- * Netty Channel
+ * Netty Channel Manager
  */
 public class ChannelManager implements Task {
 

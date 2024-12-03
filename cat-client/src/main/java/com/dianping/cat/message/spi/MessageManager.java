@@ -30,7 +30,7 @@ import com.dianping.cat.message.Transaction;
 	*/
 
 /**
- * MessageManager
+ * Thread Local Message Manager
  */
 public interface MessageManager {
 	public void add(Message message);

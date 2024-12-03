@@ -19,7 +19,7 @@
 package com.dianping.cat.configuration;
 
 /**
- * 长时间执行的操作，阈值设置
+ * problem long type
  */
 public enum ProblemLongType {
 

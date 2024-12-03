@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.dianping.cat.configuration.property.BaseEntity;
 import com.dianping.cat.configuration.property.IVisitor;
-
+// key -> property(key, value)
 public class PropertyConfig extends BaseEntity<PropertyConfig> {
    private Map<String, Property> m_properties = new LinkedHashMap<String, Property>();
 

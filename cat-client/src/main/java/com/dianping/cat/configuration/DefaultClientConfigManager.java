@@ -228,6 +228,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 	}
 
 	// if no domain specified, then try to get it from /META-INF/app.properties
+	// 自动补充 domain
 	private class AppPropertyLoader extends BaseVisitor {
 		private String getAppNameFromProperties() {
 			String appName = "Unknown";

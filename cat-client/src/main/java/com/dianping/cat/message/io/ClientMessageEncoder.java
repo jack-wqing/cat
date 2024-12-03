@@ -21,7 +21,7 @@ package com.dianping.cat.message.io;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-
+// client message -> ByteBuf
 public class ClientMessageEncoder extends MessageToByteEncoder<ClientMessage> {
 
 	@Override

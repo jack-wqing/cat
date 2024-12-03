@@ -1,19 +1,30 @@
 重要组件说明:
     ChannelManager:
         1、使用netty组件: 启动之后通过客户端配置的服务地址拉取服务端配置的路由地址，默认选择第一个进行连接
-        2、之后每秒进行一次检测，如果发现当前连接不可用或者服务端配置进行了更新，则重新初始化客户端链接，默认使用是第一个服务地址
+        2、之后每10秒进行一次检测，如果发现当前连接不可用或者服务端配置进行了更新，则重新初始化客户端链接，默认使用是第一个服务地址
+        **问题: 每个服务都是通过服务端配置的路由，一般都是默认路由：则所有的机器都会链接同一个服务端节点
 
-    TcpSocketSender[MessageSender]:
+    TcpSocketSender[MessageSender]: 队列的长度可以通过app.properties:cat.queue.length设置，默认5000
         1、初始化ChannelManager,并且注册JVM回调钩子管理ChannelManager的状态
-        2、注册[StatusExtension]client-send-queue心跳信息的状态: 队列的长度可以通过app.properties:cat.queue.length设置，默认5000
-           Cat[MessageStatistics]CatUsage消息生产溢出情况统计，心跳上报使用
-        3、发送逻辑: 通过消息的丢弃及采样判断，如果通过判断是否为原子消息，然后进入不同的各自的队列
-            否则通过:LocalAggregator 本地进行聚合
-        4、循环发送消息: 1、首先判断是否需要对原子类的MessageTree进行合并，超过30分钟或者200个则合并进入到非原子的队列
+
+        2、注册[StatusExtension]client-send-queue心跳信息的状态: 可以记录当前发送队列的信息
+           Cat[MessageStatistics]CatUsage消息生产溢出情况统计，心跳上报使用: 可以看出当前客户端队列的压力情况，是否处理不过来导致消息丢失
+
+        3、发送逻辑: 通过消息的丢弃及采样判断: 可以丢失并且采样不成功: 则客户端对消息进行处理: LocalAggregator 本地进行聚合
+                       注:当采样不通过的时候: 本地analyzer包说明
+                       1、event统计: 生成得transaction:System-EventAggregator; 生成各自的event:type,name:作为child
+                       2、transaction统计: 生成得transaction:System-EventAggregator; 生成各自的Transaction: type,name:作为child
+                    如果通过采用:则判断是否为原子消息，然后进入不同的各自的队列
+
+        4、循环发送消息: 1、首先判断是否需要对原子类的MessageTree进行合并，超过30s或者队列长度超过200个则合并进入到非原子的队列
                        2、循环对m_queue[非原子队列进行发送]
-        注:当采样不通过的时候: 本地analyzer包说明
-           1、event统计: 生成得transaction:System-EventAggregator; 生成各自的event:type,name
-           2、transaction统计: 生成得transaction:System-EventAggregator; 生成各自的Transaction: type,name
+        **问题: 1、run方法中processAtomicMessage: 在停止的时候可能导致消息丢失
+               2、m_active关闭的时候，在发送剩余的消息，此时Channel出现问题：会导致线程一一直执行
+                    if (channel != null) {
+                        sendInternal(channel, tree);
+                    } else {
+                        offer(tree);
+                    }
 
     DefaultTransportManager[TransportManager]:
         1、初始化TcpSocketSender,返回MessageSender
@@ -21,7 +32,7 @@
     DefaultMessageManager[MessageManager]:
         1、每个线程通过ThreadLocal保存自己的Context[维护一个消息树MessageTree]
         2、添加Message如果是root则会发送到队列，等待传输到后端及设置采样标记；
-           否则添加到树[通过栈实现]中然后判断时间周期[10s]和队列长度，进行刷新
+           否则添加到树[通过栈实现]中然后判断时间周期和队列长度[进行截断部分发送]，在添加到队列中
         3、操作: Context:
                     1.start: 在Context构建当前调用树，添加栈中或者为root
                     2.end: 出栈操作,表示当前transaction结束
@@ -30,24 +41,40 @@
                                 2.setUp: 首次设置Context并设置是否抽样
                                 3.end: 进行Context.end操作
                                 4.start: 进行Context.start的操作
+                        TaggedDefaultTransaction默认缓存: 1024
         4、初始化MessageIdFactory 标记文件信息
+        注: 每个线程的消息树: 维护的message个数最多为2000
+        说明: 每个线程一个Context, Root节点会发送后端，当MessageTree的长多超过2000会切割发送+消息树中的时间周期；TaggedDefaultTransaction默认缓存1024
+
     DefaultMessageProducer[MessageProducer]:
         1、管理Cat各个Message的生成
         2、每个线程的每个错误信息都只会记录第一次[DefaultTransaction类型]其它的都记录
-        3、Standalone模式: DefaultTransaction为false,其它的Transaction默认为true
-        4、独立的Event,HeartBeat,Metric,Trace: 会直接到队列中
+
+        3、Standalone模式:DefaultTransaction root为true， 其它类型的为false
+
+        4、独立的Event,HeartBeat,Metric,Trace: 作为根会直接到队列中
            可以构建Transaction的树形的MessageTree
            **其它的message在complete的时候加入到树中；只有Transaction有start和end操作
+        Transaction: start时加入队列，complete设置完成标识并触发end
+            Event,HeartBeat,Metric,Trace: complete加入消息
 
     CatClientModule:处理客户端各个Module初始化
-
+        启动: StatusUpdateTask 任务
+             LocalAggregator.DataUploader 任务
 
     CatFilter: 对于链路的处理
 
     CatListener: 监听器初始化Cat
 
-    Cat静态初始化逻辑
+    Cat静态初始化逻辑：
+        对于Rpc Trace的支持
 
     DefaultClientConfigManager:
         1、加载客户端的client.xml, /META-INF/app.properties
         2、通过http://%s:%d/cat/s/router?domain=%s&ip=%s&op=json 获取服务的路由及客户端需要的配置；比如阻塞，采样及原子transaction
+        3、自动补充Domain信息
+
+
+**
+cat-domain.mark: 记录当前小时的的索引，messageId得偏移量
+

@@ -22,9 +22,10 @@ import com.dianping.cat.message.Event;
 import com.dianping.cat.message.spi.MessageManager;
 
 /**
- * 默认Event
+ * default Event
  */
 public class DefaultEvent extends AbstractMessage implements Event {
+
 	private MessageManager m_manager;
 
 	public DefaultEvent(String type, String name) {

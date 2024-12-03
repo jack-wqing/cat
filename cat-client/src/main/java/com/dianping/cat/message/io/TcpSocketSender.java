@@ -50,7 +50,7 @@ import com.dianping.cat.status.StatusExtension;
 import com.dianping.cat.status.StatusExtensionRegister;
 
 /**
- * Tcp Message Sender
+ * Tcp Message Sender: 管理消息发送
  */
 
 @Named
@@ -243,12 +243,12 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 			processAtomicMessage();
 			processNormalMessage();
 		}
-
+		// 此部分代码可能会导致消息丢失
 		processAtomicMessage();
 
 		while (true) {
 			MessageTree tree = m_queue.poll();
-
+			// 关闭链接，停止服务：可能到线程停止不了； 应该通过m_active判断
 			if (tree != null) {
 				ChannelFuture channel = m_channelManager.channel();
 

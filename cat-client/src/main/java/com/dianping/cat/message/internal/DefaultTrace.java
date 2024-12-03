@@ -22,9 +22,10 @@ import com.dianping.cat.message.Trace;
 import com.dianping.cat.message.spi.MessageManager;
 
 /**
- * 默认trace
+ * Default Trace
  */
 public class DefaultTrace extends AbstractMessage implements Trace {
+
 	private MessageManager m_manager;
 
 	public DefaultTrace(String type, String name) {

@@ -51,7 +51,7 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 
 /**
- * Default Message Manager
+ * Default Thread Local Message Manager
  */
 
 @Named(type = MessageManager.class)
@@ -530,7 +530,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			return timestamp - timestamp % (3600 * 1000L);
 		}
 	}
-
+	// Transaction Helper
 	class TransactionHelper {
 		private void linkAsRunAway(DefaultForkedTransaction transaction) {
 			DefaultEvent event = new DefaultEvent("RemoteCall", "RunAway");
@@ -562,7 +562,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			transaction.setStandalone(true);
 			transaction.complete();
 		}
-
+		// 通过区分 当前栈 和 非当前栈的孩子类型进行区分target 和 source
 		private void migrateMessage(Stack<Transaction> stack, Transaction source, Transaction target, int level) {
 			Transaction current = level < stack.size() ? stack.get(level) : null;
 			boolean shouldKeep = false;

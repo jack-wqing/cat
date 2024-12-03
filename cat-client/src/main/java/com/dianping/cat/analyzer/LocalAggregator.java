@@ -28,8 +28,8 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.util.Threads.Task;
 
 /**
- * Local Aggregator
- * 本地对于 Transaction 和 Event 进行定期聚合操作
+ * client消息处理不过来的时候: client本地进行聚合处理
+ * 	1.1s执行一次，客户端的transactionAggregator 和 eventAggregator得统计发送操作
  */
 public class LocalAggregator {
 

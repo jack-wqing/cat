@@ -33,7 +33,7 @@ import com.dianping.cat.configuration.ClientConfigManager;
 import com.dianping.cat.configuration.client.entity.Server;
 
 /**
- * 默认的TransportManager
+ * Default TransportManager
  */
 @Named(type = TransportManager.class)
 public class DefaultTransportManager implements TransportManager, Initializable, LogEnabled {

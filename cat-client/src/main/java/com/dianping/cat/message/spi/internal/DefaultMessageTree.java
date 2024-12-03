@@ -36,7 +36,7 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.codec.PlainTextMessageCodec;
 
 /**
- * default message
+ * default message tree
  */
 public class DefaultMessageTree implements MessageTree {
 

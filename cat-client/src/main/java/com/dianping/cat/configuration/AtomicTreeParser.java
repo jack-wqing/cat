@@ -44,7 +44,7 @@ public class AtomicTreeParser {
 			m_matchTypes = Splitters.by(";").noEmptyItem().split(matchTypes);
 		}
 	}
-
+	// 只有Transaction类型的消息才会判断是否是 atomic类型的消息；其它类型都是atomic类型的
 	public boolean isAtomicMessage(MessageTree tree) {
 		Message message = tree.getMessage();
 

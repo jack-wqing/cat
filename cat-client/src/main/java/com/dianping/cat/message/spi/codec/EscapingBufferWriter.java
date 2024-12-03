@@ -21,7 +21,7 @@ package com.dianping.cat.message.spi.codec;
 import io.netty.buffer.ByteBuf;
 
 /**
- * 转义字符处理
+ * escaping \t \r \n \\
  */
 public class EscapingBufferWriter implements BufferWriter {
 	public static final String ID = "escape";

@@ -179,6 +179,7 @@ public class Cat {
 	}
 
 	// this should be called during application initializing
+	// 系统应用声明周期钩子调用
 	public static void initialize(ClientConfig config) {
 		try {
 			if (!s_initialized.get()) {

@@ -39,6 +39,10 @@ package com.dianping.cat.message;
 	*
 	* @author Frankie Wu
 	*/
+
+/**
+ * 一些指标数据，但不可代替业务请求的定时任务
+ */
 public interface Heartbeat extends Message {
 
 }

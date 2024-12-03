@@ -19,7 +19,7 @@
 package com.dianping.cat.message;
 
 /**
- * fork
+ * fork transaction
  */
 public interface ForkedTransaction extends Transaction {
 	public void fork();

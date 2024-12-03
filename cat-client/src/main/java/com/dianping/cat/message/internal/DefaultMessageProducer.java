@@ -38,7 +38,7 @@ import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 
 /**
- * Message Producer
+ * Default Message Producer
  */
 @Named(type = MessageProducer.class)
 public class DefaultMessageProducer implements MessageProducer {
@@ -67,7 +67,7 @@ public class DefaultMessageProducer implements MessageProducer {
 	public void logError(String message, Throwable cause) {
 		if (Cat.getManager().isCatEnabled()) {
 			if (shouldLog(cause)) {
-				m_manager.getThreadLocalMessageTree().setDiscard(false);
+				m_manager.getThreadLocalMessageTree().setDiscard(false); // 异常设置不能丢弃
 
 				StringWriter writer = new StringWriter(2048);
 

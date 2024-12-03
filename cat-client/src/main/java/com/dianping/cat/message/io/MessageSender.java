@@ -24,7 +24,7 @@ import java.util.List;
 import com.dianping.cat.message.spi.MessageTree;
 
 /**
- * Message Sender
+ * Message Sender: Tcp Socket Sender
  */
 public interface MessageSender {
 	public void initialize(List<InetSocketAddress> addresses);

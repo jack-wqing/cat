@@ -52,7 +52,7 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 
 /**
- * PlainTextCodec
+ * PlainTextMessageCodec: message Code
  */
 public class PlainTextMessageCodec implements MessageCodec {
 	public static final String ID = "plain-text";
@@ -606,7 +606,7 @@ public class PlainTextMessageCodec implements MessageCodec {
 	}
 
 	/**
-		* Thread safe date helper class. DateFormat is NOT thread safe.
+		* Thread safe date helper class. DateFormat is NOT thread safe.: user queue handle date format thread safe question
 		*/
 	protected static class DateHelper {
 		private BlockingQueue<SimpleDateFormat> m_formats = new ArrayBlockingQueue<SimpleDateFormat>(20);

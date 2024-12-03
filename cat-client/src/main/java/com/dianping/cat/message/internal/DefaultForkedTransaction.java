@@ -24,7 +24,7 @@ import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 
 /**
- * fork Transaction
+ * default fork Transaction
  */
 public class DefaultForkedTransaction extends DefaultTransaction implements ForkedTransaction {
 	private String m_rootMessageId;

@@ -24,7 +24,7 @@ import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 
 /**
- * tagged transaction
+ * default tagged transaction
  */
 public class DefaultTaggedTransaction extends DefaultTransaction implements TaggedTransaction {
 	private String m_rootMessageId;

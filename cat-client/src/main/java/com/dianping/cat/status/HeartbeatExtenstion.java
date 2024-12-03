@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-
+// test Heartbeat extension
 public class HeartbeatExtenstion implements StatusExtension, Initializable {
 
 	@Override

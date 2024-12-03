@@ -33,7 +33,7 @@ package com.dianping.cat.message;
 	*/
 
 /**
- * 消息抽象
+ * message
  */
 public interface Message {
 	public static final String SUCCESS = "0";

@@ -20,6 +20,7 @@ package com.dianping.cat.status;
 
 import java.util.Map;
 
+// status extension
 public interface StatusExtension {
 
 	public String getId();
