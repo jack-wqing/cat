@@ -1,0 +1,16 @@
+ForkedTransaction:
+    场景1：使用Cat创建ForkTransaction消息，首先会在当前Context中创建一个Event[RemoteCall:RunAway],记录当前的forkMessageId
+         然后当前MessageTree如果Stack为空时设置message为当前forkMessage;如果当前线程在创建DefaultTransaction则会覆盖之前的forkedTransaction
+         fork得complete不会保存flush当前的forkTransaction
+    场景2: 在创建ForkTransaction之后，调用fork方法，则会把当前ForkTransaction加入MessageTree并放入到Stack中进行正常的消息栈记录
+    场景3: 在已经开启的Transaction中创建ForkTransaction: 相当于记录一个event位置，然后跳转
+    正确使用: 适合在一个Transaction中开启多个其他线程执行操作，并把多个操作串接起来在一个transaction中
+TaggedTransaction:
+    场景1: 直接创建TaggedTransaction,在DefaultMessageManager中缓存标签时候；如果作为root进入到Stack中；触发完成也不会保存
+    场景2: 作为Transaction的child创建则会加入都child，也不会放入到stack中
+    场景3: TaggedTransaction不能作为root存在，无法开始；只能在MessageTree中作为Child创建；然后使用
+    正确使用: 在一个Transaction中创建 TaggedTransaction, 并在其他的Transaction complete之前使用MessageManager.bind方法绑定到指定的TaggedTransaction中
+Tagged可以整个进程周期都可以使用，Forked则只能传递使用，没有缓存
+    Tagged必须依赖DefaultTransaction存在；不能单独存在
+    猜想: Cat的Transaction都是基于MessageTree的声明周期而存在的
+
