@@ -39,9 +39,10 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.internal.MessageId;
-
+// hdfs 不支持写，只支持读；备份使用
 @Named(type = Bucket.class, value = HdfsBucket.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class HdfsBucket implements Bucket {
+
 	public static final String ID = "hdfs";
 
 	private static final int SEGMENT_SIZE = 32 * 1024;
@@ -203,6 +204,7 @@ public class HdfsBucket implements Bucket {
 		}
 
 		private class Header {
+			// ip -> baseIndex [index/4096] : segmentIndex
 			private Map<Integer, Map<Integer, Integer>> m_table = new LinkedHashMap<Integer, Map<Integer, Integer>>();
 
 			private int m_nextSegment;
@@ -231,6 +233,7 @@ public class HdfsBucket implements Bucket {
 			}
 
 			public void load(int headBlockIndex) throws IOException {
+				// 每个Segment 最大为 128m = 4096 * 32kb
 				Segment segment = new Segment(m_indexSteam, headBlockIndex * ENTRY_PER_SEGMENT * SEGMENT_SIZE);
 				long magicCode = segment.readLong();
 
@@ -271,9 +274,9 @@ public class HdfsBucket implements Bucket {
 		}
 
 		private class Segment {
-
+			// 每个索引块的起始位置
 			private long m_address;
-
+			// 每个索引块的起始Segment: header
 			private ByteBuffer m_buf;
 
 			private Segment(FSDataInputStream channel, long address) throws IOException {

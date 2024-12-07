@@ -19,7 +19,7 @@
 package org.unidal.cat.message.storage.hdfs;
 
 import java.util.Set;
-
+// Message Consumer Finder: 可以从index文件的每个端中找出所有的ip地址
 public interface MessageConsumerFinder {
 
 	public Set<String> findConsumerIps(String domain, int hour);

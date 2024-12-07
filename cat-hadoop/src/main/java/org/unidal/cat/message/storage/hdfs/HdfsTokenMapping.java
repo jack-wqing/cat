@@ -44,6 +44,7 @@ import com.dianping.cat.helper.TimeHelper;
 	*/
 @Named(type = TokenMapping.class, value = "hdfs", instantiationStrategy = Named.PER_LOOKUP)
 public class HdfsTokenMapping implements TokenMapping {
+
 	private static final int BLOCK_SIZE = 32 * 1024;
 
 	private static final String MAGIC_CODE = "TokenMapping"; // token mapping
@@ -77,7 +78,7 @@ public class HdfsTokenMapping implements TokenMapping {
 		m_tokens.clear();
 		m_map.clear();
 	}
-
+	// index -> token
 	@Override
 	public String find(int index) throws IOException {
 		int len = m_tokens.size();

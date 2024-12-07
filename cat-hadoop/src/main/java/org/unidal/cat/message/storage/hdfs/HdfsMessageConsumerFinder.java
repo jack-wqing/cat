@@ -34,7 +34,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.helper.TimeHelper;
-
+// domain 得消息被那些 cat机器消费的 查询记录:缓存
 @Named(type = MessageConsumerFinder.class, value = "hdfs")
 public class HdfsMessageConsumerFinder implements MessageConsumerFinder {
 

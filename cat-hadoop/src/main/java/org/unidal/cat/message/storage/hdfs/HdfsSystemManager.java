@@ -33,7 +33,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
-
+// hdfs FileSystem Manager
 @Named
 public class HdfsSystemManager implements Initializable {
 	public static final String DUMP = "dump";

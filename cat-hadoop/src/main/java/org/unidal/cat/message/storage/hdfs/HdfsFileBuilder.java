@@ -26,7 +26,7 @@ import org.unidal.cat.message.storage.PathBuilder;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
-// hdfs dir path
+// hdfs path builder
 @Named(type = PathBuilder.class, value = "hdfs")
 public class HdfsFileBuilder implements PathBuilder {
 

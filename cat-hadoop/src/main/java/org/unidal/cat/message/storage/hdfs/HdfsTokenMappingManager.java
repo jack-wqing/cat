@@ -30,7 +30,7 @@ import org.unidal.cat.message.storage.TokenMappingManager;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
 import org.unidal.tuple.Pair;
-
+// hdfs token mapping Manager: hour:ip -> TokenMapping
 @Named(type = TokenMappingManager.class, value = "hdfs")
 public class HdfsTokenMappingManager extends ContainerHolder implements TokenMappingManager {
 	private Map<Pair<Integer, String>, TokenMapping> m_cache = new LinkedHashMap<Pair<Integer, String>, TokenMapping>() {

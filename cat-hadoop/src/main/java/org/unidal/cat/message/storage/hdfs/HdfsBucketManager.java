@@ -54,7 +54,7 @@ public class HdfsBucketManager extends ContainerHolder implements Initializable,
 
 	@Inject(value = "hdfs")
 	private MessageConsumerFinder m_consumerFinder;
-
+	// 缓存最多:1000 HdfsBucket
 	private Map<String, HdfsBucket> m_buckets = new LinkedHashMap<String, HdfsBucket>() {
 
 		private static final long serialVersionUID = 1L;

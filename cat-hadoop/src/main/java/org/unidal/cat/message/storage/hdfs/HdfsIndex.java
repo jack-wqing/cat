@@ -38,7 +38,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.internal.MessageId;
-
+// MessageId映射 存储
 @Named(type = Index.class, value = HdfsBucket.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class HdfsIndex implements Index {
 	public static final String ID = "hdfs";
@@ -127,7 +127,7 @@ public class HdfsIndex implements Index {
 	public void maps(Map<MessageId, MessageId> maps) throws IOException {
 		throw new RuntimeException("unsupport operation");
 	}
-
+	// 还是和hdfs Bucket一样的索引存储规则
 	private class IndexHelper {
 		private static final int BYTE_PER_MESSAGE = 8;
 

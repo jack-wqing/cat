@@ -37,7 +37,7 @@ import org.xerial.snappy.SnappyOutputStream;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.internal.MessageId;
-//Default Block size 256 * 1024 256kb
+//Default 数据文件的 默认Block存储长度
 public class DefaultBlock implements Block {
 
 	private static final int MAX_SIZE = 256 * 1024;
@@ -91,7 +91,7 @@ public class DefaultBlock implements Block {
 
 		return new SnappyOutputStream(os);
 	}
-
+	// 通过消息id读消息
 	@Override
 	public ByteBuf find(MessageId id) {
 		Integer offset = m_offsets.get(id);

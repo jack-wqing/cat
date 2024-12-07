@@ -24,7 +24,7 @@ import java.util.Map;
 import io.netty.buffer.ByteBuf;
 
 import com.dianping.cat.message.internal.MessageId;
-//bucket
+// bucket
 public interface Bucket {
 	public static final long SEGMENT_SIZE = 32 * 1024L;
 

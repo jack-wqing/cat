@@ -1,0 +1,23 @@
+Har: 表示Hadoop Archive文件，hadoop文档的归档文件，可以把一批小文件归档为har文件；对客户端读写透明
+Kerberos: 用于计算机网络得身份鉴别Authentication;特点就是用户只需要输入一次身份验证信息，可以通过此验证消息获得票据[ticket-granting ticket]访问多个服务，SSO;client-server建立了共享秘钥，所以该协议比较安全
+        kerberos协议的消息无法穿透防火墙，所以在企业内部使用
+logview存储的索引设计:
+    存储索引的解释: http://www.wangyapu.com/2019/04/27/cat_logview_store/
+    DataHelper原理: 寻找每个消息的位置,存储格式 length + body:依次读取
+    Index原理: 一级索引Header: 可以通过每个存储单元算出来
+        headers = size / (segment * 4096)
+        file -> block - segment
+    每个索引的8byte = 40bit数据块位置 + 24便宜地址
+
+HdfsTokenMap: 在文件中记录通过length:body的方式记录所有的token
+
+
+
+
+
+
+
+
+
+
+
