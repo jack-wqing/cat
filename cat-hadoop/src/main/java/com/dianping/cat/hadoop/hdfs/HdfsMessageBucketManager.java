@@ -42,7 +42,7 @@ import org.unidal.tuple.Pair;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
+// Hdfs Message Bucket Manager: Harfs or Hdfs
 public class HdfsMessageBucketManager extends ContainerHolder implements MessageBucketManager, Initializable {
 
 	public static final String ID = "hdfs";

@@ -33,7 +33,7 @@ import com.dianping.cat.message.CodecHandler;
 import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.storage.MessageBucket;
-
+// abstract hdfs message bucket
 public abstract class AbstractHdfsMessageBucket implements MessageBucket {
 
 	@Inject

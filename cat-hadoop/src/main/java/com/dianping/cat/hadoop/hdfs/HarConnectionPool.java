@@ -39,7 +39,7 @@ import org.unidal.tuple.Pair;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.helper.TimeHelper;
-// ip date 缓存 fsSystem
+// har connection pool
 public class HarConnectionPool implements Initializable {
 
 	private ServerConfigManager m_serverConfigManager;

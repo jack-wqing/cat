@@ -25,7 +25,7 @@ import org.unidal.initialization.Module;
 import org.unidal.initialization.ModuleContext;
 
 import com.dianping.cat.CatCoreModule;
-
+// 本地文件hdfs同步 or 删除本地的old message
 public class CatHadoopModule extends AbstractModule {
 	public static final String ID = "cat-hadoop";
 

@@ -41,7 +41,7 @@ import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
-
+// Logview Processor: Hdfs打开的时候 1H 同步一次hdfs， old bucket: 除了 current last next:hour 都是需要的同步的
 @Named
 public class LogviewProcessor implements Task, Initializable {
 

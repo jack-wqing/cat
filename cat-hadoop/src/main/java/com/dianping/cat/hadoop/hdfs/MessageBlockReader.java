@@ -29,7 +29,7 @@ import org.apache.hadoop.fs.Path;
 import org.xerial.snappy.SnappyInputStream;
 
 import com.dianping.cat.Cat;
-
+// message Block Reader
 public class MessageBlockReader {
 	private FSDataInputStream m_indexFile;
 
