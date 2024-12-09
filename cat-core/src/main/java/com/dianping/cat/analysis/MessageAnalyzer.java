@@ -22,9 +22,7 @@ import com.dianping.cat.message.spi.MessageQueue;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.report.ReportManager;
 
-/**
- * Message Analyzer
- */
+// Message Analyzer
 public interface MessageAnalyzer {
 
 	public boolean isEligable(MessageTree tree);

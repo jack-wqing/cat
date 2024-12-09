@@ -42,9 +42,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.List;
 
-/**
- * 服务端消息 Receiver
- */
+// Tcp Socket Receiver
 @Named(type = TcpSocketReceiver.class)
 public final class TcpSocketReceiver implements LogEnabled {
 

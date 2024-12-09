@@ -29,10 +29,7 @@ import org.unidal.lookup.annotation.Inject;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- *
- * @param <R>
- */
+// Abstract Message Analyzer
 public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder implements MessageAnalyzer {
 	public static final long MINUTE = 60 * 1000L;
 

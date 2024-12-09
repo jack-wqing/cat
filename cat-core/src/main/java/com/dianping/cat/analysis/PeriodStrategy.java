@@ -18,12 +18,7 @@
  */
 package com.dianping.cat.analysis;
 
-/**
- * 当前统计小时区间计算
- *  m_duration: 一小时的毫米数
- *  m_extraTime: 3 minute
- *  m_aheadTime: 3 minute
- */
+// 寻找当前小时区间
 public class PeriodStrategy {
 	private long m_duration;
 

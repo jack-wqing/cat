@@ -36,9 +36,7 @@ import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
-/**
- * 实时 Consumer
- */
+// Realtime Consumer: 通过MessageAnalyzer
 @Named(type = MessageConsumer.class)
 public class RealtimeConsumer extends ContainerHolder implements MessageConsumer, Initializable, LogEnabled {
 
@@ -55,7 +53,7 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 	private PeriodManager m_periodManager;
 
 	private Logger m_logger;
-
+	// 时间戳: 是以客户端的时间戳为标准
 	@Override
 	public void consume(MessageTree tree) {
 		long timestamp = tree.getMessage().getTimestamp();
@@ -67,9 +65,7 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 			m_serverStateManager.addNetworkTimeError(1);
 		}
 	}
-	/**
-	 * 检查点操作
-	 */
+	// CheckPoint
 	public void doCheckpoint() {
 		m_logger.info("starting do checkpoint.");
 		MessageProducer cat = Cat.getProducer();

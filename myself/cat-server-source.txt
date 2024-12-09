@@ -1,3 +1,11 @@
+TcpSocketReceiver:
+    功能:接受cat-client发送消息，进行转发；根据os类型选择:Epoll,Nio; boss/work都是24个线程
+MessageHandler:
+    功能: 简单的将消息转到MessageConsumer
+
+MessageConsumer[RealTimeConsumer]:
+    功能: 1、初始化:PeriodManager
+         2、获取当前小时的Period进行处理
 Period模块:
     PeriodManager: 管理每个小时的Period,每秒一次计算当前的Period，并结束过期的上一个小时
     PeriodStrategy: Cat以小时进行分析，该类用于计算当前小时
@@ -5,7 +13,13 @@ Period模块:
         每个小时一个Period，每个Period管理当前每种类型的Analyzer
         启动每个PeriodTask 任务线程执行
     PeriodTask:管理Analyzer.analyze去处理消息队列
+    每个MessageAnalyzer绑定的队列是3w的容量
+
+DefaultMessageAnalyzerManager:
+    功能: 管理每个小时，每种类型的MessageAnalyzer: 每种Analyzer默认当前小时候有两个同时处理Message
+
 Analyzer模块:
     AbstractMessageAnalyzer:
         initialize: loadReports
         循环处理队列中的消息
+
