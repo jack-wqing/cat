@@ -19,7 +19,7 @@
 package com.dianping.cat.message;
 
 import java.util.Date;
-
+// Path Builder
 public interface PathBuilder {
 	public String getLogviewPath(Date timestamp, String name);
 

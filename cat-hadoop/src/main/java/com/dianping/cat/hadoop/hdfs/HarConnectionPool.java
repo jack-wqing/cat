@@ -39,7 +39,7 @@ import org.unidal.tuple.Pair;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.helper.TimeHelper;
-
+// ip date 缓存 fsSystem
 public class HarConnectionPool implements Initializable {
 
 	private ServerConfigManager m_serverConfigManager;
@@ -72,7 +72,7 @@ public class HarConnectionPool implements Initializable {
 			Cat.logEvent("HarConnClose", close);
 		}
 	}
-
+	// 缓存的HarFileSystem
 	public HarFileSystem getHarfsConnection(String id, Date date, FileSystem fs) throws IOException {
 		String serverUri = m_serverConfigManager.getHarfsServerUri(id);
 		String baseUri = m_serverConfigManager.getHarfsBaseDir(id);

@@ -34,7 +34,7 @@ import org.xerial.snappy.SnappyOutputStream;
 import com.dianping.cat.message.CodecHandler;
 import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
-
+// Local MessageBucket
 @Named(type = MessageBucket.class, value = LocalMessageBucket.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class LocalMessageBucket implements MessageBucket {
 	public static final String ID = "local";

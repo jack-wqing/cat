@@ -23,7 +23,7 @@ import java.util.List;
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.internal.DefaultTransaction;
 import com.dianping.cat.message.spi.MessageTree;
-
+// MessageTreeFormat
 public class MessageTreeFormat {
 
 	public static void format(MessageTree tree) {

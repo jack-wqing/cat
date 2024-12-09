@@ -21,7 +21,7 @@ package com.dianping.cat.message.codec;
 import io.netty.buffer.ByteBuf;
 
 import com.dianping.cat.message.spi.codec.BufferWriter;
-
+// HtmlEncoding
 public class HtmlEncodingBufferWriter implements BufferWriter {
 	public static final String ID = "html";
 

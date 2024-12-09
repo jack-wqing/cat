@@ -40,7 +40,7 @@ import com.dianping.cat.message.Trace;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.codec.BufferWriter;
-
+// HT2
 public class HtmlMessageCodec {
 
 	public static final String ID = "html";

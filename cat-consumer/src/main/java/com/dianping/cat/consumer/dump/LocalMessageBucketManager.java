@@ -55,7 +55,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
-
+// local Message Bucket manager
 public class LocalMessageBucketManager extends ContainerHolder
 						implements MessageBucketManager, Initializable,	LogEnabled {
 

@@ -28,7 +28,7 @@ import java.util.zip.GZIPInputStream;
 import org.xerial.snappy.SnappyInputStream;
 
 import com.dianping.cat.Cat;
-
+// Message Block Reader
 public class MessageBlockReader {
 	private RandomAccessFile m_indexFile;
 
@@ -47,7 +47,7 @@ public class MessageBlockReader {
 			m_dataFile.close();
 		}
 	}
-
+	// SnappyInputStream / GZIPInput Stream
 	private DataInputStream createDataInputStream(byte[] buf) {
 		DataInputStream in = null;
 

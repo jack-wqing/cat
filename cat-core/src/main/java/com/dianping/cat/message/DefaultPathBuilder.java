@@ -22,7 +22,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 
 import org.unidal.lookup.annotation.Named;
-
+// default PathBuilder
 @Named(type = PathBuilder.class)
 public class DefaultPathBuilder implements PathBuilder {
 

@@ -31,7 +31,7 @@ import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.codec.BufferWriter;
-
+// WF2
 public class WaterfallMessageCodec {
 
 	public static final String ID = "waterfall";

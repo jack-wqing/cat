@@ -24,7 +24,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
-
+// Message Block Writer: index 4byte blockAddress + 2 Block Size【索引数据偏移】
 public class MessageBlockWriter {
 	private RandomAccessFile m_indexFile;
 
