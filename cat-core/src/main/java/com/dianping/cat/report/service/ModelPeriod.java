@@ -19,7 +19,7 @@
 package com.dianping.cat.report.service;
 
 import com.dianping.cat.Constants;
-// search module
+// ModelPeriod
 public enum ModelPeriod {
 	CURRENT,
 	HISTORICAL,

@@ -56,7 +56,7 @@ import com.dianping.cat.core.dal.WeeklyReportDao;
 import com.dianping.cat.core.dal.WeeklyReportEntity;
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.message.Event;
-// hour daily week month : save get
+// AbstractReportService: insert query
 public abstract class AbstractReportService<T> implements LogEnabled, ReportService<T> {
 
 	public static final int s_hourly = 1;

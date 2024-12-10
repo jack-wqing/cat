@@ -30,7 +30,7 @@ import org.unidal.lookup.util.StringUtils;
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Transaction;
-
+// 数据库  connect string parser: 只支持mysql oracle
 public class DatabaseParser implements LogEnabled {
 
 	private Logger m_logger;

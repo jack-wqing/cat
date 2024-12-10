@@ -38,7 +38,7 @@ import com.dianping.cat.report.service.ModelPeriod;
 import com.dianping.cat.report.service.ModelRequest;
 import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
-// Default Remote Servers Updater
+// DefaultRemoteServersUpdater
 @Named(type = ServersUpdater.class)
 public class DefaultRemoteServersUpdater implements ServersUpdater {
 

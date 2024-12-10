@@ -21,7 +21,7 @@ package com.dianping.cat.consumer.storage.builder;
 import java.util.List;
 
 import com.dianping.cat.message.Transaction;
-
+// StorageBuilder
 public interface StorageBuilder {
 
 	public StorageItem build(Transaction t);

@@ -20,7 +20,7 @@ package com.dianping.cat.report.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-// model request
+// ModelRequest
 public class ModelRequest {
 
 	private String m_domain;

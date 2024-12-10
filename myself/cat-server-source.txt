@@ -17,9 +17,21 @@ Period模块:
 
 DefaultMessageAnalyzerManager:
     功能: 管理每个小时，每种类型的MessageAnalyzer: 每种Analyzer默认当前小时候有两个同时处理Message
+        对于Analyzer的排序：
 
 Analyzer模块:
     AbstractMessageAnalyzer:
         initialize: loadReports
         循环处理队列中的消息
+    -----------------------------------------------
+    StorageAnalyzer[Transaction类型]: 处理Cache, RPC, SQL
+        Cache: type必须以Cache.或Squirrel.开头；name以":"结尾的为method名称
+        SQL: Type等于SQL, 通过child Event解析处理id ip type method建立存储信息
+        RPC: Type等于 PigeonCall或者Call，通过Event解析出 id ip
 
+
+
+
+
+
+ReportManager: 报告管理器

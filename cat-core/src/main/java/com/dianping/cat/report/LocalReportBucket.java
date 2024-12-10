@@ -43,7 +43,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.PathBuilder;
-// local report Bucket
+// local report Bucket: 报告简单的 length:body的文件存储方式
 @Named(type = ReportBucket.class, instantiationStrategy = Named.PER_LOOKUP)
 public class LocalReportBucket implements ReportBucket, LogEnabled {
 	@Inject
@@ -146,7 +146,7 @@ public class LocalReportBucket implements ReportBucket, LogEnabled {
 	public String getLogicalPath() {
 		return m_logicalPath;
 	}
-
+	// index为Analyzer的count 默认为2
 	@Override
 	public void initialize(String name, Date timestamp, int index) throws IOException {
 		m_baseDir = Cat.getCatHome() + "bucket/report";

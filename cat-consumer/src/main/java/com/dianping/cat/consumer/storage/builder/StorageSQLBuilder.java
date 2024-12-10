@@ -29,7 +29,7 @@ import com.dianping.cat.consumer.DatabaseParser.Database;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
-
+// StorageSQLBuilder
 @Named(type = StorageBuilder.class, value = StorageSQLBuilder.ID)
 public class StorageSQLBuilder implements StorageBuilder {
 

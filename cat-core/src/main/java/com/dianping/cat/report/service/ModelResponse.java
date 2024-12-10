@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.report.service;
-// model response
+// ModelResponse
 public class ModelResponse<M> {
 	private Exception m_exception;
 

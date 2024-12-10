@@ -49,7 +49,7 @@ import static com.dianping.cat.Constants.HOUR;
 	* Hourly report manager by domain of one report type(such as Transaction, Event, Problem, Heartbeat etc.) produced in one machine
 	* for a couple of hours.
 	*/
-// Default Report Manager
+// Default Report Manager: reportDelegate创建Report, store存储通过Analyzer的触发
 public class DefaultReportManager<T> extends ContainerHolder implements ReportManager<T>, Initializable, LogEnabled {
 	@Inject
 	private ReportDelegate<T> m_reportDelegate;
@@ -67,7 +67,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 	private DomainValidator m_validator;
 
 	private String m_name;
-
+	//<StartTime,<Domain, Report>>
 	private Map<Long, Map<String, T>> m_reports = new ConcurrentHashMap<Long, Map<String, T>>();
 
 	private Logger m_logger;

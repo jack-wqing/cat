@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.consumer.storage.builder;
-
+// StorageItem
 public class StorageItem {
 
 	private String m_id;

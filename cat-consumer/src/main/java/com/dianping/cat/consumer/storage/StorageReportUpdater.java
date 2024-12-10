@@ -27,7 +27,7 @@ import com.dianping.cat.consumer.storage.model.entity.Operation;
 import com.dianping.cat.consumer.storage.model.entity.Segment;
 import com.dianping.cat.consumer.storage.model.entity.StorageReport;
 import com.dianping.cat.message.Transaction;
-
+// StorageReportUpdater
 @Named
 public class StorageReportUpdater {
 

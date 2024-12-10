@@ -31,7 +31,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.Date;
 import java.util.Map;
-
+// StorageDelegate
 @Named(type = ReportDelegate.class, value = StorageAnalyzer.ID)
 public class StorageDelegate implements ReportDelegate<StorageReport> {
 

@@ -32,7 +32,7 @@ import com.dianping.cat.analysis.MessageAnalyzer;
 import com.dianping.cat.analysis.MessageConsumer;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.mvc.ApiPayload;
-// local model service
+// LocalModelService
 public abstract class LocalModelService<T> implements Initializable {
 
 	public static final int DEFAULT_SIZE = 32 * 1024;
@@ -63,7 +63,7 @@ public abstract class LocalModelService<T> implements Initializable {
 	public String getName() {
 		return m_name;
 	}
-    // 获取当前时间和上一个小时的数据从当前的Analyzer中获取
+    // 从Analyzer中获取当前小时和上一小时的数据
 	@SuppressWarnings("unchecked")
 	protected List<T> getReport(ModelPeriod period, String domain) throws Exception {
 		List<MessageAnalyzer> analyzers = null;

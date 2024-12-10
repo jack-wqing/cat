@@ -19,7 +19,7 @@
 package com.dianping.cat.report;
 
 import java.util.Map;
-// Report Delegate
+// ReportDelegate
 public interface ReportDelegate<T> {
 	public void afterLoad(Map<String, T> reports);
 

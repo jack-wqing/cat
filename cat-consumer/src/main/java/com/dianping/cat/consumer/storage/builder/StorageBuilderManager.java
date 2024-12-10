@@ -26,7 +26,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
-
+// StorageBuilder Manager
 @Named
 public class StorageBuilderManager extends ContainerHolder implements Initializable {
 

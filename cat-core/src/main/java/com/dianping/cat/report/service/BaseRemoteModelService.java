@@ -36,7 +36,7 @@ import java.net.URLEncoder;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
-// base remote model service
+// /cat/r/model 获取当前小时和上一小时的集合
 public abstract class BaseRemoteModelService<T> extends ModelServiceWithCalSupport implements ModelService<T> {
 
 	private RemoteServersManager m_remoteServersManager;

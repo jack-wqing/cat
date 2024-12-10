@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.report.service.ModelPeriod;
-// remote servers manager
+// RemoteServersManager
 @Named
 public class RemoteServersManager {
 

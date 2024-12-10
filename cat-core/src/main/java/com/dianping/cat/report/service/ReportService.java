@@ -25,7 +25,7 @@ import com.dianping.cat.core.dal.DailyReport;
 import com.dianping.cat.core.dal.HourlyReport;
 import com.dianping.cat.core.dal.MonthlyReport;
 import com.dianping.cat.core.dal.WeeklyReport;
-// 查询 hour daily week month: report
+// ReportService
 public interface ReportService<T> {
 	public boolean insertDailyReport(DailyReport report, byte[] content);
 

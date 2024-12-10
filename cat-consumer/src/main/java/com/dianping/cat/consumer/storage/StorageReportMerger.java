@@ -24,6 +24,7 @@ import com.dianping.cat.consumer.storage.model.entity.Sql;
 import com.dianping.cat.consumer.storage.model.entity.StorageReport;
 import com.dianping.cat.consumer.storage.model.transform.DefaultMerger;
 
+// StorageReportMerger
 public class StorageReportMerger extends DefaultMerger {
 
 	public StorageReportMerger(StorageReport storageReport) {

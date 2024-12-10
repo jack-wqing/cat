@@ -26,7 +26,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
-
+// Storage Cache Builder
 @Named(type = StorageBuilder.class, value = StorageCacheBuilder.ID)
 public class StorageCacheBuilder implements StorageBuilder {
 
