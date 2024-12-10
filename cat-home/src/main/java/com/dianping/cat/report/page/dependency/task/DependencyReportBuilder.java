@@ -37,7 +37,7 @@ import com.dianping.cat.home.dependency.graph.transform.DefaultNativeBuilder;
 import com.dianping.cat.report.page.dependency.graph.TopologyGraphBuilder;
 import com.dianping.cat.report.page.dependency.service.DependencyReportService;
 import com.dianping.cat.report.task.TaskBuilder;
-
+// Dependency Report 只支持Hour级别的任务
 @Named(type = TaskBuilder.class, value = DependencyReportBuilder.ID)
 public class DependencyReportBuilder implements TaskBuilder {
 
@@ -56,7 +56,7 @@ public class DependencyReportBuilder implements TaskBuilder {
 	public boolean buildDailyTask(String name, String reportDomain, Date reportPeriod) {
 		throw new UnsupportedOperationException("no daily report builder for dependency!");
 	}
-
+	// hour Report查询所有的domain
 	@Override
 	public boolean buildHourlyTask(String name, String reportDomain, Date reportPeriod) {
 		Date end = new Date(reportPeriod.getTime() + TimeHelper.ONE_HOUR);

@@ -23,7 +23,7 @@ import java.util.Calendar;
 import com.dianping.cat.Cat;
 import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.core.dal.Task;
-
+// TaskConsumer
 public abstract class TaskConsumer implements org.unidal.helper.Threads.Task {
 
 	public static final int STATUS_TODO = 1;

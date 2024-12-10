@@ -23,7 +23,7 @@ package com.dianping.cat.report.task;
 
 import java.util.Calendar;
 import java.util.Date;
-
+// TaskHelper
 public class TaskHelper {
 
 	public static String join(double[] array, char separator) {

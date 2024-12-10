@@ -32,7 +32,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.core.dal.Task;
 import com.dianping.cat.task.TaskManager;
-
+// ReportFacade: 具体的报告分析
 @Named
 public class ReportFacade extends ContainerHolder implements LogEnabled, Initializable {
 
