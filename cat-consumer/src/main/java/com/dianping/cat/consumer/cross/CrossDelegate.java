@@ -31,7 +31,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.Date;
 import java.util.Map;
-
+// Cross Delegate
 @Named(type = ReportDelegate.class, value = CrossAnalyzer.ID)
 public class CrossDelegate implements ReportDelegate<CrossReport> {
 

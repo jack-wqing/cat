@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.dianping.cat.Cat;
-
+// IpConvertManager
 public class IpConvertManager {
 
 	private Map<String, String> m_hosts = new HashMap<String, String>();

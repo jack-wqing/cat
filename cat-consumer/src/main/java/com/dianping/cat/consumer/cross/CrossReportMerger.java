@@ -22,7 +22,7 @@ import com.dianping.cat.consumer.cross.model.entity.CrossReport;
 import com.dianping.cat.consumer.cross.model.entity.Name;
 import com.dianping.cat.consumer.cross.model.entity.Type;
 import com.dianping.cat.consumer.cross.model.transform.DefaultMerger;
-
+// CrossReportMerger
 public class CrossReportMerger extends DefaultMerger {
 
 	public CrossReportMerger(CrossReport crossReport) {

@@ -35,7 +35,7 @@ import org.unidal.lookup.annotation.Named;
 import org.unidal.lookup.util.StringUtils;
 
 import java.util.List;
-// 默认对于原生 Pigeon 得支持
+//Cross Analyzer
 @Named(type = MessageAnalyzer.class, value = CrossAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class CrossAnalyzer extends AbstractMessageAnalyzer<CrossReport> implements LogEnabled {
 	public static final String ID = "cross";
