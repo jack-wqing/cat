@@ -49,3 +49,4 @@ Cross: 跨边界访问维度
                    name: app
             RemoteRole: Pigeon.Client
             DetailType: PigeonService
+    作用: 可以站在调用端及服务端或者方法视角查看调用的次数限制
