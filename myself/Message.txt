@@ -23,3 +23,29 @@ Trace:
 
 
 
+Cross: 跨边界访问维度
+    client: type=PigeonCall/Call
+            localAddress: tree.getIpAddress
+            child: Event表示具体的内容
+               Event:
+                  type: PigeonCall.server/Call.server
+                  name: RemoteAddress
+                  ---------
+                  type: PigeonCall.app/Call.app
+                  name: App
+                  ---------
+                  type: PigeonCall.port/Call.port
+                  name: clientPort
+            RemoteRole: Pigeon.Server
+            DetailType: PigeonCall
+    Server: type=PigeonService/Service
+            localAddress: tree.getIpAddress
+            child: Event表示具体的信息
+                Event:
+                   type: PigeonService.client/Service.client
+                   name: remoteAddress
+                   ----------
+                   type: PigeonService.app/Service.app
+                   name: app
+            RemoteRole: Pigeon.Client
+            DetailType: PigeonService
