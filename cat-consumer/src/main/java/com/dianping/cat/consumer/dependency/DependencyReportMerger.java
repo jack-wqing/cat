@@ -22,7 +22,7 @@ import com.dianping.cat.consumer.dependency.model.entity.Dependency;
 import com.dianping.cat.consumer.dependency.model.entity.DependencyReport;
 import com.dianping.cat.consumer.dependency.model.entity.Index;
 import com.dianping.cat.consumer.dependency.model.transform.DefaultMerger;
-
+// DependencyReportMerger
 public class DependencyReportMerger extends DefaultMerger {
 
 	public DependencyReportMerger(DependencyReport dependencyReport) {

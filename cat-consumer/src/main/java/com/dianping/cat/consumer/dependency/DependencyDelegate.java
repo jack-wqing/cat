@@ -31,7 +31,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.Date;
 import java.util.Map;
-
+// DependencyDelegate
 @Named(type = ReportDelegate.class, value = DependencyAnalyzer.ID)
 public class DependencyDelegate implements ReportDelegate<DependencyReport> {
 
