@@ -33,7 +33,7 @@ import org.unidal.lookup.annotation.Named;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
-
+// ProblemDelegate
 @Named(type = ReportDelegate.class, value = ProblemAnalyzer.ID)
 public class ProblemDelegate implements ReportDelegate<ProblemReport> {
 

@@ -33,7 +33,7 @@ import com.dianping.cat.consumer.problem.model.entity.Machine;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
-// long execute problem analyzer
+// LongExecutionProblemHandler: Transaction
 public class LongExecutionProblemHandler extends ProblemHandler implements Initializable {
 	public static final String ID = "long-execution";
 

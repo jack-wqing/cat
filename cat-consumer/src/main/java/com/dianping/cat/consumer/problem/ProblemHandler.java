@@ -27,7 +27,7 @@ import com.dianping.cat.consumer.problem.model.entity.Machine;
 import com.dianping.cat.consumer.problem.model.entity.Segment;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.spi.MessageTree;
-
+// ProblemHandler
 public abstract class ProblemHandler {
 	public static final int MAX_LOG_SIZE = 60;
 

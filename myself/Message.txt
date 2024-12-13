@@ -57,3 +57,9 @@ Dependency: 从一个服务的视角观察系统的：调用服务，缓存，�
         分类type:Cache，Database，PigeonCall，
     Service,PigeonService:只有Index没有依赖边
     还可以记录每个时间段的异常数
+
+Problem: 1、记录长时间的操作:URL,SQL,Call
+         2、记录不成功的Transaction
+         3、记录HeartBeat操作
+         4、记录Exception等错误类型的Event
+
