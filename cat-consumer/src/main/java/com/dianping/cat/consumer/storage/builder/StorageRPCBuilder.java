@@ -26,7 +26,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
-// StorageRPCBuilder
+// StorageRPC Builder
 @Named(type = StorageBuilder.class, value = StorageRPCBuilder.ID)
 public class StorageRPCBuilder implements StorageBuilder {
 

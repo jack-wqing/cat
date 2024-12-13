@@ -66,4 +66,20 @@ Problem: 1、记录长时间的操作:URL,SQL,Call
 Matrix: 站在Url和服务服务端点的角度，查看统计信息
     type: URL, Service, PigeonService; 依赖的支持SQL, Call, Cache
 
+Storage:
+    cache: Cache / Squirrel 开头
+         默认ip为default, type是缓存类型，name为方法名
+         可以通过child:Event,type为.server的表示ip
+    SQL: type=SQL
+        默认的方式:select, 默认ip:default
+        可以通过child:Event来指定方法和ip地址
+            SQL.Method: 表示方法
+            SQL.Database: 数据库ip信息
+    RPC:
+        type=PigeonCall/Call
+        默认ip:default, 默认方法call
+         可以通过child: Event来指定服务名和服务ip
+          PigeonCall.app: 服务名
+          PigeonCall.server: 服务地址ip
+
 
