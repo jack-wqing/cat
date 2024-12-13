@@ -58,7 +58,7 @@ import com.dianping.cat.report.service.ModelRequest;
 import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
 import com.dianping.cat.service.ProjectService;
-
+// TopologyGraphManager
 @Named
 public class TopologyGraphManager implements Initializable, LogEnabled {
 
@@ -116,7 +116,7 @@ public class TopologyGraphManager implements Initializable, LogEnabled {
 		}
 		return result;
 	}
-
+	// dependency - dashboard
 	public ProductLinesDashboard buildDependencyDashboard(long time) {
 		TopologyGraph topologyGraph = queryTopologyGraph(time);
 		ProductLinesDashboard dashboardGraph = new ProductLinesDashboard();

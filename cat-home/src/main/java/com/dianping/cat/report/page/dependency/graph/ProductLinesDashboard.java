@@ -29,7 +29,7 @@ import java.util.Map.Entry;
 import com.dianping.cat.helper.JsonBuilder;
 import com.dianping.cat.home.dependency.graph.entity.TopologyEdge;
 import com.dianping.cat.home.dependency.graph.entity.TopologyNode;
-
+// ProductLinesDashboard
 public class ProductLinesDashboard {
 
 	private Map<String, List<TopologyNode>> m_productLines = new LinkedHashMap<String, List<TopologyNode>>();
@@ -74,8 +74,7 @@ public class ProductLinesDashboard {
 	}
 
 	public ProductLinesDashboard sortByNodeNumber() {
-		List<Entry<String, List<TopologyNode>>> list = new ArrayList<Entry<String, List<TopologyNode>>>(
-								m_productLines.entrySet());
+		List<Entry<String, List<TopologyNode>>> list = new ArrayList<Entry<String, List<TopologyNode>>>(m_productLines.entrySet());
 		Map<String, List<TopologyNode>> nodes = new LinkedHashMap<String, List<TopologyNode>>();
 
 		Collections.sort(list, new Comparator<Entry<String, List<TopologyNode>>>() {

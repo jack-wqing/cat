@@ -50,12 +50,10 @@ Cross: 跨边界访问维度
             RemoteRole: Pigeon.Client
             DetailType: PigeonService
     作用: 可以站在调用端及服务端或者方法视角查看调用的次数限制
-Dependency: 定义服务之间的依赖关系
-    服务依赖: client: type="Call", "PigeonCall"
-             server: type="Service", "PigeonService"
-
-
-
-    1、"URL", "SQL",
-
-
+Dependency: 从一个服务的视角观察系统的：调用服务，缓存，数据库，错误的统计量
+    Analyzer支持的依赖类型:URL,SQL,Call,PigeonCall,Service,PigeonService
+    Index:图Node,每个Index作为一个顶点，Node名Type；记录统计信息
+    Dependency:图Edge,每个Dependency作为一条边，target为传输的Type
+        分类type:Cache，Database，PigeonCall，
+    Service,PigeonService:只有Index没有依赖边
+    还可以记录每个时间段的异常数

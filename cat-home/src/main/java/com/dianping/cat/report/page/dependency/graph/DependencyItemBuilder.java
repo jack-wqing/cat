@@ -40,7 +40,7 @@ public class DependencyItemBuilder {
 
 	@Inject
 	private TopologyGraphConfigManager m_graphConfigManager;
-
+	// 边的信息
 	public TopologyEdge buildEdge(String domain, Dependency dependency) {
 		TopologyEdge edge = new TopologyEdge();
 
