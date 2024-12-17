@@ -19,7 +19,7 @@
 package com.dianping.cat.alarm.spi.receiver;
 
 import java.util.List;
-
+// 告警 Contactor
 public interface Contactor {
 
 	public String getId();

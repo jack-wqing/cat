@@ -27,7 +27,7 @@ import com.dianping.cat.alarm.spi.AlertEntity;
 import com.dianping.cat.alarm.spi.AlertType;
 import com.dianping.cat.alarm.spi.decorator.ProjectDecorator;
 import com.dianping.cat.report.alert.summary.AlertSummaryExecutor;
-
+// BusinessDecorator
 public class BusinessDecorator extends ProjectDecorator {
 
 	public static final String ID = AlertType.Business.getName();

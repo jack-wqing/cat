@@ -22,7 +22,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import com.dianping.cat.alarm.spi.AlertEntity;
-
+// Alert Content Generate: 告警内容生成
 public abstract class Decorator {
 
 	protected DateFormat m_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");

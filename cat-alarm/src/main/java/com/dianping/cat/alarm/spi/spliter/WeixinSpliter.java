@@ -21,7 +21,7 @@ package com.dianping.cat.alarm.spi.spliter;
 import java.util.regex.Pattern;
 
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// weixin : 替换 <br/> <div> <table> 等标签
 public class WeixinSpliter implements Spliter {
 
 	public static final String ID = AlertChannel.WEIXIN.getName();

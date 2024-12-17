@@ -32,7 +32,7 @@ import com.dianping.cat.alarm.Alert;
 import com.dianping.cat.alarm.AlertDao;
 import com.dianping.cat.alarm.spi.AlertEntity;
 import com.dianping.cat.alarm.spi.sender.SendMessageEntity;
-
+// 告警消息进行保存
 @Named
 public class AlertService {
 

@@ -33,7 +33,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.spi.AlertEntity;
 import com.dianping.cat.alarm.spi.AlertType;
 import com.dianping.cat.alarm.spi.decorator.Decorator;
-
+// Transaction Decorator
 public class TransactionDecorator extends Decorator implements Initializable {
 
 	public static final String ID = AlertType.Transaction.getName();

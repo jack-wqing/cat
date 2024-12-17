@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.alarm.spi;
-
+// Cat告警类型
 public enum AlertType {
 
 	Business("Business", "业务告警"),

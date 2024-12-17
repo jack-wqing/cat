@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.alarm.spi.sender;
-
+// Message Sender
 public interface Sender {
 
 	public String getId();

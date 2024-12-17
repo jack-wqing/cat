@@ -24,7 +24,7 @@ import org.unidal.lookup.util.StringUtils;
 import com.dianping.cat.Cat;
 import com.dianping.cat.core.dal.Project;
 import com.dianping.cat.service.ProjectService;
-
+// 带有项目联系信息
 public abstract class ProjectDecorator extends Decorator {
 
 	@Inject

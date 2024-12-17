@@ -20,7 +20,7 @@ package com.dianping.cat.report.alert.business;
 
 import com.dianping.cat.alarm.spi.AlertType;
 import com.dianping.cat.alarm.spi.receiver.ProjectContactor;
-
+// BusinessContactor
 public class BusinessContactor extends ProjectContactor {
 
 	public static final String ID = AlertType.Business.getName();

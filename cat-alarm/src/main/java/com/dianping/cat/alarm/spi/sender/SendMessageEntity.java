@@ -19,7 +19,7 @@
 package com.dianping.cat.alarm.spi.sender;
 
 import java.util.List;
-
+// Alert Channel Send Message Entity
 public class SendMessageEntity {
 	private String m_group;
 

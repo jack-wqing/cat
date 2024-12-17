@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-
+// AlertManager
 @Named
 public class AlertManager implements Initializable {
 
@@ -193,7 +193,7 @@ public class AlertManager implements Initializable {
 		m_alertService.insert(alert, message);
 		return result;
 	}
-
+	// 告警恢复消息
 	private boolean sendRecoveryMessage(AlertEntity alert, String currentMinute) {
 		AlertType alterType = alert.getType();
 		String type = alterType.getName();
@@ -219,7 +219,7 @@ public class AlertManager implements Initializable {
 
 		return false;
 	}
-
+	// 告警Recovery
 	private class RecoveryAnnouncer implements Task {
 
 		private DateFormat m_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -282,7 +282,7 @@ public class AlertManager implements Initializable {
 		public void shutdown() {
 		}
 	}
-
+	// 告警发送Task
 	private class SendExecutor implements Task {
 		@Override
 		public String getName() {

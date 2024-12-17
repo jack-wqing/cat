@@ -19,7 +19,7 @@
 package com.dianping.cat.alarm.spi.rule;
 
 import java.util.Date;
-
+// DataCheckEntity
 public class DataCheckEntity {
 	private boolean m_isTriggered;
 

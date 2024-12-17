@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.alarm.spi;
-
+// Alert Channel
 public enum AlertChannel {
 
 	MAIL("mail"),

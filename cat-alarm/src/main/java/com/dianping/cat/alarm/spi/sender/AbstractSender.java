@@ -31,7 +31,7 @@ import org.unidal.lookup.annotation.Inject;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.spi.config.SenderConfigManager;
-
+// Abstract Message Sender
 public abstract class AbstractSender implements Sender, LogEnabled {
 
     @Inject

@@ -24,7 +24,7 @@ import java.util.List;
 import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.sender.entity.Sender;
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// Sms 告警发送: 只支持Receiver Content
 public class SmsSender extends AbstractSender {
 
 	public static final String ID = AlertChannel.SMS.getName();

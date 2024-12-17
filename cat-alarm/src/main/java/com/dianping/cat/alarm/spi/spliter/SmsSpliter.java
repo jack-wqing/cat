@@ -21,7 +21,7 @@ package com.dianping.cat.alarm.spi.spliter;
 import java.util.regex.Pattern;
 
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// SmsSpliter: 替换<br/> <div>
 public class SmsSpliter implements Spliter {
 
 	public static final String ID = AlertChannel.SMS.getName();

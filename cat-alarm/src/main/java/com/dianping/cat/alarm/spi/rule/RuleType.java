@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+// 触发告警的子条件验证规则
 public enum RuleType {
 
 	DecreasePercentage {

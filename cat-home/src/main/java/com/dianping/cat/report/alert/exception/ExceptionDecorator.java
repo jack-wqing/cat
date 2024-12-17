@@ -35,7 +35,7 @@ import com.dianping.cat.alarm.spi.AlertEntity;
 import com.dianping.cat.alarm.spi.AlertType;
 import com.dianping.cat.alarm.spi.decorator.ProjectDecorator;
 import com.dianping.cat.report.alert.summary.AlertSummaryExecutor;
-
+// ExceptionDecorator
 public class ExceptionDecorator extends ProjectDecorator implements Initializable {
 
 	public static final String ID = AlertType.Exception.getName();

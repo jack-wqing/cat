@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.alarm.spi.spliter;
-
+// Spliter : 分割器
 public interface Spliter {
 
 	public String process(String content);

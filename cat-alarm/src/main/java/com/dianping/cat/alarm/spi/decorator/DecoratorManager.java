@@ -29,7 +29,7 @@ import org.unidal.tuple.Pair;
 
 import com.dianping.cat.alarm.spi.AlertEntity;
 import com.dianping.cat.alarm.spi.AlertType;
-
+//通过告警类型名寻找告警Decorator
 @Named
 public class DecoratorManager extends ContainerHolder implements Initializable {
 

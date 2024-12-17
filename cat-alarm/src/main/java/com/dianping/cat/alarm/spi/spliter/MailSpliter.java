@@ -19,7 +19,7 @@
 package com.dianping.cat.alarm.spi.spliter;
 
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// MailSpliter -> e -> e得作用
 public class MailSpliter implements Spliter {
 
 	public static final String ID = AlertChannel.MAIL.getName();

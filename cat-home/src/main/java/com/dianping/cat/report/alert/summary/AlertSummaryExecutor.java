@@ -38,7 +38,7 @@ import com.dianping.cat.report.alert.summary.build.AlterationSummaryBuilder;
 import com.dianping.cat.report.alert.summary.build.FailureSummaryBuilder;
 import com.dianping.cat.report.alert.summary.build.RelatedSummaryBuilder;
 import com.dianping.cat.report.alert.summary.build.SummaryBuilder;
-
+// AlertSummaryExecutor
 @Named
 public class AlertSummaryExecutor {
 

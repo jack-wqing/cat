@@ -27,7 +27,7 @@ import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// 通过AlertChannel对选择具体的 Spliter进行Content的处理
 @Named
 public class SpliterManager extends ContainerHolder implements Initializable {
 

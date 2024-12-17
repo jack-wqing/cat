@@ -27,7 +27,7 @@ import org.unidal.lookup.annotation.Named;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+// 查询联系人
 @Named
 public class ContactorManager extends ContainerHolder implements Initializable {
 

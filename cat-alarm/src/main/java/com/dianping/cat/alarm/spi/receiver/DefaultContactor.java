@@ -24,7 +24,7 @@ import java.util.List;
 import org.unidal.helper.Splitters;
 
 import com.dianping.cat.alarm.receiver.entity.Receiver;
-
+// 支持默认的联系人
 public abstract class DefaultContactor {
 
 	protected List<String> buildDefaultMailReceivers(Receiver receiver) {

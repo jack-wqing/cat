@@ -26,7 +26,7 @@ import java.util.List;
 import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.sender.entity.Sender;
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// Mail Sender: Receiver Content title time
 public class MailSender extends AbstractSender {
 
 	public static final String ID = AlertChannel.MAIL.getName();

@@ -35,7 +35,7 @@ import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
 import java.util.List;
-// Sender config
+// Sender config Manager: 通过设置发送的频道，目的地：mail, sms, weixin
 @Named
 public class SenderConfigManager implements Initializable {
 

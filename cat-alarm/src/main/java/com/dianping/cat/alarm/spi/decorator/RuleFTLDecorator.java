@@ -28,7 +28,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import com.dianping.cat.Cat;
-
+// 告警规则配置模板
 public class RuleFTLDecorator implements Initializable {
 
 	public Configuration m_configuration;

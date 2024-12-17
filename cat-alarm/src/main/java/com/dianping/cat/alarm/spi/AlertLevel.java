@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 package com.dianping.cat.alarm.spi;
-
+// Cat告警级别
 public enum AlertLevel {
 
 	WARNING("warning", 1),

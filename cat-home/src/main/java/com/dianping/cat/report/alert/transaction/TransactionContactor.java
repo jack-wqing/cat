@@ -20,7 +20,7 @@ package com.dianping.cat.report.alert.transaction;
 
 import com.dianping.cat.alarm.spi.AlertType;
 import com.dianping.cat.alarm.spi.receiver.ProjectContactor;
-
+// TransactionContactor
 public class TransactionContactor extends ProjectContactor {
 
 	public static final String ID = AlertType.Transaction.getName();

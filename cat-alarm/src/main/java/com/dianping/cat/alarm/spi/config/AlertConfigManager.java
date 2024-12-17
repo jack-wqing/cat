@@ -33,7 +33,7 @@ import com.dianping.cat.config.content.ContentFetcher;
 import com.dianping.cat.core.config.Config;
 import com.dianping.cat.core.config.ConfigDao;
 import com.dianping.cat.core.config.ConfigEntity;
-// 默认告警接收人
+// 默认告警人配置，自动添加告警人
 @Named
 public class AlertConfigManager implements Initializable {
 

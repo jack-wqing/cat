@@ -21,7 +21,7 @@ package com.dianping.cat.alarm.spi;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+// AlertEntity:
 public class AlertEntity {
 
 	private Date m_date;

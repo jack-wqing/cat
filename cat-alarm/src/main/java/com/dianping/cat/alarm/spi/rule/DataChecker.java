@@ -21,7 +21,7 @@ package com.dianping.cat.alarm.spi.rule;
 import java.util.List;
 
 import com.dianping.cat.alarm.rule.entity.Condition;
-
+// DataChecker
 public interface DataChecker {
 	public List<DataCheckEntity> checkData(double[] value, double[] baseline, List<Condition> conditions);
 

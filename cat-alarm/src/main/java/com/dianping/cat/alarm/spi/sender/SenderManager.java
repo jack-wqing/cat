@@ -31,7 +31,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.spi.AlertChannel;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.Event;
-
+// Channel 对告警消息发送：通过Event Type=Channel进行记录； 只有启动send-alert的机器才会发送
 @Named
 public class SenderManager extends ContainerHolder implements Initializable {
 

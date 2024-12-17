@@ -29,7 +29,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.home.alert.summary.entity.AlertSummary;
 import com.dianping.cat.report.alert.summary.AlertSummaryService;
-
+// 依赖关系 告警内容构建: RelatedSummaryBuilder
 @Named(type = SummaryBuilder.class, value = RelatedSummaryBuilder.ID)
 public class RelatedSummaryBuilder extends SummaryBuilder {
 

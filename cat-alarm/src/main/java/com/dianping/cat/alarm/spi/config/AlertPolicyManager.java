@@ -38,7 +38,7 @@ import com.dianping.cat.config.content.ContentFetcher;
 import com.dianping.cat.core.config.Config;
 import com.dianping.cat.core.config.ConfigDao;
 import com.dianping.cat.core.config.ConfigEntity;
-// alert Policy
+// alert Policy: 记录各种维度的告警channel及告警详情: Transaction, Event, Exception, Heartbeat, Bussiness: 内部告警驱动写死了
 @Named
 public class AlertPolicyManager implements Initializable {
 

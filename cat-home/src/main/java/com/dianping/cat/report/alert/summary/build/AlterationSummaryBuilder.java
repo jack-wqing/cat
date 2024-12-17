@@ -32,7 +32,7 @@ import com.dianping.cat.home.dal.report.Alteration;
 import com.dianping.cat.home.dal.report.AlterationDao;
 import com.dianping.cat.home.dal.report.AlterationEntity;
 import com.dianping.cat.report.alert.summary.AlertSummaryExecutor;
-
+// 变更信息告警
 @Named(type = SummaryBuilder.class, value = AlterationSummaryBuilder.ID)
 public class AlterationSummaryBuilder extends SummaryBuilder {
 

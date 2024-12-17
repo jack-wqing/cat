@@ -37,7 +37,7 @@ import com.dianping.cat.report.page.problem.transform.ProblemStatistics.TypeStat
 import com.dianping.cat.report.service.ModelRequest;
 import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
-
+// FailureSummaryBuilder
 @Named(type = SummaryBuilder.class, value = FailureSummaryBuilder.ID)
 public class FailureSummaryBuilder extends SummaryBuilder {
 

@@ -28,7 +28,7 @@ import com.dianping.cat.alarm.receiver.entity.Receiver;
 import com.dianping.cat.alarm.spi.config.AlertConfigManager;
 import com.dianping.cat.core.dal.Project;
 import com.dianping.cat.service.ProjectService;
-
+// 默认的项目联系人邮件配置
 public abstract class ProjectContactor extends DefaultContactor implements Contactor {
 
 	@Inject

@@ -24,7 +24,7 @@ import java.util.List;
 import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.sender.entity.Sender;
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// weixin发送支持的发送参数比较多: Receiver Content title type domain
 public class WeixinSender extends AbstractSender {
 
 	public static final String ID = AlertChannel.WEIXIN.getName();

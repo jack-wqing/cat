@@ -21,7 +21,7 @@ package com.dianping.cat.alarm.spi.spliter;
 import java.util.regex.Pattern;
 
 import com.dianping.cat.alarm.spi.AlertChannel;
-
+// DXSpliter: <br/> <div> <table>
 public class DXSpliter implements Spliter {
 
 	public static final String ID = AlertChannel.DX.getName();
