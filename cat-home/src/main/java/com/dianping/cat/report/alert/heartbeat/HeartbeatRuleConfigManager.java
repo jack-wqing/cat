@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.unidal.lookup.annotation.Named;
-// heartbeat rule config manager
+// HeartbeatRuleConfigManager
 @Named
 public class HeartbeatRuleConfigManager extends BaseRuleConfigManager implements Initializable {
 

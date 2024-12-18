@@ -55,7 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
+// 控制Transaction Alert
 @Named
 public class TransactionAlert implements Task, LogEnabled {
 

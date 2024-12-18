@@ -15,7 +15,7 @@ public class Rule extends BaseEntity<Rule> {
    private String m_id;
 
    private Boolean m_available;
-
+   // 指标项
    private List<MetricItem> m_metricItems = new ArrayList<MetricItem>();
 
    private List<Config> m_configs = new ArrayList<Config>();

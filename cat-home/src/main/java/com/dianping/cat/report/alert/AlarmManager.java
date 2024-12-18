@@ -27,7 +27,7 @@ import com.dianping.cat.report.alert.event.EventAlert;
 import com.dianping.cat.report.alert.exception.ExceptionAlert;
 import com.dianping.cat.report.alert.heartbeat.HeartbeatAlert;
 import com.dianping.cat.report.alert.transaction.TransactionAlert;
-
+// AlarmManager: 启动支持的各维度的统计指标告警
 @Named
 public class AlarmManager extends ContainerHolder {
 

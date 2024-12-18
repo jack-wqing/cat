@@ -29,7 +29,7 @@ import org.unidal.tuple.Pair;
 import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.rule.entity.Condition;
 import com.dianping.cat.alarm.rule.entity.Config;
-
+// 告警规则设置的Condition条件满足判断
 @Named
 public class BaseRuleHelper {
 

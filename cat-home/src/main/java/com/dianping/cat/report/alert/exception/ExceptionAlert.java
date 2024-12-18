@@ -45,7 +45,7 @@ import com.dianping.cat.report.page.dependency.TopMetric.Item;
 import com.dianping.cat.report.service.ModelRequest;
 import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
-
+// ExceptionAlert: 通过TopReport
 @Named
 public class ExceptionAlert implements Task {
 

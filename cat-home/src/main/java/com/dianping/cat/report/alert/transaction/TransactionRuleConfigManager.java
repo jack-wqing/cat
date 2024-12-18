@@ -21,7 +21,7 @@ package com.dianping.cat.report.alert.transaction;
 import com.dianping.cat.report.alert.spi.config.BaseRuleConfigManager;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.unidal.lookup.annotation.Named;
-// transaction rule
+// TransactionRuleConfigManager
 @Named
 public class TransactionRuleConfigManager extends BaseRuleConfigManager implements Initializable {
 

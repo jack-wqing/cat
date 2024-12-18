@@ -55,7 +55,7 @@ import com.dianping.cat.report.service.ModelRequest;
 import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
 import com.dianping.cat.service.ProjectService;
-
+//HeartbeatAlert
 @Named
 public class HeartbeatAlert implements Task {
 

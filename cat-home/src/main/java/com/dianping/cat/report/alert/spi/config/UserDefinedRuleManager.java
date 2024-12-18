@@ -25,7 +25,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.alarm.UserDefineRule;
 import com.dianping.cat.alarm.UserDefineRuleDao;
 import com.dianping.cat.alarm.UserDefineRuleEntity;
-
+// 用户自定义 告警规则
 @Named
 public class UserDefinedRuleManager {
 

@@ -55,7 +55,7 @@ import com.dianping.cat.report.alert.config.BaseRuleHelper;
 import com.dianping.cat.report.alert.spi.AlarmRule;
 import com.dianping.cat.task.TimerSyncTask;
 import com.dianping.cat.task.TimerSyncTask.SyncHandler;
-
+// 支持 Transaction, Event, HeartBeat 得告警规则配置
 public abstract class BaseRuleConfigManager {
 
 	@Inject

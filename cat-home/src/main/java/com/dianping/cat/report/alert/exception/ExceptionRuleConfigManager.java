@@ -36,7 +36,7 @@ import com.dianping.cat.home.exception.entity.ExceptionExclude;
 import com.dianping.cat.home.exception.entity.ExceptionLimit;
 import com.dianping.cat.home.exception.entity.ExceptionRuleConfig;
 import com.dianping.cat.home.exception.transform.DefaultSaxParser;
-
+//ExceptionRuleConfigManager
 @Named
 public class ExceptionRuleConfigManager implements Initializable {
 
