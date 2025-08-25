@@ -40,27 +40,35 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
+// Default Block 进行存储管理
+// dump的默认线程数是5
 @Named(type = BlockDumper.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultBlockDumper extends ContainerHolder implements BlockDumper, LogEnabled {
 
+	// 服务端统计
 	@Inject
 	private ServerStatisticManager m_statisticManager;
 
+	// 服务端配置
 	@Inject
 	private ServerConfigManager m_configManager;
 
+	// 块队列
 	private List<BlockingQueue<Block>> m_queues = new ArrayList<BlockingQueue<Block>>();
 
+	// 块队列持久化
 	private List<BlockWriter> m_writers = new ArrayList<BlockWriter>();
 
 	private int m_failCount = -1;
 
 	private Logger m_logger;
 
+	// 同步terminal
 	@Override
 	public void awaitTermination() throws InterruptedException {
 		int index = 0;
 
+		// 需要等待BlockWriter将消息消耗完
 		while (index < 100) {
 			boolean allEmpty = true;
 
@@ -86,6 +94,7 @@ public class DefaultBlockDumper extends ContainerHolder implements BlockDumper, 
 		}
 	}
 
+	// 持久化Block，异步操作
 	@Override
 	public void dump(Block block) throws IOException {
 		String domain = block.getDomain();
@@ -110,7 +119,6 @@ public class DefaultBlockDumper extends ContainerHolder implements BlockDumper, 
 	public void enableLogging(Logger logger) {
 		m_logger = logger;
 	}
-
 	@Override
 	public void initialize(int hour) {
 		int threads = m_configManager.getMessageDumpThreads();

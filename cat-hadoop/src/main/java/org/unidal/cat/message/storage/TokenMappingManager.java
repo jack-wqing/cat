@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage;
 
 import java.io.IOException;
 
+// String -> int Token管理器
 public interface TokenMappingManager {
 	public void close(int hour);
 

@@ -45,6 +45,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.internal.MessageId;
 
+// 对于消息的MessageId的索引存储， 通过一级二级索引 及 TokenMapping String -> Int 减少存储空间
 @Named(type = Index.class, value = "local", instantiationStrategy = Named.PER_LOOKUP)
 public class LocalIndex implements Index {
 	private static final int SEGMENT_SIZE = 32 * 1024;
@@ -52,14 +53,17 @@ public class LocalIndex implements Index {
 	@Inject("local")
 	private PathBuilder m_bulider;
 
+	// String -> int 支持
 	@Inject("local")
 	private TokenMappingManager m_manager;
 
+	// BufBuf缓存
 	@Inject
 	private ByteBufCache m_bufCache;
 
 	private TokenMapping m_mapping;
 
+	// MessageId映射器
 	private MessageIdCodec m_codec = new MessageIdCodec();
 
 	private IndexHelper m_index = new IndexHelper();
@@ -127,7 +131,7 @@ public class LocalIndex implements Index {
 			map(entry.getKey(), entry.getValue());
 		}
 	}
-
+	// Index IndexHalper
 	private class IndexHelper {
 		private static final int BYTE_PER_MESSAGE = 8;
 
@@ -461,6 +465,7 @@ public class LocalIndex implements Index {
 		* hour   2 bits
 		* seq    32bits
 		*/
+	// MessageId: Codec操作 Domain + ip + hour + seq 映射为
 	class MessageIdCodec {
 
 		private int bytesToInt(byte[] src, int offset) {

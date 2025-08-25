@@ -38,6 +38,7 @@ import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.MessageId;
 
+//
 @Named
 public class HdfsIndexManager extends ContainerHolder implements Initializable, LogEnabled {
 
@@ -70,7 +71,7 @@ public class HdfsIndexManager extends ContainerHolder implements Initializable, 
 	@Override
 	public void initialize() throws InitializationException {
 	}
-
+	// 寻找真实的映射消息ip
 	public MessageId loadMessage(MessageId id) {
 		if (m_configManager.isHdfsOn()) {
 			Transaction t = Cat.newTransaction("Hdfs", getClass().getSimpleName());

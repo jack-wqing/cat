@@ -36,6 +36,7 @@ import org.unidal.lookup.annotation.Inject;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 
+// Har文件系统
 public class FileSystemManager implements Initializable {
 	@Inject
 	private ServerConfigManager m_configManager;

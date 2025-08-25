@@ -34,6 +34,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 
+// Hdfs文件存储管理
 @Named
 public class HdfsSystemManager implements Initializable {
 	public static final String DUMP = "dump";

@@ -18,6 +18,7 @@
  */
 package org.unidal.cat.message.storage;
 
+// 小时BlockDumper管理器
 public interface BlockDumperManager {
 	public void close(int hour);
 

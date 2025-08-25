@@ -37,17 +37,22 @@ import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
+// Default BlockWriter
 @Named(type = BlockWriter.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultBlockWriter implements BlockWriter {
 
+	// 最小存储单元管理器
 	@Inject("local")
 	private BucketManager m_bucketManager;
 
+	// 服务端统计信息管理器
 	@Inject
 	private ServerStatisticManager m_statisticManager;
 
+	// 默认5个，第几BlockWriter
 	private int m_index;
 
+	// Block队列
 	private BlockingQueue<Block> m_queue;
 
 	private long m_hour;
@@ -74,6 +79,7 @@ public class DefaultBlockWriter implements BlockWriter {
 		m_latch = new CountDownLatch(1);
 	}
 
+	// 数据块进行 data index 存储
 	private void processBlock(String ip, Block block) {
 		try {
 			Bucket bucket = m_bucketManager.getBucket(block.getDomain(), ip, block.getHour(), true);
@@ -106,7 +112,7 @@ public class DefaultBlockWriter implements BlockWriter {
 			block.clear();
 		}
 	}
-
+	// 定时启动存储 5mills
 	@Override
 	public void run() {
 		String ip = NetworkInterfaceManager.INSTANCE.getLocalHostAddress();
@@ -129,7 +135,7 @@ public class DefaultBlockWriter implements BlockWriter {
 
 		m_latch.countDown();
 	}
-
+	// shutdown 对剩余的数据进行存储，
 	@Override
 	public void shutdown() {
 		m_enabled.set(false);

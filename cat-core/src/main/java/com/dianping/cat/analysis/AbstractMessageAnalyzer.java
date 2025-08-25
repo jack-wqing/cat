@@ -29,6 +29,7 @@ import org.unidal.lookup.annotation.Inject;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// 各种类型的消息分析器
 public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder implements MessageAnalyzer {
 	public static final long MINUTE = 60 * 1000L;
 
@@ -70,7 +71,7 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 				}
 			}
 		}
-
+		// 如果服务时间到器或者停止服务，消费调剩余的消息
 		while (true) {
 			MessageTree tree = queue.poll();
 
@@ -89,7 +90,7 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 			}
 		}
 	}
-
+	// destroy 报告服务
 	@Override
 	public void destroy() {
 		super.release(this);
@@ -102,7 +103,7 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 
 	@Override
 	public abstract void doCheckpoint(boolean atEnd);
-
+	// 每个分析器都可以指定分析的数量
 	@Override
 	public int getAnanlyzerCount(String name) {
 		return m_serverConfigManager.getThreadsOfRealtimeAnalyzer(name);
@@ -127,7 +128,7 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 
 		loadReports();
 	}
-
+	// 是否启动
 	protected boolean isActive() {
 		return m_active.get();
 	}
@@ -141,6 +142,7 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 		return m_serverConfigManager.isLocalMode();
 	}
 
+	// 判定当前的服务时间范围
 	protected boolean isTimeout() {
 		long currentTime = System.currentTimeMillis();
 		long endTime = m_startTime + m_duration + m_extraTime;

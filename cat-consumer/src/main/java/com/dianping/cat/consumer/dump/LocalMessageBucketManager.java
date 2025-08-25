@@ -91,7 +91,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 	private List<BlockingQueue<MessageItem>> m_messageQueues = new ArrayList<BlockingQueue<MessageItem>>();
 
 	private BlockingQueue<MessageItem> m_last;
-
+	// 持久化桶
 	@Override
 	public void archive(long startTime) {
 		String path = m_pathBuilder.getLogviewPath(new Date(startTime), "");
@@ -121,6 +121,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 		m_logger = logger;
 	}
 
+	//发现需要关闭的桶
 	public List<String> findCloseBuckets() {
 		final Set<String> paths = new HashSet<String>();
 
@@ -144,6 +145,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 		return new ArrayList<String>(paths);
 	}
 
+	// 进行新旧存储判断
 	@Override
 	public void initialize() throws InitializationException {
 		if (!m_configManager.isUseNewStorage()) {
@@ -152,6 +154,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 			Threads.forGroup("cat").start(new BlockDumper(m_buckets, m_messageBlocks, m_serverStateManager, m_configManager));
 			Threads.forGroup("cat").start(new CloseBucketChecker());
 
+			// 启动Gzip
 			if (m_configManager.isLocalMode()) {
 				m_gzipThreads = 2;
 			}
@@ -165,7 +168,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 			m_last = m_messageQueues.get(m_gzipThreads - 1);
 		}
 	}
-
+	// 实时还是旧消息(文件中查找)
 	@Override
 	public MessageTree loadMessage(String messageId) {
 		MessageProducer cat = Cat.getProducer();
@@ -269,6 +272,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 		m_localIp = localIp;
 	}
 
+	// 是否应close Bucket
 	private boolean shouldUpload(String path) {
 		long current = System.currentTimeMillis();
 		long currentHour = current - current % TimeHelper.ONE_HOUR;
@@ -288,7 +292,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 		}
 		return true;
 	}
-
+	// 存储消息
 	@Override
 	public void storeMessage(final MessageTree tree, final MessageId id) {
 		boolean errorFlag = true;
@@ -312,6 +316,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 		logStorageState(tree);
 	}
 
+	// 选择当前小时，上一小时，下一小时
 	public class CloseBucketChecker implements Task {
 
 		private void closeBuckets(final List<String> paths) {
@@ -363,6 +368,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 		}
 	}
 
+	// MessageGzip V1消息存储
 	public class MessageGzip implements Task {
 
 		public BlockingQueue<MessageItem> m_messageQueue;

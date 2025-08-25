@@ -41,6 +41,8 @@ import com.dianping.cat.helper.TimeHelper;
 /**
 	* Supports up to 64K tokens mapping from <code>String</code> to <code>int</code>, or reverse by local file system.
 	*/
+// 支持64k tokens 映射 String -> int  通过本地文件映射
+// 为LocalIndex 提供支持
 @Named(type = TokenMapping.class, value = "local", instantiationStrategy = Named.PER_LOOKUP)
 public class LocalTokenMapping implements TokenMapping {
 	private static final int BLOCK_SIZE = 32 * 1024;
@@ -54,8 +56,10 @@ public class LocalTokenMapping implements TokenMapping {
 
 	private File m_path;
 
+	// 文件存储的所有Token
 	private List<String> m_tokens = new ArrayList<String>(1024);
 
+	// Token 和 Index的映射
 	private Map<String, Integer> m_map = new HashMap<String, Integer>(1024);
 
 	private int m_block;
@@ -84,6 +88,7 @@ public class LocalTokenMapping implements TokenMapping {
 		m_map.clear();
 	}
 
+	// index -> token
 	@Override
 	public String find(int index) throws IOException {
 		int len = m_tokens.size();
@@ -134,7 +139,7 @@ public class LocalTokenMapping implements TokenMapping {
 
 		buf.writerIndex(buf.readerIndex());
 	}
-
+	// 按照Token的写入顺序
 	@Override
 	public int map(String token) throws IOException {
 		Integer index = m_map.get(token);
@@ -172,7 +177,8 @@ public class LocalTokenMapping implements TokenMapping {
 	public void open(int hour, String ip) throws IOException {
 		m_path = new File(m_bulider.getPath(null, new Date(hour * TimeHelper.ONE_HOUR), ip, FileType.TOKEN));
 		m_path.getParentFile().mkdirs();
-		m_file = new RandomAccessFile(m_path, "rwd"); // read-write without meta sync
+		m_file = new RandomAccessFile(m_path, "rwd");
+		// 32 kb // read-write without meta sync
 		m_data = Unpooled.buffer(BLOCK_SIZE);
 		m_block = 0;
 

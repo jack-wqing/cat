@@ -40,6 +40,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.internal.MessageId;
 
+// Hdfs 实现的Bucket
 @Named(type = Bucket.class, value = HdfsBucket.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class HdfsBucket implements Bucket {
 	public static final String ID = "hdfs";
@@ -126,6 +127,7 @@ public class HdfsBucket implements Bucket {
 		return initialize(domain, ip, hour);
 	}
 
+	// Hdfs数据文件只支持读
 	private class DataHelper {
 
 		private FSDataInputStream m_dataStream;
@@ -154,6 +156,7 @@ public class HdfsBucket implements Bucket {
 		}
 	}
 
+	// Index索引文件 也只支持支持读操作
 	private class IndexHelper {
 		private static final int BYTE_PER_MESSAGE = 8;
 

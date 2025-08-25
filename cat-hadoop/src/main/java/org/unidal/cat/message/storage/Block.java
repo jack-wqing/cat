@@ -25,6 +25,7 @@ import io.netty.buffer.ByteBuf;
 
 import com.dianping.cat.message.internal.MessageId;
 
+// 数据块存储是以Block的压缩方式存储的，块内偏移指的是解压后的偏移量
 public interface Block {
 	public void clear();
 

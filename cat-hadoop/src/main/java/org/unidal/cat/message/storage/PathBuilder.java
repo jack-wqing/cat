@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage;
 
 import java.util.Date;
 
+// 文件路径构造器
 public interface PathBuilder {
 	public String getPath(String domain, Date startTime, String consumerId, FileType type);
 

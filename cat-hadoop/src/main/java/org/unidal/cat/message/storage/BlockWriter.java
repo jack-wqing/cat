@@ -22,6 +22,7 @@ import java.util.concurrent.BlockingQueue;
 
 import org.unidal.helper.Threads.Task;
 
+// Block Writer
 public interface BlockWriter extends Task {
 	public void initialize(int hour, int index, BlockingQueue<Block> queue);
 

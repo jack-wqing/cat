@@ -23,6 +23,7 @@ import org.unidal.lookup.util.StringUtils;
 /**
  * message Id
  */
+// 消息Id设计: 服务 + ipHex + hour + index
 public class MessageId {
 	private String m_domain;
 

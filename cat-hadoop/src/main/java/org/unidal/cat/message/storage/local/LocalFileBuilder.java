@@ -27,6 +27,7 @@ import org.unidal.cat.message.storage.StorageConfiguration;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
+// dump路由构建策略
 @Named(type = PathBuilder.class, value = "local")
 public class LocalFileBuilder implements PathBuilder {
 	@Inject

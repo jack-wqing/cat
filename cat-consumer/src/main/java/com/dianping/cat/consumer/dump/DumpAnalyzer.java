@@ -37,16 +37,17 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.concurrent.TimeUnit;
 
+// Analyzer: dump
 @Named(type = MessageAnalyzer.class, value = DumpAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements LogEnabled {
 	public static final String ID = "dump";
 
 	@Inject
 	private ServerStatisticManager m_serverStateManager;
-
+	// V2消息dump
 	@Inject
 	private MessageDumperManager m_dumperManager;
-
+	// V2 消息查找
 	@Inject
 	private MessageFinderManager m_finderManager;
 
@@ -69,7 +70,7 @@ public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements Log
 			t.complete();
 		}
 	}
-
+	// checkpoint 会持久化数据
 	@Override
 	public synchronized void doCheckpoint(boolean atEnd) {
 		if (atEnd) {
@@ -88,12 +89,12 @@ public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements Log
 	public void enableLogging(Logger logger) {
 		m_logger = logger;
 	}
-
+	// Dump分析器不支持
 	@Override
 	public Object getReport(String domain) {
 		throw new UnsupportedOperationException("This should not be called!");
 	}
-
+	// Dump分析器不支持
 	@Override
 	public ReportManager<?> getReportManager() {
 		return null;
@@ -103,15 +104,15 @@ public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements Log
 	public void initialize(long startTime, long duration, long extraTime) {
 		super.initialize(startTime, duration, extraTime);
 		int hour = (int) TimeUnit.MILLISECONDS.toHours(startTime);
-
+		// 报告dump
 		m_dumperManager.findOrCreate(hour);
 	}
-
+	// 不支持
 	@Override
 	protected void loadReports() {
 		// do nothing
 	}
-
+	// MessageTree 存储
 	@Override
 	public void process(MessageTree tree) {
 		try {
@@ -128,7 +129,7 @@ public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements Log
 		MessageDumper dumper = m_dumperManager.find(hour);
 
 		tree.setFormatMessageId(messageId);
-
+		// 时差出现
 		if (dumper != null) {
 			dumper.process(tree);
 		} else {
@@ -140,6 +141,7 @@ public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements Log
 		m_serverStateManager = serverStateManager;
 	}
 
+	// 一服务节点，一小时最多5千万
 	private boolean shouldDiscard(MessageId id) {
 		int index = id.getIndex();
 

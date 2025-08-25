@@ -26,6 +26,7 @@ import org.unidal.initialization.ModuleContext;
 
 import com.dianping.cat.CatCoreModule;
 
+// CatHadoopModule
 public class CatHadoopModule extends AbstractModule {
 	public static final String ID = "cat-hadoop";
 

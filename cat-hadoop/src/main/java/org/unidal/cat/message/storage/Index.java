@@ -23,6 +23,8 @@ import java.util.Map;
 
 import com.dianping.cat.message.internal.MessageId;
 
+
+// MessageId 映射支持
 public interface Index {
 
 	public void close();

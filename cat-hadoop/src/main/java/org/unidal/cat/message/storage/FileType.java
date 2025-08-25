@@ -18,6 +18,7 @@
  */
 package org.unidal.cat.message.storage;
 
+// 支持的几种文件类型
 public enum FileType {
 	MAPPING("map"),
 

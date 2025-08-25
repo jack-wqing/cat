@@ -21,6 +21,7 @@ package com.dianping.cat.message.storage;
 import java.util.ArrayList;
 import java.util.List;
 
+// Message Block
 public class MessageBlock {
 	private String m_dataFile;
 

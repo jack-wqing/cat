@@ -36,6 +36,7 @@ import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
+// LocalIndexManager存储
 @Named(type = IndexManager.class, value = "local")
 public class LocalIndexManager extends ContainerHolder implements IndexManager {
 	protected Logger m_logger;
@@ -45,6 +46,7 @@ public class LocalIndexManager extends ContainerHolder implements IndexManager {
 	@Inject("local")
 	private PathBuilder m_bulider;
 
+	//小时文件
 	private boolean bucketFilesExsits(String domain, String ip, int hour) {
 		long timestamp = hour * 3600 * 1000L;
 		Date startTime = new Date(timestamp);
@@ -94,6 +96,7 @@ public class LocalIndexManager extends ContainerHolder implements IndexManager {
 		return m;
 	}
 
+	// index 创建
 	@Override
 	public Index getIndex(String domain, String ip, int hour, boolean createIfNotExists) throws IOException {
 		Map<String, Index> map = findOrCreateMap(m_indexes, hour);

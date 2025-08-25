@@ -32,6 +32,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 
+// 缓存一批ByteBuffer对象使用: 8000，每个byte buffer大小为32KB
 @Named(type = ByteBufCache.class)
 public class DefaultByteBufCache implements ByteBufCache, Initializable, LogEnabled {
 

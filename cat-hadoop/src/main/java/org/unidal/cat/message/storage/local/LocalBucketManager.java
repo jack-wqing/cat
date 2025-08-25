@@ -39,6 +39,8 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 
+// BucketManager: Local 本地文件方式
+// 小时维度 + domain维度 缓存
 @Named(type = BucketManager.class, value = "local")
 public class LocalBucketManager extends ContainerHolder implements BucketManager, LogEnabled {
 
@@ -47,8 +49,10 @@ public class LocalBucketManager extends ContainerHolder implements BucketManager
 	@Inject("local")
 	private PathBuilder m_builder;
 
+	//Hour -> Domain -> Bucket
 	private Map<Integer, Map<String, Bucket>> m_buckets = new LinkedHashMap<Integer, Map<String, Bucket>>();
 
+	// s数据文件索引文件
 	private boolean bucketFilesExists(String domain, String ip, int hour) {
 		long timestamp = hour * 3600 * 1000L;
 		Date startTime = new Date(timestamp);
@@ -114,6 +118,8 @@ public class LocalBucketManager extends ContainerHolder implements BucketManager
 		return m;
 	}
 
+	// 小时维度的 -> domain 温度
+	// 桶的Segment满了之后
 	@Override
 	public Bucket getBucket(String domain, String ip, int hour, boolean createIfNotExists) throws IOException {
 		Map<String, Bucket> map = findOrCreateMap(m_buckets, hour);

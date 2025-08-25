@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage;
 
 import java.io.IOException;
 
+// 索引最小最小存储单元管理 BucketManager
 public interface BucketManager {
 	public void closeBuckets(int hour);
 

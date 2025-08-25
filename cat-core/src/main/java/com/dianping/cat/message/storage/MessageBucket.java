@@ -23,6 +23,7 @@ import java.util.Date;
 
 import com.dianping.cat.message.spi.MessageTree;
 
+// Message Bucket
 public interface MessageBucket {
 	public void close() throws IOException;
 

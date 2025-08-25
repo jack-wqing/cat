@@ -27,6 +27,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 
+// 可以通过CAT_HOME指定数据目录，默认是 /data/appdatas/cat/bucket
 @Named(type = StorageConfiguration.class)
 public class DefaultStorageConfiguration implements Initializable, StorageConfiguration {
 	private String m_baseDataDir;

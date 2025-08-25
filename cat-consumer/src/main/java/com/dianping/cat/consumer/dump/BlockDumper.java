@@ -32,9 +32,11 @@ import com.dianping.cat.message.storage.LocalMessageBucket;
 import com.dianping.cat.message.storage.MessageBlock;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
+// V1版本MessageBlock Flush
 public class BlockDumper implements Task {
 	private int m_errors;
 
+	// datafile -> MessageBucket
 	private ConcurrentHashMap<String, LocalMessageBucket> m_buckets;
 
 	private BlockingQueue<MessageBlock> m_messageBlocks;

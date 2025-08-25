@@ -23,6 +23,7 @@ import java.util.Set;
 
 import com.dianping.cat.report.DefaultReportManager.StoragePolicy;
 
+// 报告管理
 public interface ReportManager<T> {
 
 	public void destory();

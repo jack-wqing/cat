@@ -32,6 +32,7 @@ import com.dianping.cat.message.internal.MessageId;
 /**
  * Message Tree
  */
+// 消息tree
 public interface MessageTree extends Cloneable {
 
 	public boolean canDiscard();

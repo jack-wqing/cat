@@ -30,6 +30,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.message.internal.MessageId;
 
+// 支持试试消息发现，存储的消息在DefaultMessageProcessor
 @Named(type = MessageFinderManager.class)
 public class DefaultMessageFinderManager implements MessageFinderManager {
 

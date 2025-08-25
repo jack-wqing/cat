@@ -25,6 +25,7 @@ import io.netty.buffer.ByteBuf;
 
 import com.dianping.cat.message.internal.MessageId;
 
+// 数据桶设计
 public interface Bucket {
 	public static final long SEGMENT_SIZE = 32 * 1024L;
 

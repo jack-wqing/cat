@@ -18,6 +18,7 @@
  */
 package org.unidal.cat.message.storage.internals;
 
+// 压缩类型，默认是SNAPPY
 public enum CompressTye {
 
 	GZIP("gzip"),

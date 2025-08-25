@@ -18,9 +18,7 @@
  */
 package com.dianping.cat.message.spi;
 
-/**
- * 消息队列
- */
+// 消息对垒
 public interface MessageQueue {
 	public boolean offer(MessageTree tree);
 

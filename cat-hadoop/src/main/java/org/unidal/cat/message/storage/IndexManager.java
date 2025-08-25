@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage;
 
 import java.io.IOException;
 
+//Mapping MessageId映射
 public interface IndexManager {
 	public void close(int hour);
 

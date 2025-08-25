@@ -42,9 +42,11 @@ import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 
+// Logview 文件管理
 @Named
 public class LogviewProcessor implements Task, Initializable {
 
+	// Hdfs MessageTree 上传器
 	@Inject
 	private HdfsUploader m_hdfsUploader;
 
@@ -62,8 +64,10 @@ public class LogviewProcessor implements Task, Initializable {
 		parent.getParentFile().delete(); // delete it if empty
 	}
 
+	// 删除旧的LogView记录文件
 	private void deleteOldMessages() {
 		final Set<String> paths = new HashSet<String>();
+		// 默认是七天
 		final Set<String> validPaths = findValidPath(m_configManager.getLogViewStroageTime());
 
 		Scanners.forDir().scan(m_baseDir, new FileMatcher() {
@@ -127,8 +131,10 @@ public class LogviewProcessor implements Task, Initializable {
 		return "logview-processor";
 	}
 
+	// 基本的目录信息: ${local-base-dir}/dump
 	@Override
 	public void initialize() throws InitializationException {
+		// storage 的 local-base-dir 加 dump 在Hdfs基本存储路径
 		m_baseDir = new File(m_configManager.getHdfsLocalBaseDir("dump"));
 	}
 
@@ -149,6 +155,7 @@ public class LogviewProcessor implements Task, Initializable {
 		return true;
 	}
 
+	// 处理旧的日志文件
 	private void processLogviewFiles(final List<String> paths, boolean upload) {
 		String ip = NetworkInterfaceManager.INSTANCE.getLocalHostAddress();
 		Transaction t = Cat.newTransaction("System", "Delete" + "-" + ip);
@@ -175,7 +182,7 @@ public class LogviewProcessor implements Task, Initializable {
 		}
 		t.complete();
 	}
-
+	// 定时任务处理，一小时执行一次
 	@Override
 	public void run() {
 		boolean active = true;
@@ -183,6 +190,7 @@ public class LogviewProcessor implements Task, Initializable {
 		while (active) {
 			long start = System.currentTimeMillis();
 			long current = start / 1000 / 60;
+			// 分装
 			int min = (int) (current % (60));
 			Calendar nextStart = Calendar.getInstance();
 
@@ -192,6 +200,7 @@ public class LogviewProcessor implements Task, Initializable {
 				if (m_configManager.isHdfsOn()) {
 					// make system 0-10 min is not busy
 					if (min >= 9) {
+						// 非当前小时，上一个小时，下一个小时的文件
 						List<String> paths = findOldBuckets();
 
 						processLogviewFiles(paths, true);
@@ -219,7 +228,7 @@ public class LogviewProcessor implements Task, Initializable {
 	@Override
 	public void shutdown() {
 	}
-
+	// 本地文件上传Hdfs
 	private void uploadFileToHdfs(String path) {
 		File file = new File(m_baseDir, path);
 

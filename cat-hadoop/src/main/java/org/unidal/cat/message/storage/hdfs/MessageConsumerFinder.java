@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage.hdfs;
 
 import java.util.Set;
 
+// Cat集群的消费机器IP 获取多个机器的
 public interface MessageConsumerFinder {
 
 	public Set<String> findConsumerIps(String domain, int hour);

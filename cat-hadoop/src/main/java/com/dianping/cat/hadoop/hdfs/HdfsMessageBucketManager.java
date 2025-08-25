@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+// 消息桶管理器
 public class HdfsMessageBucketManager extends ContainerHolder implements MessageBucketManager, Initializable {
 
 	public static final String ID = "hdfs";
@@ -60,6 +61,7 @@ public class HdfsMessageBucketManager extends ContainerHolder implements Message
 	@Inject
 	private ServerConfigManager m_serverConfigManager;
 
+	// Ip消息桶
 	private Map<String, MessageBucket> m_buckets = new ConcurrentHashMap<String, MessageBucket>();
 
 	@Override
@@ -141,6 +143,7 @@ public class HdfsMessageBucketManager extends ContainerHolder implements Message
 		return new Pair<List<String>, String>(paths, HDFS_BUCKET);
 	}
 
+	// 是否支持Har模式
 	@Override
 	public MessageTree loadMessage(String messageId) {
 		if (!m_serverConfigManager.isHdfsOn()) {

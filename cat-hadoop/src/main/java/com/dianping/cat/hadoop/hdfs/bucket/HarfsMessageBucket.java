@@ -27,6 +27,7 @@ import org.apache.hadoop.fs.Path;
 import com.dianping.cat.hadoop.hdfs.HdfsMessageBucketManager;
 import com.dianping.cat.hadoop.hdfs.MessageBlockReader;
 
+// Har文件信息桶
 public class HarfsMessageBucket extends AbstractHdfsMessageBucket {
 
 	public static final String ID = HdfsMessageBucketManager.HARFS_BUCKET;

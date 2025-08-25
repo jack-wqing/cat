@@ -30,6 +30,7 @@ import org.xerial.snappy.SnappyInputStream;
 
 import com.dianping.cat.Cat;
 
+// V1 Hdfs文件读取
 public class MessageBlockReader {
 	private FSDataInputStream m_indexFile;
 

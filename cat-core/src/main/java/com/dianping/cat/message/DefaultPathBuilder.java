@@ -23,6 +23,7 @@ import java.util.Date;
 
 import org.unidal.lookup.annotation.Named;
 
+// v1版本默认的路径构造器
 @Named(type = PathBuilder.class)
 public class DefaultPathBuilder implements PathBuilder {
 

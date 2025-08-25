@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
+// v1 索引 数据文件写
 public class MessageBlockWriter {
 	private RandomAccessFile m_indexFile;
 
@@ -58,7 +59,7 @@ public class MessageBlockWriter {
 			m_dataFile.close();
 		}
 	}
-
+    // 索引每个数据6字节: 4块位置，2字节偏移值
 	public synchronized void writeBlock(MessageBlock block) throws IOException {
 		int len = block.getBlockSize();
 		byte[] data = block.getData();
@@ -66,7 +67,7 @@ public class MessageBlockWriter {
 
 		ByteBuffer buffer = ByteBuffer.allocate(4 + data.length);
 		buffer.order(ByteOrder.BIG_ENDIAN);
-
+		// 相同小时内 机器重启客户单se 重置，会覆盖原来的值
 		for (int i = 0; i < len; i++) {
 			int seq = block.getIndex(i);
 			int size = block.getSize(i);

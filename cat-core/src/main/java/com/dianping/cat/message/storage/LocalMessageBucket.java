@@ -35,6 +35,7 @@ import com.dianping.cat.message.CodecHandler;
 import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 
+// V1版本本地文件Bucket读取
 @Named(type = MessageBucket.class, value = LocalMessageBucket.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class LocalMessageBucket implements MessageBucket {
 	public static final String ID = "local";
@@ -79,7 +80,7 @@ public class LocalMessageBucket implements MessageBucket {
 
 		return findByIndex(index);
 	}
-
+	// 消息读取
 	public MessageTree findByIndex(int index) throws IOException {
 		File file = new File(m_baseDir, m_dataFile);
 		MessageBlockReader reader = new MessageBlockReader(file);
@@ -143,7 +144,9 @@ public class LocalMessageBucket implements MessageBucket {
 		File file = new File(m_baseDir, dataFile);
 
 		m_writer = new MessageBlockWriter(file);
+		// m_block
 		m_block = new MessageBlock(m_dataFile);
+		// m_out
 		m_buf = new ByteArrayOutputStream(16384);
 		m_out = new SnappyOutputStream(m_buf);
 	}
@@ -151,7 +154,7 @@ public class LocalMessageBucket implements MessageBucket {
 	public void setBaseDir(File baseDir) {
 		m_baseDir = baseDir;
 	}
-
+	// V1消息存储
 	public MessageBlock storeMessage(final ByteBuf buf, final MessageId id) throws IOException {
 		synchronized (this) {
 			try {

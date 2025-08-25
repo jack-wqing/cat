@@ -39,6 +39,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.internal.MessageId;
 
+// HdfsIndex支持
 @Named(type = Index.class, value = HdfsBucket.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class HdfsIndex implements Index {
 	public static final String ID = "hdfs";
@@ -105,7 +106,7 @@ public class HdfsIndex implements Index {
 	public long getLastAccessTime() {
 		return m_lastAccessTime;
 	}
-
+	// 初始化 使用Hadoop文件系统
 	@Override
 	public void initialize(String domain, String ip, int hour) throws IOException {
 		long timestamp = hour * 3600 * 1000L;
@@ -117,12 +118,12 @@ public class HdfsIndex implements Index {
 		m_index.init(indexStream);
 		m_mapping = m_hdfsTokenManager.getTokenMapping(hour, ip);
 	}
-
+	// 只支持读
 	@Override
 	public void map(MessageId from, MessageId to) throws IOException {
 		throw new RuntimeException("unsupport operation");
 	}
-
+	// 只支持读
 	@Override
 	public void maps(Map<MessageId, MessageId> maps) throws IOException {
 		throw new RuntimeException("unsupport operation");

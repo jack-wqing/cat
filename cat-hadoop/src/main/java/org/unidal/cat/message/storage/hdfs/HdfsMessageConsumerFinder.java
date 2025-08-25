@@ -35,6 +35,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.helper.TimeHelper;
 
+// 消息集群IP映射
 @Named(type = MessageConsumerFinder.class, value = "hdfs")
 public class HdfsMessageConsumerFinder implements MessageConsumerFinder {
 

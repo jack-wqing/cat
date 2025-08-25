@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage;
 
 import java.io.File;
 
+// 存储配置
 public interface StorageConfiguration {
 	public String getBaseDataDir();
 

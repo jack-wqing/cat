@@ -24,6 +24,8 @@ import org.unidal.helper.Threads.Task;
 
 import com.dianping.cat.message.spi.MessageTree;
 
+// MessageTree处理: 有MessageDumper 管理默认20个并发处理
 public interface MessageProcessor extends Task {
+	// 小时初始化
 	public void initialize(int hour, int index, BlockingQueue<MessageTree> queue);
 }

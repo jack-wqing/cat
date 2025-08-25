@@ -20,6 +20,7 @@ package org.unidal.cat.message.storage;
 
 import java.io.IOException;
 
+// 对数据Block 进行Dump操作
 public interface BlockDumper {
 	public void awaitTermination() throws InterruptedException;
 

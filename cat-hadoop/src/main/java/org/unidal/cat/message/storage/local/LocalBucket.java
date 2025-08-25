@@ -47,6 +47,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.internal.MessageId;
 
+// 本地数据存储: 最小存储单元Buncket
 @Named(type = Bucket.class, value = "local", instantiationStrategy = Named.PER_LOOKUP)
 public class LocalBucket implements Bucket {
 
@@ -90,7 +91,7 @@ public class LocalBucket implements Bucket {
 			Cat.logError(e);
 		}
 	}
-
+	// 存储数据是以Block压缩的方式进行的
 	@Override
 	public ByteBuf get(MessageId id) throws IOException {
 		long address = m_index.read(id);
@@ -100,11 +101,12 @@ public class LocalBucket implements Bucket {
 		} else {
 			int segmentOffset = (int) (address & 0xFFFFFFL);
 			long dataOffset = address >> 24;
+			// 每次数据消息读取会读取整个Block
 			byte[] data = m_data.read(dataOffset);
 
 			if (data != null) {
 				DefaultBlock block = new DefaultBlock(id, segmentOffset, data);
-
+				// 解压数据
 				return block.unpack(id);
 			} else {
 				return null;
@@ -145,6 +147,7 @@ public class LocalBucket implements Bucket {
 		return String.format("%s[%s]", getClass().getSimpleName(), m_data.getPath());
 	}
 
+	// 数据文件存储
 	private class DataHelper {
 		private File m_path;
 
@@ -152,6 +155,7 @@ public class LocalBucket implements Bucket {
 
 		private long m_offset;
 
+		// 是一个FilterOutputStream,允许Java以机器无关的方式把Java基本类型写入到文件
 		private DataOutputStream m_out;
 
 		private void close() {
@@ -193,7 +197,7 @@ public class LocalBucket implements Bucket {
 				m_offset += 4;
 			}
 		}
-
+		// 数据文件每个消息的存储内容是: 消息长度[INT] + 消息内容
 		private byte[] read(long dataOffset) throws IOException {
 			if (dataOffset < m_offset) {
 				m_file.seek(dataOffset);
@@ -220,16 +224,17 @@ public class LocalBucket implements Bucket {
 		}
 	}
 
+	// 索引文件操作帮助类
 	private class IndexHelper {
-
+		// 随机访问类
 		private RandomAccessFile m_file;
-
+		// 索引文件Path
 		private File m_path;
-
+		// FileChannel
 		private FileChannel m_indexChannel;
-
+		// 一级索引
 		private Header m_header = new Header();
-
+		// ip缓存: 每个ip缓存最多两个segmetn
 		private Map<String, SegmentCache> m_caches = new LinkedHashMap<String, SegmentCache>();
 
 		private void close() {
@@ -245,8 +250,9 @@ public class LocalBucket implements Bucket {
 
 		private void flushAndClose() {
 			try {
+				// 一级索引刷新
 				m_header.m_segment.flushAndClose();
-
+				// 二级索引刷新
 				for (SegmentCache cache : m_caches.values()) {
 					cache.flushAndClose();
 				}
@@ -283,7 +289,7 @@ public class LocalBucket implements Bucket {
 
 			return cache.findOrCreateNextSegment(id);
 		}
-
+		// 从索引文件初始化操作
 		private void init(File indexPath) throws IOException {
 			m_path = indexPath;
 			m_path.getParentFile().mkdirs();
@@ -293,12 +299,14 @@ public class LocalBucket implements Bucket {
 			m_indexChannel = m_file.getChannel();
 
 			long size = m_file.length();
+			// 总的一级索引的数量；文件大小：每个索引单元为4096 * 32KB；就是总共有多少个 Header表
 			int totalHeaders = (int) Math.ceil((size * 1.0 / (((long) ENTRY_PER_SEGMENT) * SEGMENT_SIZE)));
-
+			// 默认为1
 			if (totalHeaders == 0) {
 				totalHeaders = 1;
 			}
-
+			// 初始化所有的最小索引单元的头部
+			// 定位到最新的Header Segment
 			for (int i = 0; i < totalHeaders; i++) {
 				m_header.load(i);
 			}
@@ -307,7 +315,7 @@ public class LocalBucket implements Bucket {
 		private boolean isOpen() {
 			return m_file != null;
 		}
-
+		// 数据文件的位置 40位存储块地址， 24位偏移地址
 		private long read(MessageId id) throws IOException {
 			int index = id.getIndex();
 			long position = m_header.getOffset(id.getIpAddressValue(), index, false);
@@ -330,7 +338,7 @@ public class LocalBucket implements Bucket {
 
 			return -1;
 		}
-
+		// 写入块地址 和 块偏移地址: 通过索引文件ip + baseindex + 8byte推到出
 		private void write(MessageId id, long blockAddress, int blockOffset) throws IOException {
 			long position = m_header.getOffset(id.getIpAddressValue(), id.getIndex(), true);
 			long address = position / SEGMENT_SIZE;
@@ -344,6 +352,7 @@ public class LocalBucket implements Bucket {
 				if (m_count.incrementAndGet() % 1000 == 0) {
 					Cat.logEvent("AbnormalBlock", id.getDomain());
 				}
+				// NIO
 				if (m_nioEnabled) {
 					m_indexChannel.position(position);
 
@@ -357,8 +366,10 @@ public class LocalBucket implements Bucket {
 				}
 			}
 		}
-
+		// 每一个最小索引单位中Header一级索引管理二级索引的方式
 		private class Header {
+			// 映射表: IP, baseIndex, segementIndex
+			// 初始化会加载所有的以及索引
 			private Map<Integer, Map<Integer, Integer>> m_table = new LinkedHashMap<Integer, Map<Integer, Integer>>();
 
 			private int m_nextSegment;
@@ -366,6 +377,8 @@ public class LocalBucket implements Bucket {
 			private Segment m_segment;
 
 			private int m_offset;
+
+			// 通过Ip和Index 二级索引位于那个段
 
 			private Integer findSegment(int ip, int index, boolean createIfNotExists) throws IOException {
 				Map<Integer, Integer> map = m_table.get(ip);
@@ -413,7 +426,7 @@ public class LocalBucket implements Bucket {
 					return -1;
 				}
 			}
-
+			// headBlockIndex从0开始
 			private void load(int headBlockIndex) throws IOException {
 				Segment segment = new Segment(m_indexChannel, ((long) headBlockIndex) * ENTRY_PER_SEGMENT * SEGMENT_SIZE);
 				long magicCode = segment.readLong();
@@ -460,6 +473,7 @@ public class LocalBucket implements Bucket {
 			}
 		}
 
+		// 每个段都是32kb数据 + BufCache 8000个32kb
 		private class Segment {
 			private FileChannel m_segmentChannel;
 
@@ -513,7 +527,7 @@ public class LocalBucket implements Bucket {
 				m_buf.putLong(offset, value);
 			}
 		}
-
+		// 段缓存
 		private class SegmentCache {
 			private final static int CACHE_SIZE = 2;
 
@@ -527,7 +541,7 @@ public class LocalBucket implements Bucket {
 				}
 				m_latestSegments.clear();
 			}
-
+			// 缓存两个段
 			private Segment findOrCreateNextSegment(long segmentId) throws IOException {
 				Segment segment = m_latestSegments.get(segmentId);
 

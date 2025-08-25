@@ -33,6 +33,7 @@ import org.unidal.cat.message.storage.MessageDumperManager;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
 
+// 管理以小时为维度的MessageDumper
 @Named(type = MessageDumperManager.class)
 public class DefaultMessageDumperManager extends ContainerHolder
 						implements LogEnabled, MessageDumperManager,	Initializable {

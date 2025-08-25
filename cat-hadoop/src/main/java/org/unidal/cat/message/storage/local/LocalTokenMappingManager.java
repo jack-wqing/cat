@@ -31,8 +31,11 @@ import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
 import org.unidal.tuple.Pair;
 
+// 以小时时间划分: TokenMapping
 @Named(type = TokenMappingManager.class, value = "local")
 public class LocalTokenMappingManager extends ContainerHolder implements TokenMappingManager {
+
+	// Hour,ip -> TokenMapping
 	private Map<Pair<Integer, String>, TokenMapping> m_cache = new HashMap<Pair<Integer, String>, TokenMapping>();
 
 	@Override

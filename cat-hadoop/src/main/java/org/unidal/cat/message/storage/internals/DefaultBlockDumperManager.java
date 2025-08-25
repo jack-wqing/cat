@@ -31,8 +31,10 @@ import org.unidal.cat.message.storage.BlockDumperManager;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
 
+// 未每个小时都产生BlockDumper
 @Named(type = BlockDumperManager.class)
 public class DefaultBlockDumperManager extends ContainerHolder implements LogEnabled, BlockDumperManager {
+	// hour -> BlockDumper
 	private Map<Integer, BlockDumper> m_map = new LinkedHashMap<Integer, BlockDumper>();
 
 	private Logger m_logger;

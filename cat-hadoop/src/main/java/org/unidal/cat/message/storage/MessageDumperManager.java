@@ -18,6 +18,7 @@
  */
 package org.unidal.cat.message.storage;
 
+// 管理小时维度的MessageDumper
 public interface MessageDumperManager {
 	public abstract void close(int hour);
 

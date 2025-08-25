@@ -48,6 +48,7 @@ import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 
+// 文件上传到hdfs
 @Named
 public class HdfsUploader implements LogEnabled, Initializable {
 
@@ -77,15 +78,17 @@ public class HdfsUploader implements LogEnabled, Initializable {
 		m_logger = logger;
 	}
 
+	// dump文件对应logView文件
 	@Override
 	public void initialize() throws InitializationException {
 		int thread = m_serverConfigManager.getHdfsUploadThreadsCount();
-
+		// 基本文件目录
 		m_localBaseDir = new File(m_serverConfigManager.getHdfsLocalBaseDir(HdfsSystemManager.DUMP));
+		// 并行上传的线程数据
 		m_executors = new ThreadPoolExecutor(thread, thread, 10, TimeUnit.SECONDS,	new ArrayBlockingQueue<Runnable>(5000),
 								new ThreadPoolExecutor.CallerRunsPolicy());
 	}
-
+	// hdfs文件创建
 	private FSDataOutputStream makeHdfsOutputStream(String path) throws IOException {
 		FileSystem fs = m_fileSystemManager.getFileSystem();
 		String baseDir = m_fileSystemManager.getBaseDir();
@@ -106,6 +109,7 @@ public class HdfsUploader implements LogEnabled, Initializable {
 		return out;
 	}
 
+	// 上传操作
 	public boolean upload(String path, File file) {
 		if (file.exists()) {
 			Transaction t = Cat.newTransaction("System", "UploadDump");
@@ -161,7 +165,7 @@ public class HdfsUploader implements LogEnabled, Initializable {
 		}
 		return false;
 	}
-
+	// 上传任务提交
 	public void uploadLogviewFile(String path, File file) {
 		try {
 			m_executors.submit(new Uploader(path, file));

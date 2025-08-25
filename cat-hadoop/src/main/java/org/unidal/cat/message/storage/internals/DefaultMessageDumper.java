@@ -47,22 +47,25 @@ import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
+// MessageTree 存储 通过MessageProcessor并发处理
 @Named(type = MessageDumper.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultMessageDumper extends ContainerHolder implements MessageDumper, LogEnabled {
+	// BlockDumper
 	@Inject
 	private BlockDumperManager m_blockDumperManager;
-
+	// BucketManager
 	@Inject("local")
 	private BucketManager m_bucketManager;
-
+	// 服务端统计
 	@Inject
 	private ServerStatisticManager m_statisticManager;
-
+	// 服务端配置
 	@Inject
 	private ServerConfigManager m_configManager;
 
+	// 大小为设置的并发消息处理数
 	private List<BlockingQueue<MessageTree>> m_queues = new ArrayList<BlockingQueue<MessageTree>>();
-
+	// 大小为设置的并发消息处理数
 	private List<MessageProcessor> m_processors = new ArrayList<MessageProcessor>();
 
 	private AtomicInteger m_failCount = new AtomicInteger(-1);
@@ -70,7 +73,7 @@ public class DefaultMessageDumper extends ContainerHolder implements MessageDump
 	private Logger m_logger;
 
 	private long m_total;
-
+	// 默认为20
 	private int m_processThreads;
 
 	@Override
@@ -129,6 +132,7 @@ public class DefaultMessageDumper extends ContainerHolder implements MessageDump
 		m_processThreads = processThreads;
 
 		for (int i = 0; i < processThreads; i++) {
+			// 队列为10000
 			BlockingQueue<MessageTree> queue = new ArrayBlockingQueue<MessageTree>(10000);
 			MessageProcessor processor = lookup(MessageProcessor.class);
 

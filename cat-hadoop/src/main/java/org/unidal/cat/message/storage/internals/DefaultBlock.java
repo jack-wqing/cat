@@ -38,6 +38,7 @@ import org.xerial.snappy.SnappyOutputStream;
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.internal.MessageId;
 
+// 数据文件中，默认的Block存储 一个Block最大是256KB
 public class DefaultBlock implements Block {
 
 	private static final int MAX_SIZE = 256 * 1024;
@@ -47,9 +48,10 @@ public class DefaultBlock implements Block {
 	private int m_hour;
 
 	private ByteBuf m_data;
-
+	// 块的当前消息偏移量
 	private int m_offset;
 
+	// 消息 -> 快内偏移量
 	private Map<MessageId, Integer> m_offsets = new LinkedHashMap<MessageId, Integer>();
 
 	private volatile OutputStream m_out;

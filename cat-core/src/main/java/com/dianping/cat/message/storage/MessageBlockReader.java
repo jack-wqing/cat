@@ -29,6 +29,7 @@ import org.xerial.snappy.SnappyInputStream;
 
 import com.dianping.cat.Cat;
 
+// 消息读取
 public class MessageBlockReader {
 	private RandomAccessFile m_indexFile;
 
@@ -63,6 +64,7 @@ public class MessageBlockReader {
 		return in;
 	}
 
+	// v1 直接通过一级索引定位数据文件消息位置
 	public byte[] readMessage(int index) throws IOException {
 		int blockAddress = 0;
 		int blockOffset = 0;

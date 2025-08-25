@@ -42,6 +42,7 @@ import com.dianping.cat.helper.TimeHelper;
 /**
 	* Supports up to 64K tokens mapping from <code>String</code> to <code>int</code>, or reverse by local file system.
 	*/
+// Hdfs Token Mapping
 @Named(type = TokenMapping.class, value = "hdfs", instantiationStrategy = Named.PER_LOOKUP)
 public class HdfsTokenMapping implements TokenMapping {
 	private static final int BLOCK_SIZE = 32 * 1024;
@@ -120,7 +121,7 @@ public class HdfsTokenMapping implements TokenMapping {
 
 		buf.writerIndex(buf.readerIndex());
 	}
-
+	// 不支持写
 	@Override
 	public int map(String token) throws IOException {
 		throw new RuntimeException("unsupport operation");

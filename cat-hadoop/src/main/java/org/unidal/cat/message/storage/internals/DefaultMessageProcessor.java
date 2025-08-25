@@ -44,8 +44,10 @@ import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 
+// MessageProcessor 存储处理
 @Named(type = MessageProcessor.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultMessageProcessor implements MessageProcessor, MessageFinder {
+	// BlockDumper
 	@Inject
 	private BlockDumperManager m_blockDumperManager;
 
@@ -55,12 +57,15 @@ public class DefaultMessageProcessor implements MessageProcessor, MessageFinder 
 	@Inject
 	private ServerConfigManager m_configManger;
 
+	// BlockDumper
 	private BlockDumper m_dumper;
 
+	// 并发20 序列号
 	private int m_index;
-
+	// 并发20 第几个序列队列
 	private BlockingQueue<MessageTree> m_queue;
 
+	// domain - Block
 	private ConcurrentHashMap<String, Block> m_blocks = new ConcurrentHashMap<String, Block>();
 
 	private int m_hour;

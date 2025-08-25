@@ -22,6 +22,7 @@ import io.netty.buffer.ByteBuf;
 
 import com.dianping.cat.message.internal.MessageId;
 
+// 试试消息发现
 public interface MessageFinderManager {
 	public void close(int hour);
 

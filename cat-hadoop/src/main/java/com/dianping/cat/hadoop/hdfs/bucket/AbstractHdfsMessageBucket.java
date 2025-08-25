@@ -34,11 +34,12 @@ import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.storage.MessageBucket;
 
+// Hdfs抽象的消息桶
 public abstract class AbstractHdfsMessageBucket implements MessageBucket {
 
 	@Inject
 	protected FileSystemManager m_manager;
-
+	// hdfs 消息读取器
 	protected MessageBlockReader m_reader;
 
 	protected long m_lastAccessTime;

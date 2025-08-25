@@ -40,6 +40,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.helper.TimeHelper;
 
+// hdfs Har通过合并多个小文件到一个大文件处理提高性能
 public class HarConnectionPool implements Initializable {
 
 	private ServerConfigManager m_serverConfigManager;

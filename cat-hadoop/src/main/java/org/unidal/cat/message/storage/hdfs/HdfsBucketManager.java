@@ -41,6 +41,8 @@ import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 
+// HdfsBucket Manager
+// Hdfs 只作为备份使用
 @Named
 public class HdfsBucketManager extends ContainerHolder implements Initializable, LogEnabled {
 
@@ -55,6 +57,7 @@ public class HdfsBucketManager extends ContainerHolder implements Initializable,
 	@Inject(value = "hdfs")
 	private MessageConsumerFinder m_consumerFinder;
 
+	// domain ip hour
 	private Map<String, HdfsBucket> m_buckets = new LinkedHashMap<String, HdfsBucket>() {
 
 		private static final long serialVersionUID = 1L;
@@ -73,7 +76,7 @@ public class HdfsBucketManager extends ContainerHolder implements Initializable,
 	@Override
 	public void initialize() throws InitializationException {
 	}
-
+	// 支持读消息
 	public MessageTree loadMessage(MessageId id) {
 		if (m_configManager.isHdfsOn()) {
 			Transaction t = Cat.newTransaction("Hdfs", getClass().getSimpleName());
