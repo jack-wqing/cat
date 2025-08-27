@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
 
+// cat状态分析器: 通过心跳包
 @Named(type = MessageAnalyzer.class, value = StateAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class StateAnalyzer extends AbstractMessageAnalyzer<StateReport> implements LogEnabled {
 	public static final String ID = "state";
@@ -225,7 +226,7 @@ public class StateAnalyzer extends AbstractMessageAnalyzer<StateReport> implemen
 	protected void loadReports() {
 		// do nothing
 	}
-
+	// 只是记录项目
 	@Override
 	protected void process(MessageTree tree) {
 		String domain = tree.getDomain();

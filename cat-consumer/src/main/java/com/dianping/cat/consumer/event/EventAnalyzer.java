@@ -211,7 +211,7 @@ public class EventAnalyzer extends AbstractMessageAnalyzer<EventReport> implemen
 			m_nextClearTime = startTime + TimeHelper.ONE_MINUTE * 2;
 		}
 	}
-
+	// MessageTree 具有 Event类型的消息
 	@Override
 	public boolean isEligable(MessageTree tree) {
 		List<Event> events = tree.getEvents();

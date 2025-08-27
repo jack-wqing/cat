@@ -33,6 +33,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.core.dal.Task;
 import com.dianping.cat.task.TaskManager;
 
+// 各种类型报告的统计任务
 @Named
 public class ReportFacade extends ContainerHolder implements LogEnabled, Initializable {
 

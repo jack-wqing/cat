@@ -56,6 +56,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
+//  v1版本的消息管理
 public class LocalMessageBucketManager extends ContainerHolder
 						implements MessageBucketManager, Initializable,	LogEnabled {
 
@@ -91,7 +92,7 @@ public class LocalMessageBucketManager extends ContainerHolder
 	private List<BlockingQueue<MessageItem>> m_messageQueues = new ArrayList<BlockingQueue<MessageItem>>();
 
 	private BlockingQueue<MessageItem> m_last;
-	// 持久化桶
+	// 持久化桶 v1
 	@Override
 	public void archive(long startTime) {
 		String path = m_pathBuilder.getLogviewPath(new Date(startTime), "");

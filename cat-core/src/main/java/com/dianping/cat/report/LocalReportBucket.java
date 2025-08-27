@@ -44,6 +44,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.PathBuilder;
 
+// 报告本地存储桶
 @Named(type = ReportBucket.class, instantiationStrategy = Named.PER_LOOKUP)
 public class LocalReportBucket implements ReportBucket, LogEnabled {
 	@Inject
@@ -52,12 +53,13 @@ public class LocalReportBucket implements ReportBucket, LogEnabled {
 	@Inject
 	private ServerConfigManager m_configManager;
 
+	// 默认基础路径
 	private String m_baseDir = "target/bucket/report";
 
-	// key => offset of record
+	// key => offset of record id -> Offset
 	private Map<String, Long> m_idToOffsets = new HashMap<String, Long>();
 
-	// tag => list of ids
+	// tag => list of ids  tag -> ids
 	private Map<String, List<String>> m_tagToIds = new HashMap<String, List<String>>();
 
 	private ReentrantLock m_readLock;
@@ -96,6 +98,8 @@ public class LocalReportBucket implements ReportBucket, LogEnabled {
 		m_logger = logger;
 	}
 
+	// id -> Domain
+	// 寻找一个完整域名的报告
 	@Override
 	public String findById(String id) throws IOException {
 		Long offset = m_idToOffsets.get(id);
@@ -147,6 +151,7 @@ public class LocalReportBucket implements ReportBucket, LogEnabled {
 		return m_logicalPath;
 	}
 
+	// 默认基本目录为 Cat.getCatHome() + "bucket/report"
 	@Override
 	public void initialize(String name, Date timestamp, int index) throws IOException {
 		m_baseDir = Cat.getCatHome() + "bucket/report";
@@ -209,7 +214,7 @@ public class LocalReportBucket implements ReportBucket, LogEnabled {
 			}
 		}
 	}
-
+	// 存储索引文件
 	@Override
 	public boolean storeById(String id, String report) throws IOException {
 		byte[] content = report.getBytes("utf-8");

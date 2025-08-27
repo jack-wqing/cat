@@ -40,6 +40,7 @@ import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Transaction;
 
+// 默认的报告桶管理器
 @Named(type = ReportBucketManager.class)
 public class DefaultReportBucketManager extends ContainerHolder implements ReportBucketManager, Initializable {
 
@@ -48,6 +49,7 @@ public class DefaultReportBucketManager extends ContainerHolder implements Repor
 
 	private String m_reportBaseDir;
 
+	// 删除旧报告
 	@Override
 	public void clearOldReports() {
 		Transaction t = Cat.newTransaction("System", "DeleteReport");
@@ -101,7 +103,7 @@ public class DefaultReportBucketManager extends ContainerHolder implements Repor
 			release(bucket);
 		}
 	}
-
+	// name 报告类型
 	@Override
 	public ReportBucket getReportBucket(long timestamp, String name, int index) throws IOException {
 		Date date = new Date(timestamp);

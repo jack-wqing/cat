@@ -35,6 +35,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 
+// DefaultAnalyzerManager
 @Named(type = MessageAnalyzerManager.class)
 public class DefaultMessageAnalyzerManager extends ContainerHolder
 						implements MessageAnalyzerManager, Initializable,	LogEnabled {
@@ -47,7 +48,7 @@ public class DefaultMessageAnalyzerManager extends ContainerHolder
 	private long m_extraTime = 3 * MINUTE;
 
 	private List<String> m_analyzerNames;
-
+	// 按hour, type, MA
 	private final Map<Long, Map<String, List<MessageAnalyzer>>> m_analyzers = new HashMap<Long, Map<String, List<MessageAnalyzer>>>();
 
 	@Override

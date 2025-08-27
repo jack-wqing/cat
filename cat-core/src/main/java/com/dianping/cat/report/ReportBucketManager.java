@@ -20,6 +20,7 @@ package com.dianping.cat.report;
 
 import java.io.IOException;
 
+// 报告桶管理器 小时维度
 public interface ReportBucketManager {
 
 	public void closeBucket(ReportBucket bucket);

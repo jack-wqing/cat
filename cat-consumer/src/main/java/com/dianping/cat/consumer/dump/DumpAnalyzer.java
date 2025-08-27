@@ -36,7 +36,7 @@ import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
 import java.util.concurrent.TimeUnit;
-
+// 原始消息的存储
 // Analyzer: dump
 @Named(type = MessageAnalyzer.class, value = DumpAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements LogEnabled {
@@ -89,6 +89,7 @@ public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements Log
 	public void enableLogging(Logger logger) {
 		m_logger = logger;
 	}
+
 	// Dump分析器不支持
 	@Override
 	public Object getReport(String domain) {
@@ -124,7 +125,6 @@ public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements Log
 		} catch (Exception ignored) {
 		}
 	}
-
 	private void processWithStorage(MessageTree tree, MessageId messageId, int hour) {
 		MessageDumper dumper = m_dumperManager.find(hour);
 

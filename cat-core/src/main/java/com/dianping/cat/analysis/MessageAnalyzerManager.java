@@ -20,6 +20,7 @@ package com.dianping.cat.analysis;
 
 import java.util.List;
 
+// 消息分析器
 public interface MessageAnalyzerManager {
 	public List<String> getAnalyzerNames();
 

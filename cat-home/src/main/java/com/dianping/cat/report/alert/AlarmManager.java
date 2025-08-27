@@ -28,6 +28,7 @@ import com.dianping.cat.report.alert.exception.ExceptionAlert;
 import com.dianping.cat.report.alert.heartbeat.HeartbeatAlert;
 import com.dianping.cat.report.alert.transaction.TransactionAlert;
 
+// 告警服务管理器
 @Named
 public class AlarmManager extends ContainerHolder {
 

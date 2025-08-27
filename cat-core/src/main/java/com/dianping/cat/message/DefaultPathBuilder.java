@@ -26,14 +26,14 @@ import org.unidal.lookup.annotation.Named;
 // v1版本默认的路径构造器
 @Named(type = PathBuilder.class)
 public class DefaultPathBuilder implements PathBuilder {
-
+	// v1版本的原始消息
 	@Override
 	public String getLogviewPath(Date timestamp, String name) {
 		MessageFormat format = new MessageFormat("{0,date,yyyyMMdd}/{0,date,HH}/{1}");
 
 		return format.format(new Object[] { timestamp, name });
 	}
-
+	// 报告路径构建
 	@Override
 	public String getReportPath(String name, Date timestamp, int index) {
 		MessageFormat format = new MessageFormat("{0,date,yyyyMMdd}/{0,date,HH}/{1}/report-{2}");

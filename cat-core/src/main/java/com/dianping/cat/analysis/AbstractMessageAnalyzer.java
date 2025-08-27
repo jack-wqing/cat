@@ -133,6 +133,7 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 		return m_active.get();
 	}
 
+	// 默认支持所有的消息
 	@Override
 	public boolean isEligable(MessageTree tree) {
 		return true;
@@ -149,9 +150,9 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 
 		return currentTime > endTime;
 	}
-
+	// ReportManager
 	protected abstract void loadReports();
-
+	// 处理消息
 	protected abstract void process(MessageTree tree);
 
 	public void setIndex(int index) {

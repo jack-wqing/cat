@@ -42,6 +42,7 @@ public class PeriodStrategy {
 	}
 
 	public long next(long now) {
+		// 当前
 		long startTime = now - now % m_duration;
 
 		// for current period
@@ -50,13 +51,13 @@ public class PeriodStrategy {
 			return startTime;
 		}
 
-		// prepare next period ahead
+		// prepare next period ahead 表示准备下一个周期 上个周期的第57-59分钟内
 		if (now - m_lastStartTime >= m_duration - m_aheadTime) {
 			m_lastStartTime = startTime + m_duration;
 			return startTime + m_duration;
 		}
 
-		// last period is over
+		// last period is over 在如果是当前周期内 小于第57分钟，则触发结束上一个周期的任务
 		if (now - m_lastEndTime >= m_duration + m_extraTime) {
 			long lastEndTime = m_lastEndTime;
 			m_lastEndTime = startTime;

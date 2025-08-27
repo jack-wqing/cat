@@ -28,6 +28,7 @@ public interface MessageAnalyzer {
 	// Eligable 符合条件
 	public boolean isEligable(MessageTree tree);
 
+	// 分析消息
 	public void analyze(MessageQueue queue);
 
 	public void destroy();

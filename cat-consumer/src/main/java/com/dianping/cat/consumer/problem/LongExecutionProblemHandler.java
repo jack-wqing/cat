@@ -34,6 +34,7 @@ import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 
+// 只是时间长处理器
 public class LongExecutionProblemHandler extends ProblemHandler implements Initializable {
 	public static final String ID = "long-execution";
 

@@ -49,13 +49,14 @@ public class PeriodManager implements Task {
 
 	public PeriodManager(long duration, MessageAnalyzerManager analyzerManager,	ServerStatisticManager serverStateManager,
 							Logger logger) {
+		// 一个周期的策略
 		m_strategy = new PeriodStrategy(duration, EXTRATIME, EXTRATIME);
 		m_active = true;
 		m_analyzerManager = analyzerManager;
 		m_serverStateManager = serverStateManager;
 		m_logger = logger;
 	}
-
+	// 结束周期
 	private void endPeriod(long startTime) {
 		int len = m_periods.size();
 
@@ -69,7 +70,7 @@ public class PeriodManager implements Task {
 			}
 		}
 	}
-
+	// 寻找周期
 	public Period findPeriod(long timestamp) {
 		for (Period period : m_periods) {
 			if (period.isIn(timestamp)) {

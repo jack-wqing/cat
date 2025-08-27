@@ -22,6 +22,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+// 域名字符管理 在ascll中 32-126之间
 @Named
 public class DomainValidator {
 

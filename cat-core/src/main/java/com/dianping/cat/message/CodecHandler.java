@@ -25,6 +25,7 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.codec.NativeMessageCodec;
 import com.dianping.cat.message.spi.codec.PlainTextMessageCodec;
 
+// 编解码器
 public class CodecHandler {
 
 	private static MessageCodec m_plainTextCodec = new PlainTextMessageCodec();

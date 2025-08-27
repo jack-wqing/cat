@@ -29,6 +29,7 @@ import org.unidal.lookup.annotation.Named;
 import java.util.Calendar;
 import java.util.Date;
 
+// 每种类型报告都会创建任务
 @Named
 public class TaskManager {
 

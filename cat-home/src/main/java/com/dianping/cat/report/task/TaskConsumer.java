@@ -24,6 +24,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.core.dal.Task;
 
+// Cat任务沟通
 public abstract class TaskConsumer implements org.unidal.helper.Threads.Task {
 
 	public static final int STATUS_TODO = 1;
@@ -71,6 +72,7 @@ public abstract class TaskConsumer implements org.unidal.helper.Threads.Task {
 
 	protected abstract boolean processTask(Task doing);
 
+	// 每个小时第10分钟之后才会支持统计
 	@Override
 	public void run() {
 		String localIp = getLoaclIp();
@@ -108,6 +110,7 @@ public abstract class TaskConsumer implements org.unidal.helper.Threads.Task {
 						taskNotFoundDuration();
 					}
 				} else {
+					// 1分钟轮训
 					try {
 						Thread.sleep(60 * 1000);
 					} catch (InterruptedException e) {

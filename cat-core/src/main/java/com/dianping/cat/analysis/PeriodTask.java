@@ -31,10 +31,12 @@ import com.dianping.cat.CatConstants;
 import com.dianping.cat.message.spi.MessageQueue;
 import com.dianping.cat.message.spi.MessageTree;
 
+// 周期任务
 public class PeriodTask implements Task, LogEnabled {
 
+	// 消息分析器类型
 	private MessageAnalyzer m_analyzer;
-
+	// 对应处理的消息队列
 	private MessageQueue m_queue;
 
 	private long m_startTime;
@@ -59,7 +61,7 @@ public class PeriodTask implements Task, LogEnabled {
 	public void enableLogging(Logger logger) {
 		m_logger = logger;
 	}
-
+	// 超出处理能力会进行日志提醒
 	public boolean enqueue(MessageTree tree) {
 		if (m_analyzer.isEligable(tree)) {
 			boolean result = m_queue.offer(tree);

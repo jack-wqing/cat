@@ -38,6 +38,7 @@ import org.unidal.lookup.util.StringUtils;
 
 import java.util.List;
 
+// 业务类型分析器
 @Named(type = MessageAnalyzer.class, value = BusinessAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class BusinessAnalyzer extends AbstractMessageAnalyzer<BusinessReport> implements LogEnabled {
 

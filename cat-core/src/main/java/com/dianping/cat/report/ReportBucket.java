@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 
+// 报告桶管理器
 public interface ReportBucket {
 	/**
 		* Close bucket and release component instance

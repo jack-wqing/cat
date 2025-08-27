@@ -20,6 +20,7 @@ package com.dianping.cat.report;
 
 import java.util.Map;
 
+// 报告Delegate 具体的报告类型处理具体的报告: 存储形式是以xml的方式存储的及小时报告的处理都是内存中的
 public interface ReportDelegate<T> {
 	public void afterLoad(Map<String, T> reports);
 

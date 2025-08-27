@@ -34,6 +34,7 @@ import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
 
+// 失败问题处理
 public class DefaultProblemHandler extends ProblemHandler {
 	public static final String ID = "default-problem";
 

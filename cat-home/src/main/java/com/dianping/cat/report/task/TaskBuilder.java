@@ -20,6 +20,7 @@ package com.dianping.cat.report.task;
 
 import java.util.Date;
 
+// 报告统计
 public interface TaskBuilder {
 
 	public boolean buildDailyTask(String name, String domain, Date period);

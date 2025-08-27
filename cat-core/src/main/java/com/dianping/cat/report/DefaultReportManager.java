@@ -49,16 +49,19 @@ import static com.dianping.cat.Constants.HOUR;
 	* Hourly report manager by domain of one report type(such as Transaction, Event, Problem, Heartbeat etc.) produced in one machine
 	* for a couple of hours.
 	*/
+// 每个小时的报告数据管理
 public class DefaultReportManager<T> extends ContainerHolder implements ReportManager<T>, Initializable, LogEnabled {
 	@Inject
 	private ReportDelegate<T> m_reportDelegate;
 
+	// 本地存储报告桶管理
 	@Inject
 	private ReportBucketManager m_bucketManager;
 
+	// 小时报告Dao
 	@Inject
 	private HourlyReportDao m_reportDao;
-
+	// 小时报告内容Dao
 	@Inject
 	private HourlyReportContentDao m_reportContentDao;
 
@@ -67,6 +70,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 
 	private String m_name;
 
+	// hour - domain
 	private Map<Long, Map<String, T>> m_reports = new ConcurrentHashMap<Long, Map<String, T>>();
 
 	private Logger m_logger;
@@ -161,6 +165,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 	public void initialize() {
 	}
 
+	// 本地文件加载
 	@Override
 	public Map<String, T> loadHourlyReports(long startTime, StoragePolicy policy, int index) {
 		Transaction t = Cat.newTransaction("Restore", m_name);
@@ -198,7 +203,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 		}
 		return reports;
 	}
-
+	// 加载报告本地文件
 	@Override
 	public Map<String, T> loadLocalReports(long startTime, int index) {
 		Transaction t = Cat.newTransaction("ReloadLocalTask", m_name);
@@ -285,7 +290,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 			}
 		}
 	}
-
+	// 存储报告 file
 	private void storeFile(Map<String, T> reports, ReportBucket bucket) {
 		for (T report : reports.values()) {
 			try {
@@ -298,7 +303,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 			}
 		}
 	}
-
+	// 存储报告 file + Db
 	@Override
 	public void storeHourlyReports(long startTime, StoragePolicy policy, int index) {
 		Transaction t = Cat.newTransaction("Checkpoint", m_name);
@@ -354,6 +359,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 		}
 	}
 
+	// file + db
 	public static enum StoragePolicy {
 		FILE,
 

@@ -36,6 +36,7 @@ import com.dianping.cat.message.spi.MessageQueue;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
+// 表示一个时间段
 public class Period {
 	private static final int QUEUE_SIZE = 30000;
 
@@ -43,6 +44,7 @@ public class Period {
 
 	private long m_endTime;
 
+	// 各种分析器映射
 	private Map<String, List<PeriodTask>> m_tasks;
 
 	@Inject
@@ -61,7 +63,7 @@ public class Period {
 		m_analyzerManager = analyzerManager;
 		m_serverStateManager = serverStateManager;
 		m_logger = logger;
-
+		// 各种分析器管理器
 		List<String> names = m_analyzerManager.getAnalyzerNames();
 
 		m_tasks = new HashMap<String, List<PeriodTask>>();
@@ -69,6 +71,7 @@ public class Period {
 			List<MessageAnalyzer> messageAnalyzers = m_analyzerManager.getAnalyzer(name, startTime);
 
 			for (MessageAnalyzer analyzer : messageAnalyzers) {
+				// 队列默认3w
 				MessageQueue queue = new DefaultMessageQueue(QUEUE_SIZE);
 				PeriodTask task = new PeriodTask(analyzer, queue, startTime);
 

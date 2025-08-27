@@ -35,6 +35,7 @@ import com.dianping.cat.core.dal.TaskDao;
 import com.dianping.cat.core.dal.TaskEntity;
 import com.dianping.cat.message.Transaction;
 
+// 默认的任务执行器
 @Named
 public class DefaultTaskConsumer extends TaskConsumer {
 
