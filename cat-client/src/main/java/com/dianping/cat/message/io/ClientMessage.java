@@ -60,7 +60,6 @@ public class ClientMessage {
 			ret <<= 8;
 			ret |= bytes[i] & 0xFF;
 		}
-		System.out.println(ret);
 	}
 
 	public byte[] getData() {

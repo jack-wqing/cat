@@ -21,6 +21,9 @@ package com.dianping.cat.system.page.config.processor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
+import com.dianping.cat.home.exception.entity.ExceptionRuleConfig;
+import com.dianping.cat.report.service.CompositeRemoteRefreshService;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.util.StringUtils;
 
@@ -31,6 +34,7 @@ import com.dianping.cat.system.page.config.Action;
 import com.dianping.cat.system.page.config.Model;
 import com.dianping.cat.system.page.config.Payload;
 
+
 public class ExceptionConfigProcessor {
 
 	@Inject
@@ -39,17 +43,42 @@ public class ExceptionConfigProcessor {
 	@Inject
 	private ExceptionRuleConfigManager m_exceptionRuleConfigManager;
 
+	@Inject
+	private CompositeRemoteRefreshService compositeRemoteRefreshService;
+
+	private ExceptionRuleConfig m_exceptionRuleConfig;
+
 	private void deleteExceptionExclude(Payload payload) {
 		m_exceptionRuleConfigManager.deleteExceptionExclude(payload.getDomain(), payload.getException());
+		compositeRemoteRefreshService.refreshExceptionExcludeConfig(payload.getDomain(),payload.getException(),"delete");
 	}
 
 	private void deleteExceptionLimit(Payload payload) {
 		m_exceptionRuleConfigManager.deleteExceptionLimit(payload.getDomain(), payload.getException());
+		compositeRemoteRefreshService.refreshExceptionConfig(payload.getDomain(),payload.getException(),null);
 	}
 
 	private void loadExceptionConfig(Model model) {
 		model.setExceptionExcludes(m_exceptionRuleConfigManager.queryAllExceptionExcludes());
-		model.setExceptionLimits(m_exceptionRuleConfigManager.queryAllExceptionLimits());
+
+		List<ExceptionLimit> exceptionLimits = m_exceptionRuleConfigManager
+				.queryAllExceptionLimits();
+		rulesAvailableBuild(exceptionLimits);
+		model.setExceptionLimits(exceptionLimits);
+	}
+
+
+
+	//增加告警开关功能，但是线上并无available值，这里做一个兼容
+	private void rulesAvailableBuild(List<ExceptionLimit> exceptionLimits) {
+		if (exceptionLimits == null || exceptionLimits.isEmpty()) {
+			return;
+		}
+		for (ExceptionLimit exceptionLimit : exceptionLimits) {
+			if (null == exceptionLimit.getAvailable()) {
+				exceptionLimit.setAvailable(true);
+			}
+		}
 	}
 
 	public void process(Action action, Payload payload, Model model) {
@@ -107,6 +136,7 @@ public class ExceptionConfigProcessor {
 
 		if (StringUtils.isNotEmpty(exclude.getDomain()) && StringUtils.isNotEmpty(exclude.getName()))
 			m_exceptionRuleConfigManager.insertExceptionExclude(exclude);
+			compositeRemoteRefreshService.refreshExceptionExcludeConfig(exclude.getDomain(), exclude.getName(), "add");
 	}
 
 	private void updateExceptionLimit(Payload payload) {
@@ -114,9 +144,12 @@ public class ExceptionConfigProcessor {
 		limit.setDomain(limit.getDomain().trim());
 		limit.setName(limit.getName().trim());
 		limit.setId(limit.getDomain() + ":" + limit.getName());
+		limit.setAvailable(limit.getAvailable());
 
 		if (StringUtils.isNotEmpty(limit.getDomain()) && StringUtils.isNotEmpty(limit.getName())) {
 			m_exceptionRuleConfigManager.insertExceptionLimit(limit);
+			compositeRemoteRefreshService.refreshExceptionConfig(limit.getDomain(), limit.getName(), JSONObject.toJSONString(limit));
 		}
+
 	}
 }

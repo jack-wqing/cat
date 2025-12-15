@@ -48,7 +48,6 @@ public class MetricMonitorTest {
 		long timestamp = System.currentTimeMillis();
 		url = String.format(url, timestamp, group, key, value);
 		String ret = sendGet(url);
-		System.out.println(ret);
 	}
 
 	public String sendGet(String url) {

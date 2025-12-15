@@ -35,16 +35,6 @@ public class TestHelper {
 	 */
 	private static final Logger LOG = LoggerFactory.getLogger(TestHelper.class.getName());
 
-	// public static void main(String[] args) throws Exception {
-	// Diff diff = XMLUnit.compareXML(toInputSource(new File("R:/t1.xml")), toInputSource(new File("R:/t2.xml")));
-	//
-	// diff.overrideElementQualifier(new ElementNameAndTextQualifier());
-	//
-	// System.out.println("diff1:"+diff);
-	// System.out.println(diff.similar());
-	//
-	//
-	// }
 	public static <T> void assertEquals(String expectedXml, T input) throws SAXException, IOException {
 		Assert.assertTrue(isEquals(expectedXml, input));
 	}

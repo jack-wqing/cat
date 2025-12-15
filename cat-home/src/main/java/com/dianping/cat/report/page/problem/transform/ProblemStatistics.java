@@ -19,18 +19,10 @@
 package com.dianping.cat.report.page.problem.transform;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.dianping.cat.consumer.problem.ProblemType;
-import com.dianping.cat.consumer.problem.model.entity.Duration;
-import com.dianping.cat.consumer.problem.model.entity.Entity;
-import com.dianping.cat.consumer.problem.model.entity.Machine;
+import com.dianping.cat.consumer.problem.model.entity.*;
 import com.dianping.cat.consumer.problem.model.transform.BaseVisitor;
 import com.dianping.cat.helper.SortHelper;
 import com.dianping.cat.report.page.problem.LongConfig;
@@ -70,40 +62,100 @@ public class ProblemStatistics extends BaseVisitor {
 
 	private List<Duration> getDurationsByType(String type, Entity entity) {
 		List<Duration> durations = new ArrayList<Duration>();
+		List<String> messages = new ArrayList<String>();
+
 		if (ProblemType.LONG_URL.getName().equals(type)) {
 			for (java.util.Map.Entry<Integer, Duration> temp : entity.getDurations().entrySet()) {
 				if (temp.getKey() >= m_longConfig.getUrlThreshold()) {
-					durations.add(temp.getValue());
+					Duration duration = temp.getValue();
+					durations.add(duration);
+					messages.addAll(duration.getMessages());
 				}
 			}
 		} else if (ProblemType.LONG_SQL.getName().equals(type)) {
 			for (java.util.Map.Entry<Integer, Duration> temp : entity.getDurations().entrySet()) {
 				if (temp.getKey() >= m_longConfig.getSqlThreshold()) {
-					durations.add(temp.getValue());
+					Duration duration = temp.getValue();
+					durations.add(duration);
+					messages.addAll(duration.getMessages());
 				}
 			}
 		} else if (ProblemType.LONG_SERVICE.getName().equals(type)) {
 			for (java.util.Map.Entry<Integer, Duration> temp : entity.getDurations().entrySet()) {
 				if (temp.getKey() >= m_longConfig.getServiceThreshold()) {
-					durations.add(temp.getValue());
+					Duration duration = temp.getValue();
+					durations.add(duration);
+					messages.addAll(duration.getMessages());
 				}
 			}
 		} else if (ProblemType.LONG_CALL.getName().equals(type)) {
 			for (java.util.Map.Entry<Integer, Duration> temp : entity.getDurations().entrySet()) {
 				if (temp.getKey() >= m_longConfig.getCallThreshold()) {
-					durations.add(temp.getValue());
+					Duration duration = temp.getValue();
+					durations.add(duration);
+					messages.addAll(duration.getMessages());
 				}
 			}
 		} else if (ProblemType.LONG_CACHE.getName().equals(type)) {
 			for (java.util.Map.Entry<Integer, Duration> temp : entity.getDurations().entrySet()) {
 				if (temp.getKey() >= m_longConfig.getCacheThreshold()) {
-					durations.add(temp.getValue());
+					Duration duration = temp.getValue();
+					durations.add(duration);
+					messages.addAll(duration.getMessages());
 				}
 			}
 		} else {
 			durations.add(entity.getDurations().get(0));
 		}
+		if(entity.getType().startsWith("long")){
+			filterLongCount(messages,entity);
+		}
 		return durations;
+	}
+
+	private void filterLongCount(List<String> messages, Entity entity) {
+		if(messages == null || messages.size() == 0){
+			setNull(entity);
+			return;
+		}
+		Map<String, JavaThread> threads = entity.getThreads();
+		for (Map.Entry<String, JavaThread> threadEntry : threads.entrySet()) {
+			JavaThread javaThread = threadEntry.getValue();
+			Map<Integer, Segment> segments = javaThread.getSegments();
+
+			for (Map.Entry<Integer, Segment> segmentEntry : segments.entrySet()) {
+				Segment segment = segmentEntry.getValue();
+				List<String> messageList = segment.getMessages();
+				if(messageList == null || messageList.size() == 0){
+					segment.setCount(0);
+					continue;
+				}
+				int count = 0;
+				for (String message : messageList) {
+					if(messages.contains(message)){
+						count++;
+					}
+				}
+				segment.setCount(count);
+			}
+		}
+	}
+
+	private void setNull(Entity entity) {
+		Map<String, JavaThread> threads = entity.getThreads();
+		for (Map.Entry<String, JavaThread> threadEntry : threads.entrySet()) {
+			JavaThread javaThread = threadEntry.getValue();
+			Map<Integer, Segment> segments = javaThread.getSegments();
+
+			for (Map.Entry<Integer, Segment> segmentEntry : segments.entrySet()) {
+				Segment segment = segmentEntry.getValue();
+				List<String> messageList = segment.getMessages();
+				if(messageList == null || messageList.size() == 0){
+					continue;
+				}
+				segment.setCount(0);
+			}
+		}
 	}
 
 	public List<String> getIps() {
@@ -150,7 +202,7 @@ public class ProblemStatistics extends BaseVisitor {
 
 	@Override
 	public void visitMachine(Machine machine) {
-		if (m_allIp == true || m_ip.equals(machine.getIp())) {
+		if (m_allIp || m_ip.equals(machine.getIp())) {
 			Collection<Entity> entities = machine.getEntities().values();
 
 			for (Entity entity : entities) {
@@ -242,13 +294,7 @@ public class ProblemStatistics extends BaseVisitor {
 
 		public Map<String, StatusStatistics> getStatus() {
 			Map<String, StatusStatistics> result = SortHelper
-									.sortMap(m_status,	new Comparator<java.util.Map.Entry<String, StatusStatistics>>() {
-										@Override
-										public int compare(java.util.Map.Entry<String, StatusStatistics> o1,
-																java.util.Map.Entry<String, StatusStatistics> o2) {
-											return o2.getValue().getCount() - o1.getValue().getCount();
-										}
-									});
+									.sortMap(m_status, (o1, o2) -> o2.getValue().getCount() - o1.getValue().getCount());
 			return result;
 		}
 

@@ -23,14 +23,16 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryPoolMXBean;
-import java.lang.management.OperatingSystemMXBean;
+import com.sun.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dianping.cat.message.spi.MessageStatistics;
 import com.dianping.cat.status.model.entity.DiskInfo;
 import com.dianping.cat.status.model.entity.DiskVolumeInfo;
@@ -56,6 +58,9 @@ public class StatusInfoCollector extends BaseVisitor {
 	private StatusInfo m_statusInfo;
 
 	private String m_jstackInfo;
+
+	volatile long processCpuTime = 0L;
+	volatile long processUpTime = 0L;
 
 	public StatusInfoCollector(MessageStatistics statistics, String jars) {
 		m_statistics = statistics;
@@ -220,16 +225,17 @@ public class StatusInfoCollector extends BaseVisitor {
 	@Override
 	public void visitOs(OsInfo os) {
 		Extension systemExtension = m_statusInfo.findOrCreateExtension("System");
-		OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
+		OperatingSystemMXBean bean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
 
 		os.setArch(bean.getArch());
 		os.setName(bean.getName());
 		os.setVersion(bean.getVersion());
 		os.setAvailableProcessors(bean.getAvailableProcessors());
 		os.setSystemLoadAverage(bean.getSystemLoadAverage());
-
-		systemExtension.findOrCreateExtensionDetail("LoadAverage").setValue(bean.getSystemLoadAverage());
-
+		double processCpuUsage = getCpuUsage(bean);
+		os.setSystemCpuLoad(processCpuUsage);
+		systemExtension.findOrCreateExtensionDetail("系统负载(SystemLoadAverage)").setValue(bean.getSystemLoadAverage());
+		systemExtension.findOrCreateExtensionDetail("CPU使用率(ProcessCpuUseage)").setValue(processCpuUsage);
 		// for Sun JDK
 		if (isInstanceOfInterface(bean.getClass(), "com.sun.management.OperatingSystemMXBean")) {
 			com.sun.management.OperatingSystemMXBean b = (com.sun.management.OperatingSystemMXBean) bean;
@@ -241,10 +247,22 @@ public class StatusInfoCollector extends BaseVisitor {
 			os.setProcessTime(b.getProcessCpuTime());
 			os.setCommittedVirtualMemory(b.getCommittedVirtualMemorySize());
 
-			systemExtension.findOrCreateExtensionDetail("FreePhysicalMemory").setValue(b.getFreePhysicalMemorySize());
-			systemExtension.findOrCreateExtensionDetail("FreeSwapSpaceSize").setValue(b.getFreeSwapSpaceSize());
+			systemExtension.findOrCreateExtensionDetail("空闲物理内存(FreePhysicalMemory)").setValue(b.getFreePhysicalMemorySize());
+			systemExtension.findOrCreateExtensionDetail("空闲交换区内存(FreeSwapSpaceSize)").setValue(b.getFreeSwapSpaceSize());
 		}
 		m_statusInfo.addExtension(systemExtension);
+	}
+
+	private double getCpuUsage(OperatingSystemMXBean bean) {
+		long newProcessCpuTime = bean.getProcessCpuTime();
+		long newProcessUpTime = m_statusInfo.getRuntime().getUpTime();
+		int cpuCores = bean.getAvailableProcessors();
+		long processCpuTimeDiffInMs = TimeUnit.NANOSECONDS.toMillis(newProcessCpuTime - this.processCpuTime);
+		long processUpTimeDiffInMs = newProcessUpTime - this.processUpTime;
+		double processCpuUsage = (double) processCpuTimeDiffInMs / (double) processUpTimeDiffInMs / (double) cpuCores;
+		processUpTime = newProcessUpTime;
+		processCpuTime = newProcessCpuTime;
+		return processCpuUsage;
 	}
 
 	@Override
@@ -302,6 +320,8 @@ public class StatusInfoCollector extends BaseVisitor {
 		frameworkThread.findOrCreateExtensionDetail("CatThread").setValue(countThreadsByPrefix(threads, "Cat-"));
 		frameworkThread.findOrCreateExtensionDetail("PigeonThread")
 								.setValue(countThreadsByPrefix(threads, "Pigeon-", "DPSF-", "Netty-", "Client-ResponseProcessor"));
+		frameworkThread.findOrCreateExtensionDetail("GrpcThread")
+				.setValue(countThreadsByPrefix(threads, "grpc-"));
 		frameworkThread.findOrCreateExtensionDetail("ActiveThread").setValue(bean.getThreadCount());
 		frameworkThread.findOrCreateExtensionDetail("StartedThread").setValue(bean.getTotalStartedThreadCount());
 

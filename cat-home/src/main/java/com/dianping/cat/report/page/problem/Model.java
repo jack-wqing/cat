@@ -72,6 +72,10 @@ public class Model extends AbstractReportModel<Action, ReportPage, Context> {
 
 	private String m_distributionChart;
 
+	private int m_startMinute;
+
+	private List<String> ipList;
+
 	public Model(Context ctx) {
 		super(ctx);
 	}
@@ -240,4 +244,19 @@ public class Model extends AbstractReportModel<Action, ReportPage, Context> {
 		m_threadLevelInfo = threadLevelInfo;
 	}
 
+	public int getStartMinute() {
+		return m_startMinute;
+	}
+
+	public void setStartMinute(int m_startMinute) {
+		this.m_startMinute = m_startMinute;
+	}
+
+	public List<String> getIpList() {
+		return ipList;
+	}
+
+	public void setIpList(List<String> ipList) {
+		this.ipList = ipList;
+	}
 }

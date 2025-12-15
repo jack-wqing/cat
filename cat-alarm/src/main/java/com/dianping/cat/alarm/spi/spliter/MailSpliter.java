@@ -20,6 +20,8 @@ package com.dianping.cat.alarm.spi.spliter;
 
 import com.dianping.cat.alarm.spi.AlertChannel;
 
+import java.util.regex.Pattern;
+
 public class MailSpliter implements Spliter {
 
 	public static final String ID = AlertChannel.MAIL.getName();
@@ -31,7 +33,8 @@ public class MailSpliter implements Spliter {
 
 	@Override
 	public String process(String content) {
-		return content;
+		String smsContent = content.replaceAll("<br/>", " ");
+		return Pattern.compile("<div.*(?=</div>)</div>", Pattern.DOTALL).matcher(smsContent).replaceAll("");
 	}
 
 }

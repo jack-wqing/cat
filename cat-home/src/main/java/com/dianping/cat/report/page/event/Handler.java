@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dianping.cat.common.FlowControl;
+import org.apache.hadoop.yarn.webapp.hamlet.HamletSpec;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.util.StringUtils;
 import org.unidal.web.mvc.PageHandler;
@@ -56,6 +58,9 @@ import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
 
 public class Handler implements PageHandler<Context> {
+
+    @Inject
+    private FlowControl flowControl;
 
 	@Inject
 	private GraphBuilder m_builder;
@@ -200,8 +205,11 @@ public class Handler implements PageHandler<Context> {
 
 		Model model = new Model(ctx);
 		Payload payload = ctx.getPayload();
-
 		normalize(model, payload);
+		if (!flowControl.canPass("/cat/r/e")) {
+			m_jspViewer.view(ctx, model);
+		}
+
 		String domain = payload.getDomain();
 		Action action = payload.getAction();
 		String ipAddress = payload.getIpAddress();

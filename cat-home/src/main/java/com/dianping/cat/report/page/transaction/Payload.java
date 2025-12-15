@@ -48,6 +48,24 @@ public class Payload extends AbstractReportPayload<Action, ReportPage> {
 	@FieldMeta("group")
 	private String m_group;
 
+	@FieldMeta("periodStr")
+	private String m_periodStr = "CURRENT";
+
+	@FieldMeta("queryType")
+	private String m_queryType = "view";
+
+	@FieldMeta("ip")
+	private String m_ip = "All";
+
+	@FieldMeta("startMinute")
+	private int startMinute = 0;
+
+	@FieldMeta("endMinute")
+	private int endMinute = 59;
+
+	@FieldMeta("json")
+	private boolean m_json;
+
 	public Payload() {
 		super(ReportPage.TRANSACTION);
 	}
@@ -115,6 +133,54 @@ public class Payload extends AbstractReportPayload<Action, ReportPage> {
 
 	public void setXml(boolean xml) {
 		m_xml = xml;
+	}
+
+	public boolean isJson() {
+		return m_json;
+	}
+
+	public void setJson(boolean json) {
+		m_json = json;
+	}
+
+	public void setPeriodStr(String periodStr) {
+		this.m_periodStr = periodStr;
+	}
+
+	public String getPeriodStr() {
+		return this.m_periodStr;
+	}
+
+	public void setIp(String m_ip) {
+		this.m_ip = m_ip;
+	}
+
+	public void setQueryType(String m_queryType) {
+		this.m_queryType = m_queryType;
+	}
+
+	public String getIp() {
+		return m_ip;
+	}
+
+	public int getStartMinute() {
+		return startMinute;
+	}
+
+	public void setStartMinute(int startMinute) {
+		this.startMinute = startMinute;
+	}
+
+	public int getEndMinute() {
+		return endMinute;
+	}
+
+	public void setEndMinute(int endMinute) {
+		this.endMinute = endMinute;
+	}
+
+	public String getQueryType() {
+		return m_queryType;
 	}
 
 	@Override

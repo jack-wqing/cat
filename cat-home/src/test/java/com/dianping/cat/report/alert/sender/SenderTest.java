@@ -39,9 +39,9 @@ public class SenderTest extends ComponentTestCase {
 		Map<String, Sender> mailSender = lookupMap(Sender.class);
 		String content = "[CAT 第三方告警] [项目: ] : [[type=get, details=HTTP URL[1234568888888888.com?] GET访问出现异常]][时间: 2015-01-15 18:20] \n<a href='http://cat/r/p?domain=&date=2015011518'>点击此处查看详情</a>";
 		SendMessageEntity entity = new SendMessageEntity("CAT", "[CAT第三方告警] [项目: ]", AlertType.Transaction.getName(),	content,
-								Arrays.asList("jialin.sun@dianping.com"));
+								Arrays.asList("jialin.sun@dianping.com"), null);
 		SendMessageEntity entity2 = new SendMessageEntity("CAT", "[CAT第三方告警] [项目: ]", AlertType.Transaction.getName(),	content,
-								Arrays.asList("15201789489"));
+								Arrays.asList("15201789489"), null);
 
 		Assert.assertEquals(true, mailSender.get(MailSender.ID).send(entity));
 		Assert.assertEquals(true, mailSender.get(WeixinSender.ID).send(entity));

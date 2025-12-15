@@ -11,6 +11,7 @@
 		Long-sql <select size="1" id="p_longSql" class="input-small">
 				${model.defaultSqlThreshold}
 				<option value="100">100 ms</option>
+				<option value="200">200 ms</option>
 				<option value="500">500 ms</option>
 				<option value="1000">1000 ms</option>
 				<option value="3000">3000 ms</option>
@@ -20,6 +21,7 @@
 				${model.defaultSqlThreshold}
 				<option value="50">50 ms</option>
 				<option value="100">100 ms</option>
+				<option value="200">200 ms</option>
 				<option value="500">500 ms</option>
 				<option value="1000">1000 ms</option>
 				<option value="3000">3000 ms</option>
@@ -29,11 +31,13 @@
 				<option value="10">10 ms</option>
 				<option value="50">50 ms</option>
 				<option value="100">100 ms</option>
+				<option value="200">200 ms</option>
 				<option value="500">500 ms</option>
 		</select>
 		Long-call <select size="1" id="p_longCall" class="input-small">
 				<option value="50">50 ms</option>
 				<option value="100">100 ms</option>
+				<option value="200">200 ms</option>
 				<option value="500">500 ms</option>
 				<option value="1000">1000 ms</option>
 				<option value="3000">3000 ms</option>

@@ -35,57 +35,57 @@ import com.dianping.cat.report.task.reload.ReportReloadTask;
 
 @Named(type = Module.class, value = CatHomeModule.ID)
 public class CatHomeModule extends AbstractModule {
-	public static final String ID = "cat-home";
+    public static final String ID = "cat-home";
 
-	@Override
-	protected void execute(ModuleContext ctx) throws Exception {
-		ServerConfigManager serverConfigManager = ctx.lookup(ServerConfigManager.class);
-		ReportReloadTask reportReloadTask = ctx.lookup(ReportReloadTask.class);
+    @Override
+    protected void execute(ModuleContext ctx) throws Exception {
+        ServerConfigManager serverConfigManager = ctx.lookup(ServerConfigManager.class);
+        ReportReloadTask reportReloadTask = ctx.lookup(ReportReloadTask.class);
 
-		Threads.forGroup("cat").start(reportReloadTask);
+        Threads.forGroup("cat").start(reportReloadTask);
 
-		ctx.lookup(MessageConsumer.class);
+        ctx.lookup(MessageConsumer.class);
 
-		if (serverConfigManager.isJobMachine()) {
-			DefaultTaskConsumer taskConsumer = ctx.lookup(DefaultTaskConsumer.class);
+        if (serverConfigManager.isJobMachine()) {
+            DefaultTaskConsumer taskConsumer = ctx.lookup(DefaultTaskConsumer.class);
 
-			Threads.forGroup("cat").start(taskConsumer);
-		}
+            Threads.forGroup("cat").start(taskConsumer);
+        }
 
-		AlarmManager alarmManager = ctx.lookup(AlarmManager.class);
+        AlarmManager alarmManager = ctx.lookup(AlarmManager.class);
 
-		if (serverConfigManager.isAlertMachine()) {
-			alarmManager.startAlarm();
-		}
+        if (serverConfigManager.isAlertMachine()) {
+            alarmManager.startAlarm();
+        }
 
-		final MessageConsumer consumer = ctx.lookup(MessageConsumer.class);
-		Runtime.getRuntime().addShutdownHook(new Thread() {
+        final MessageConsumer consumer = ctx.lookup(MessageConsumer.class);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
 
-			@Override
-			public void run() {
-				consumer.doCheckpoint();
-			}
-		});
-	}
+            @Override
+            public void run() {
+                consumer.doCheckpoint();
+            }
+        });
+    }
 
-	@Override
-	public Module[] getDependencies(ModuleContext ctx) {
-		return ctx.getModules(CatConsumerModule.ID, CatHadoopModule.ID);
-	}
+    @Override
+    public Module[] getDependencies(ModuleContext ctx) {
+        return ctx.getModules(CatConsumerModule.ID, CatHadoopModule.ID);
+    }
 
-	@Override
-	protected void setup(ModuleContext ctx) throws Exception {
-		final TcpSocketReceiver messageReceiver = ctx.lookup(TcpSocketReceiver.class);
+    @Override
+    protected void setup(ModuleContext ctx) throws Exception {
+        final TcpSocketReceiver messageReceiver = ctx.lookup(TcpSocketReceiver.class);
 
-		messageReceiver.init();
+        messageReceiver.init();
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
 
-			@Override
-			public void run() {
-				messageReceiver.destory();
-			}
-		});
-	}
+            @Override
+            public void run() {
+                messageReceiver.destory();
+            }
+        });
+    }
 
 }

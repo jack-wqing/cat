@@ -65,7 +65,6 @@ public class HdfsSystemManager implements Initializable {
 				}
 			}
 		}
-
 		return m_fileSystem;
 	}
 

@@ -19,7 +19,13 @@
 package com.dianping.cat.report.page.transaction.service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Map;
 
+import com.dianping.cat.Cat;
+import com.dianping.cat.report.service.ModelRequest;
 import org.xml.sax.SAXException;
 
 import com.dianping.cat.consumer.transaction.TransactionAnalyzer;
@@ -28,8 +34,33 @@ import com.dianping.cat.consumer.transaction.model.transform.DefaultSaxParser;
 import com.dianping.cat.report.service.BaseRemoteModelService;
 
 public class RemoteTransactionService extends BaseRemoteModelService<TransactionReport> {
+
+	private String m_serviceUrl = "/cat/r/transaction_report";
+
 	public RemoteTransactionService() {
 		super(TransactionAnalyzer.ID);
+	}
+
+	public URL buildUrl(ModelRequest request) throws MalformedURLException {
+		StringBuilder sb = new StringBuilder(256);
+
+		for (Map.Entry<String, String> e : request.getProperties().entrySet()) {
+			if (e.getValue() != null) {
+				try {
+					if ("status".equals(e.getKey()) && e.getValue().contains("{")) {
+						continue;
+					}
+					sb.append('&');
+					sb.append(e.getKey()).append('=').append(URLEncoder.encode(e.getValue(), "utf-8"));
+				} catch (Exception ex) {
+					Cat.logError(ex);
+				}
+			}
+		}
+		String url = String.format("http://%s:%s%s?domain=%s&periodStr=%s%s",
+		                           super.getHost(), super.getPort(), m_serviceUrl, request.getDomain(), request.getPeriod(), sb.toString());
+
+		return new URL(url);
 	}
 
 	@Override

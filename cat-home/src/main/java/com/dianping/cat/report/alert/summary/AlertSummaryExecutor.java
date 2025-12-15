@@ -18,16 +18,6 @@
  */
 package com.dianping.cat.report.alert.summary;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.unidal.helper.Splitters;
-import org.unidal.lookup.annotation.Inject;
-import org.unidal.lookup.annotation.Named;
-
 import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.spi.AlertChannel;
 import com.dianping.cat.alarm.spi.sender.SendMessageEntity;
@@ -38,6 +28,15 @@ import com.dianping.cat.report.alert.summary.build.AlterationSummaryBuilder;
 import com.dianping.cat.report.alert.summary.build.FailureSummaryBuilder;
 import com.dianping.cat.report.alert.summary.build.RelatedSummaryBuilder;
 import com.dianping.cat.report.alert.summary.build.SummaryBuilder;
+import org.unidal.helper.Splitters;
+import org.unidal.lookup.annotation.Inject;
+import org.unidal.lookup.annotation.Named;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Named
 public class AlertSummaryExecutor {
@@ -107,7 +106,7 @@ public class AlertSummaryExecutor {
 		} else {
 			String title = buildMailTitle(domain, date);
 			List<String> receivers = builderReceivers(receiverStr);
-			SendMessageEntity message = new SendMessageEntity(domain, title, "alertSummary", content, receivers);
+			SendMessageEntity message = new SendMessageEntity(domain, title, "alertSummary", content, receivers,null);
 
 			if (receivers.size() > 0) {
 				m_sendManager.sendAlert(AlertChannel.MAIL, message);

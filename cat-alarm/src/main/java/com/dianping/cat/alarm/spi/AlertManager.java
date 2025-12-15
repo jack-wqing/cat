@@ -31,6 +31,7 @@ import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.message.Event;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.unidal.helper.Splitters;
 import org.unidal.helper.Threads;
 import org.unidal.helper.Threads.Task;
 import org.unidal.lookup.annotation.Inject;
@@ -39,10 +40,7 @@ import org.unidal.tuple.Pair;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,252 +51,284 @@ import java.util.regex.Pattern;
 @Named
 public class AlertManager implements Initializable {
 
-	private static final int MILLIS1MINUTE = 60 * 1000;
+    private static final int MILLIS1MINUTE = 60 * 1000;
 
-	@Inject
-	protected SpliterManager m_splitterManager;
+    @Inject
+    protected SpliterManager m_splitterManager;
 
-	@Inject
-	protected SenderManager m_senderManager;
+    @Inject
+    protected SenderManager m_senderManager;
 
-	@Inject
-	protected AlertService m_alertService;
+    @Inject
+    protected AlertService m_alertService;
 
-	@Inject
-	private AlertPolicyManager m_policyManager;
+    @Inject
+    private AlertPolicyManager m_policyManager;
 
-	@Inject
-	private DecoratorManager m_decoratorManager;
+    @Inject
+    private DecoratorManager m_decoratorManager;
 
-	@Inject
-	private ContactorManager m_contactorManager;
+    @Inject
+    private ContactorManager m_contactorManager;
 
-	@Inject
-	private ServerConfigManager m_configManager;
+    @Inject
+    private ServerConfigManager m_configManager;
 
-	private BlockingQueue<AlertEntity> m_alerts = new LinkedBlockingDeque<AlertEntity>(10000);
+    private String m_host;
 
-	private Map<String, AlertEntity> m_unrecoveredAlerts = new ConcurrentHashMap<String, AlertEntity>(1000);
+    private BlockingQueue<AlertEntity> m_alerts = new LinkedBlockingDeque<AlertEntity>(10000);
 
-	private Map<String, AlertEntity> m_sendedAlerts = new ConcurrentHashMap<String, AlertEntity>(1000);
+    private Map<String, AlertEntity> m_unrecoveredAlerts = new ConcurrentHashMap<String, AlertEntity>(1000);
 
-	private ConcurrentHashMap<AlertEntity, Long> m_alertMap = new ConcurrentHashMap<AlertEntity, Long>();
+    private Map<String, AlertEntity> m_sendedAlerts = new ConcurrentHashMap<String, AlertEntity>(1000);
 
-	public boolean addAlert(AlertEntity entity) {
-		m_alertMap.put(entity, entity.getDate().getTime());
+    private ConcurrentHashMap<AlertEntity, Long> m_alertMap = new ConcurrentHashMap<AlertEntity, Long>();
 
-		String group = entity.getGroup();
-		Cat.logEvent("Alert:" + entity.getType().getName(), group, Event.SUCCESS, entity.toString());
+    private final String WARNING = "warning";
 
-		if (m_configManager.isAlertMachine()) {
-			return m_alerts.offer(entity);
-		} else {
-			return true;
-		}
-	}
+    public boolean addAlert(AlertEntity entity) {
+        m_alertMap.put(entity, entity.getDate().getTime());
 
-	@Override
-	public void initialize() throws InitializationException {
-		Threads.forGroup("cat").start(new SendExecutor());
-		Threads.forGroup("cat").start(new RecoveryAnnouncer());
-	}
+        String group = entity.getGroup();
+        Cat.logEvent("Alert:" + entity.getType().getName(), group, Event.SUCCESS, entity.toString());
 
-	public boolean isSuspend(String alertKey, int suspendMinute) {
-		AlertEntity sendedAlert = m_sendedAlerts.get(alertKey);
+        if (m_configManager.isAlertMachine()) {
+        	entity.setHost(m_host);
+            return m_alerts.offer(entity);
+        } else {
+            return true;
+        }
+    }
 
-		if (sendedAlert != null) {
-			long duration = System.currentTimeMillis() - sendedAlert.getDate().getTime();
+    @Override
+    public void initialize() throws InitializationException {
+        Threads.forGroup("cat").start(new SendExecutor());
+        Threads.forGroup("cat").start(new RecoveryAnnouncer());
+        m_host = getHost();
+    }
 
-			if (duration / MILLIS1MINUTE < suspendMinute) {
-				Cat.logEvent("SuspendAlert", alertKey, Event.SUCCESS, null);
-				return true;
-			}
-		}
-		return false;
-	}
+    public String getHost() {
+        String remoteServers = m_configManager.getConsoleRemoteServers();
+        List<String> endpoints = Splitters.by(',').noEmptyItem().trim().split(remoteServers);
+        if(endpoints == null || endpoints.size() == 0){
+        	return null;
+        }
+        return endpoints.get(0);
+    }
 
-	public List<AlertEntity> queryLastestAlarmKey(int minute) {
-		List<AlertEntity> keys = new ArrayList<AlertEntity>();
-		long currentTimeMillis = System.currentTimeMillis();
+    public boolean isSuspend(String alertKey, int suspendMinute) {
+        AlertEntity sendedAlert = m_sendedAlerts.get(alertKey);
 
-		for (Entry<AlertEntity, Long> entry : m_alertMap.entrySet()) {
-			Long value = entry.getValue();
+        if (sendedAlert != null) {
+            long duration = System.currentTimeMillis() - sendedAlert.getDate().getTime();
 
-			if (currentTimeMillis - value < TimeHelper.ONE_MINUTE * minute) {
-				keys.add(entry.getKey());
-			}
-		}
+            if (duration / MILLIS1MINUTE < suspendMinute) {
+                Cat.logEvent("SuspendAlert", alertKey, Event.SUCCESS, null);
+                return true;
+            }
+        }
+        return false;
+    }
 
-		return keys;
-	}
+    public List<AlertEntity> queryLastestAlarmKey(int minute) {
+        List<AlertEntity> keys = new ArrayList<AlertEntity>();
+        long currentTimeMillis = System.currentTimeMillis();
 
-	private boolean send(AlertEntity alert) {
-		boolean result = false;
-		String type = alert.getType().getName();
-		String group = alert.getGroup();
-		String level = alert.getLevel().getLevel();
-		String alertKey = alert.getKey();
-		List<AlertChannel> channels = m_policyManager.queryChannels(type, group, level);
-		int suspendMinute = m_policyManager.querySuspendMinute(type, group, level);
+        for (Entry<AlertEntity, Long> entry : m_alertMap.entrySet()) {
+            Long value = entry.getValue();
 
-		m_unrecoveredAlerts.put(alertKey, alert);
+            if (currentTimeMillis - value < TimeHelper.ONE_MINUTE * minute) {
+                keys.add(entry.getKey());
+            }
+        }
 
-		Pair<String, String> pair = m_decoratorManager.generateTitleAndContent(alert);
-		String title = pair.getKey();
+        return keys;
+    }
 
-		if (suspendMinute > 0) {
-			if (isSuspend(alertKey, suspendMinute)) {
-				return true;
-			} else {
-				m_sendedAlerts.put(alertKey, alert);
-			}
-		}
+    //List去重
+    private void removeDuplicate(List<String> list) {
+        LinkedHashSet<String> set = new LinkedHashSet<String>(list.size());
+        set.addAll(list);
+        list.clear();
+        list.addAll(set);
+    }
 
-		SendMessageEntity message = null;
+    private boolean send(AlertEntity alert) {
+        boolean result = false;
+        String type = alert.getType().getName();
+        String group = alert.getGroup();
+        String level = alert.getLevel().getLevel();
+        String alertKey = alert.getKey();
+        List<AlertChannel> channels = m_policyManager.queryChannels(type, group, level);
+        int suspendMinute = m_policyManager.querySuspendMinute(type, group, level);
 
-		for (AlertChannel channel : channels) {
-			String contactGroup = alert.getContactGroup();
-			List<String> receivers = m_contactorManager.queryReceivers(contactGroup, channel, type);
+        m_unrecoveredAlerts.put(alertKey, alert);
 
-			if (receivers.size() > 0) {
-				String rawContent = pair.getValue();
+        Pair<String, String> pair = m_decoratorManager.generateTitleAndContent(alert);
+        String title = pair.getKey();
 
-				if (suspendMinute > 0) {
-					rawContent = rawContent + "<br/>[告警间隔时间]" + suspendMinute + "分钟";
-				}
-				String content = m_splitterManager.process(rawContent, channel);
-				message = new SendMessageEntity(group, title, type, content, receivers);
+        if (suspendMinute > 0) {
+            if (isSuspend(alertKey, suspendMinute)) {
+                return true;
+            } else {
+                m_sendedAlerts.put(alertKey, alert);
+            }
+        }
 
-				if (m_senderManager.sendAlert(channel, message)) {
-					result = true;
-				}
-			} else {
-				Cat.logEvent("NoneReceiver:" + channel, type + ":" + contactGroup, Event.SUCCESS, null);
-			}
-		}
+        SendMessageEntity message = null;
 
-		String dbContent = Pattern.compile("<div.*(?=</div>)</div>", Pattern.DOTALL).matcher(pair.getValue()).replaceAll("");
+        for (AlertChannel channel : channels) {
+            String contactGroup = alert.getContactGroup();
+            List<String> receivers = m_contactorManager.queryReceivers(contactGroup, channel, type);
+            //去重
+            removeDuplicate(receivers);
 
-		if (message == null) {
-			message = new SendMessageEntity(group, title, type, "", null);
-		}
-		message.setContent(dbContent);
-		m_alertService.insert(alert, message);
-		return result;
-	}
+            if (receivers.size() > 0) {
+                String rawContent = pair.getValue();
 
-	private boolean sendRecoveryMessage(AlertEntity alert, String currentMinute) {
-		AlertType alterType = alert.getType();
-		String type = alterType.getName();
-		String group = alert.getGroup();
-		String level = alert.getLevel().getLevel();
-		List<AlertChannel> channels = m_policyManager.queryChannels(type, group, level);
+                if (suspendMinute > 0) {
+                    rawContent = rawContent + "<br/>[告警间隔时间]" + suspendMinute + "分钟";
+                }
+                String content = m_splitterManager.process(rawContent, channel);
+                message = new SendMessageEntity(group, title, type, content, receivers, getLevel(alert));
 
-		for (AlertChannel channel : channels) {
-			String title = "[告警恢复] [告警类型 " + alterType.getTitle() + "][" + group + " " + alert.getMetric() + "]";
-			String content = "[告警已恢复][恢复时间]" + currentMinute;
-			List<String> receivers = m_contactorManager.queryReceivers(alert.getContactGroup(), channel, type);
+                if (m_senderManager.sendAlert(channel, message)) {
+                    result = true;
+                }
+            } else {
+                Cat.logEvent("NoneReceiver:" + channel, type + ":" + contactGroup, Event.SUCCESS, null);
+            }
+        }
 
-			if (receivers.size() > 0) {
-				SendMessageEntity message = new SendMessageEntity(group, title, type, content, receivers);
+        String dbContent =
+                Pattern.compile("<div.*(?=</div>)</div>", Pattern.DOTALL).matcher(pair.getValue()).replaceAll("");
 
-				if (m_senderManager.sendAlert(channel, message)) {
-					return true;
-				}
-			}
-		}
+        if (message == null) {
+            message = new SendMessageEntity(group, title, type, "", null, getLevel(alert));
+        }
+        message.setContent(dbContent);
+        m_alertService.insert(alert, message);
+        return result;
+    }
 
-		return false;
-	}
+    private String getLevel(AlertEntity alert){
+        return Objects.equals(WARNING, alert.getLevel().getLevel()) ? "P1" : "P0";
+    }
 
-	private class RecoveryAnnouncer implements Task {
+    private boolean sendRecoveryMessage(AlertEntity alert, String currentMinute) {
+        AlertType alterType = alert.getType();
+        String type = alterType.getName();
+        String group = alert.getGroup();
+        String level = alert.getLevel().getLevel();
+        List<AlertChannel> channels = m_policyManager.queryChannels(type, group, level);
 
-		private DateFormat m_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        for (AlertChannel channel : channels) {
+            String title = "[告警恢复] [告警类型 " + alterType.getTitle() + "][" + group + " " + alert.getMetric() + "]";
+            String content = "[告警已恢复][恢复时间]" + currentMinute;
+            List<String> receivers = m_contactorManager.queryReceivers(alert.getContactGroup(), channel, type);
+            //去重
+            removeDuplicate(receivers);
 
-		@Override
-		public String getName() {
-			return "recovery-announcer";
-		}
+            if (receivers.size() > 0) {
+                SendMessageEntity message = new SendMessageEntity(group, title, type, content, receivers, getLevel(alert));
 
-		private int queryRecoverMinute(AlertEntity alert) {
-			String type = alert.getType().getName();
-			String group = alert.getGroup();
-			String level = alert.getLevel().getLevel();
+                if (m_senderManager.sendAlert(channel, message)) {
+                    return true;
+                }
+            }
+        }
 
-			return m_policyManager.queryRecoverMinute(type, group, level);
-		}
+        return false;
+    }
 
-		@Override
-		public void run() {
-			while (true) {
-				long current = System.currentTimeMillis();
-				String currentStr = m_sdf.format(new Date(current));
-				List<String> recoveredItems = new ArrayList<String>();
+    private class RecoveryAnnouncer implements Task {
 
-				for (Entry<String, AlertEntity> entry : m_unrecoveredAlerts.entrySet()) {
-					try {
-						String key = entry.getKey();
-						AlertEntity alert = entry.getValue();
-						int recoverMinute = queryRecoverMinute(alert);
-						long alertTime = alert.getDate().getTime();
-						int alreadyMinutes = (int) ((current - alertTime) / MILLIS1MINUTE);
+        private DateFormat m_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-						if (alreadyMinutes >= recoverMinute) {
-							recoveredItems.add(key);
-							sendRecoveryMessage(alert, currentStr);
-						}
-					} catch (Exception e) {
-						Cat.logError(e);
-					}
-				}
+        @Override
+        public String getName() {
+            return "recovery-announcer";
+        }
 
-				for (String key : recoveredItems) {
-					m_unrecoveredAlerts.remove(key);
-				}
+        private int queryRecoverMinute(AlertEntity alert) {
+            String type = alert.getType().getName();
+            String group = alert.getGroup();
+            String level = alert.getLevel().getLevel();
 
-				long duration = System.currentTimeMillis() - current;
-				if (duration < MILLIS1MINUTE) {
-					long lackMills = MILLIS1MINUTE - duration;
+            return m_policyManager.queryRecoverMinute(type, group, level);
+        }
 
-					try {
-						TimeUnit.MILLISECONDS.sleep(lackMills);
-					} catch (InterruptedException e) {
-						Cat.logError(e);
-					}
-				}
-			}
-		}
+        @Override
+        public void run() {
+            while (true) {
+                long current = System.currentTimeMillis();
+                String currentStr = m_sdf.format(new Date(current));
+                List<String> recoveredItems = new ArrayList<String>();
 
-		@Override
-		public void shutdown() {
-		}
-	}
+                for (Entry<String, AlertEntity> entry : m_unrecoveredAlerts.entrySet()) {
+                    try {
+                        String key = entry.getKey();
+                        AlertEntity alert = entry.getValue();
+                        int recoverMinute = queryRecoverMinute(alert);
+                        long alertTime = alert.getDate().getTime();
+                        int alreadyMinutes = (int) ((current - alertTime) / MILLIS1MINUTE);
 
-	private class SendExecutor implements Task {
-		@Override
-		public String getName() {
-			return "send-executor";
-		}
+                        if (alreadyMinutes >= recoverMinute) {
+                            recoveredItems.add(key);
+                            sendRecoveryMessage(alert, currentStr);
+                        }
+                    } catch (Exception e) {
+                        Cat.logError(e);
+                    }
+                }
 
-		@Override
-		public void run() {
-			while (true) {
-				try {
-					AlertEntity alert = m_alerts.poll(5, TimeUnit.MILLISECONDS);
+                for (String key : recoveredItems) {
+                    m_unrecoveredAlerts.remove(key);
+                }
 
-					if (alert != null) {
-						send(alert);
-					}
-				} catch (Exception e) {
-					Cat.logError(e);
-					e.printStackTrace();
-				}
-			}
-		}
+                long duration = System.currentTimeMillis() - current;
+                if (duration < MILLIS1MINUTE) {
+                    long lackMills = MILLIS1MINUTE - duration;
 
-		@Override
-		public void shutdown() {
-		}
-	}
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(lackMills);
+                    } catch (InterruptedException e) {
+                        Cat.logError(e);
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void shutdown() {
+        }
+    }
+
+    private class SendExecutor implements Task {
+        @Override
+        public String getName() {
+            return "send-executor";
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    AlertEntity alert = m_alerts.poll(5, TimeUnit.MILLISECONDS);
+
+                    if (alert != null) {
+                        send(alert);
+                    }
+                } catch (Exception e) {
+                    Cat.logError(e);
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void shutdown() {
+        }
+    }
 
 }

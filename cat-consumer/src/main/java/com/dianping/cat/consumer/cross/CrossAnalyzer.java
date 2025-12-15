@@ -72,8 +72,8 @@ public class CrossAnalyzer extends AbstractMessageAnalyzer<CrossReport> implemen
 		} else {
 			info.setRemoteAddress(localAddress + ":" + clientPort);
 		}
-		info.setRemoteRole("Pigeon.Caller");
-		info.setDetailType("PigeonCall");
+		info.setRemoteRole(StringUtils.isEmpty(crossInfo.getRemoteRole()) ? "Pigeon.Caller" : crossInfo.getRemoteRole());
+		info.setDetailType(crossInfo.getDetailType());
 		info.setApp(client);
 
 		return info;
@@ -127,29 +127,28 @@ public class CrossAnalyzer extends AbstractMessageAnalyzer<CrossReport> implemen
 		String type = t.getType();
 
 		if (m_serverConfigManager.isRpcClient(type)) {
-			return parsePigeonClientTransaction(t, tree);
+			return parsePigeonClientTransaction(t, tree, type);
 		} else if (m_serverConfigManager.isRpcServer(type)) {
-			return parsePigeonServerTransaction(t, tree);
+			return parsePigeonServerTransaction(t, tree, type);
 		}
 		return null;
 	}
 
-	private CrossInfo parsePigeonClientTransaction(Transaction t, MessageTree tree) {
+	private CrossInfo parsePigeonClientTransaction(Transaction t, MessageTree tree, String transactionType) {
 		CrossInfo crossInfo = new CrossInfo();
 		String localAddress = tree.getIpAddress();
 		List<Message> messages = t.getChildren();
-
 		for (Message message : messages) {
 			if (message instanceof Event) {
 				String type = message.getType();
 
-				if (type.equals("PigeonCall.server") || type.equals("Call.server")) {
+				if (type.equals("PigeonCall.server") || type.equals("Call.server") || type.equals("Rpc.Client.server") || type.equals("Feign.Client.server")) {
 					crossInfo.setRemoteAddress(message.getName());
 				}
-				if (type.equals("PigeonCall.app") || type.equals("Call.app")) {
+				if (type.equals("PigeonCall.app") || type.equals("Call.app") || type.equals("Rpc.Client.app") || type.equals("Feign.Client.app")) {
 					crossInfo.setApp(message.getName());
 				}
-				if (type.equals("PigeonCall.port") || type.equals("Call.port")) {
+				if (type.equals("PigeonCall.port") || type.equals("Call.port") || type.equals("Rpc.Client.port")) {
 					crossInfo.setClientPort(message.getName());
 				}
 			}
@@ -157,11 +156,20 @@ public class CrossAnalyzer extends AbstractMessageAnalyzer<CrossReport> implemen
 
 		crossInfo.setLocalAddress(localAddress);
 		crossInfo.setRemoteRole("Pigeon.Server");
-		crossInfo.setDetailType("PigeonCall");
+		if ("Rpc.Client".equals(transactionType)) {
+			crossInfo.setRemoteRole("Rpc.Server");
+			crossInfo.setDetailType(transactionType);
+		} else if ("FeignCall".equals(transactionType)) {
+			crossInfo.setRemoteRole("Feign.Server");
+			crossInfo.setDetailType(transactionType);
+		} else {
+			crossInfo.setRemoteRole("Pigeon.Server");
+			crossInfo.setDetailType("PigeonCall");
+		}
 		return crossInfo;
 	}
 
-	private CrossInfo parsePigeonServerTransaction(Transaction t, MessageTree tree) {
+	private CrossInfo parsePigeonServerTransaction(Transaction t, MessageTree tree, String transactionType) {
 		CrossInfo crossInfo = new CrossInfo();
 		String localAddress = tree.getIpAddress();
 		List<Message> messages = t.getChildren();
@@ -170,10 +178,10 @@ public class CrossAnalyzer extends AbstractMessageAnalyzer<CrossReport> implemen
 			if (message instanceof Event) {
 				String type = message.getType();
 
-				if (type.equals("PigeonService.client") || type.equals("Service.client")) {
+				if (type.equals("PigeonService.client") || type.equals("Service.client") || type.equals("Rpc.Server.client") || type.equals("Feign.Server.client")) {
 					crossInfo.setRemoteAddress(message.getName());
 				}
-				if (type.equals("PigeonService.app") || type.equals("Service.app")) {
+				if (type.equals("PigeonService.app") || type.equals("Service.app") || type.equals("Rpc.Server.app") || type.equals("Feign.Server.app")) {
 					crossInfo.setApp(message.getName());
 				}
 			}
@@ -181,7 +189,16 @@ public class CrossAnalyzer extends AbstractMessageAnalyzer<CrossReport> implemen
 
 		crossInfo.setLocalAddress(localAddress);
 		crossInfo.setRemoteRole("Pigeon.Client");
-		crossInfo.setDetailType("PigeonService");
+		if ("Rpc.Server".equals(transactionType)) {
+			crossInfo.setRemoteRole("Rpc.Client");
+			crossInfo.setDetailType(transactionType);
+		} else if ("FeignService".equals(transactionType)) {
+			crossInfo.setRemoteRole("Feign.Client");
+			crossInfo.setDetailType(transactionType);
+		} else {
+			crossInfo.setRemoteRole("Pigeon.Client");
+			crossInfo.setDetailType("PigeonService");
+		}
 		return crossInfo;
 	}
 
@@ -201,7 +218,6 @@ public class CrossAnalyzer extends AbstractMessageAnalyzer<CrossReport> implemen
 
 	private void processTransaction(CrossReport report, MessageTree tree, Transaction t) {
 		CrossInfo crossInfo = parseCrossTransaction(t, tree);
-
 		if (crossInfo != null && crossInfo.validate()) {
 			updateCrossReport(report, t, crossInfo);
 

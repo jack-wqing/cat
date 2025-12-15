@@ -21,6 +21,9 @@ package com.dianping.cat.build.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dianping.cat.report.page.transaction.XmlViewer;
+import com.dianping.cat.report.page.transaction.service.TransactionReportService;
+import com.dianping.cat.report.page.transaction.transform.TransactionMergeHelper;
 import org.unidal.lookup.configuration.AbstractResourceConfigurator;
 import org.unidal.lookup.configuration.Component;
 

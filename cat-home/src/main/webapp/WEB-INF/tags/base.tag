@@ -11,6 +11,7 @@
 	<title>CAT</title>
 	<meta name="description" content="Restyling jQuery UI Widgets and Elements">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="icon" href="https://i.loli.net/2021/04/14/byAXlDVTuqevcO5.png" type="image/x-icon"/>
 	<link rel="stylesheet" type="text/css" href="${model.webapp}/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${model.webapp}/assets/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="${model.webapp}/assets/css/font-awesome.min.css">
@@ -74,7 +75,7 @@
 						<i class="ace-icon fa fa-cogs"></i>Configs
 					</button>
 					<button class="btn btn-yellow btn-sm" id="nav_document">
-						<i class="ace-icon fa fa-cogs"></i>Documents
+						<i class="ace-icon fa fa-book"></i>Documents
 					</button>
 					</i>
 				</div>

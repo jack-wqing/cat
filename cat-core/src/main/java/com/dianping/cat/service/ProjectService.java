@@ -23,6 +23,9 @@ import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.core.dal.Project;
 import com.dianping.cat.core.dal.ProjectDao;
 import com.dianping.cat.core.dal.ProjectEntity;
+import com.dianping.cat.report.service.CompositeRemoteRefreshService;
+import com.google.common.collect.Sets;
+import com.mchange.v2.util.CollectionUtils;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.unidal.dal.jdbc.DalException;
@@ -43,6 +46,9 @@ public class ProjectService implements Initializable {
 
 	@Inject
 	private ServerConfigManager m_manager;
+
+	@Inject
+	private CompositeRemoteRefreshService compositeRemoteRefreshService;
 
 	private ConcurrentHashMap<String, String> m_domains = new ConcurrentHashMap<String, String>();
 
@@ -97,7 +103,14 @@ public class ProjectService implements Initializable {
 	}
 
 	public Set<String> findAllDomains() {
-		return m_domains.keySet();
+		if (m_domainToProjects == null || m_domainToProjects.size() == 0) {
+			return Sets.newHashSet();
+		}
+		Set<String> collect = new HashSet<>();
+		for (Project project : m_domainToProjects.values()) {
+			collect.add(project.getDomain());
+		}
+		return collect;
 	}
 
 	public Project findByDomain(String domainName) {
@@ -129,10 +142,10 @@ public class ProjectService implements Initializable {
 
 			if (project != null) {
 				String bu = project.getBu();
-				String productline = project.getCmdbProductline();
+				String productLine = project.getCmdbProductline();
 
 				department = bu == null ? DEFAULT : bu;
-				projectLine = productline == null ? DEFAULT : productline;
+				projectLine = productLine == null ? DEFAULT : productLine;
 			}
 			Department temp = departments.get(department);
 
@@ -229,6 +242,7 @@ public class ProjectService implements Initializable {
 
 		try {
 			m_projectDao.updateByPK(project, ProjectEntity.UPDATESET_FULL);
+			compositeRemoteRefreshService.refreshProjectConfig(project.getDomain());
 			return true;
 		} catch (DalException e) {
 			Cat.logError(e);
@@ -236,7 +250,25 @@ public class ProjectService implements Initializable {
 		}
 	}
 
-	public static class Department {
+	public void refreshProject(String domainName) {
+		try {
+			Project pro = m_projectDao.findByDomain(domainName, ProjectEntity.READSET_FULL);
+			if (pro == null) {
+				return;
+			}
+			m_domainToProjects.put(pro.getDomain(), pro);
+
+			String cmdbDomain = pro.getCmdbDomain();
+			if (cmdbDomain != null) {
+				m_cmdbToProjects.put(cmdbDomain, pro);
+			}
+		} catch (DalException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+    public static class Department {
 
 		private Map<String, ProjectLine> m_projectLines = new TreeMap<String, ProjectLine>();
 

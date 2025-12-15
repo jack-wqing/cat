@@ -56,6 +56,14 @@ public abstract class BaseRemoteModelService<T> extends ModelServiceWithCalSuppo
 		m_name = name;
 	}
 
+	public String getHost() {
+		return m_host;
+	}
+
+	public int getPort() {
+		return m_port;
+	}
+
 	protected abstract T buildModel(String xml) throws SAXException, IOException;
 
 	public URL buildUrl(ModelRequest request) throws MalformedURLException {
@@ -90,7 +98,6 @@ public abstract class BaseRemoteModelService<T> extends ModelServiceWithCalSuppo
 			URL url = buildUrl(request);
 
 			t.addData(url.toString());
-
 			InputStream in = Urls.forIO().connectTimeout(1000).readTimeout(10000).openStream(url.toExternalForm());
 			GZIPInputStream gzip = new GZIPInputStream(in);
 			String xml = Files.forIO().readFrom(gzip, "utf-8");

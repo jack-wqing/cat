@@ -81,6 +81,7 @@ public class ExceptionDecorator extends ProjectDecorator implements Initializabl
 		Map<Object, Object> map = new HashMap<Object, Object>();
 
 		map.put("domain", domain);
+		map.put("host", alert.getHost());
 		map.put("content", alert.getContent());
 		map.put("date", m_format.format(alert.getDate()));
 		map.put("linkDate", m_linkFormat.format(alert.getDate()));

@@ -65,6 +65,12 @@ import org.unidal.web.mvc.annotation.ModulePagesMeta;
 
 						com.dianping.cat.report.page.business.Handler.class,
 
+						com.dianping.cat.report.page.problem.ProblemReportHandler.class,
+
+						com.dianping.cat.report.page.transaction.TransactionReportHandler.class,
+
+						com.dianping.cat.report.page.event.EventReportHandler.class,
+
 })
 public class ReportModule extends AbstractModule {
 

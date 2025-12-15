@@ -23,11 +23,16 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSONObject;
+import com.dianping.cat.common.FlowControl;
+import com.dianping.cat.report.page.problem.transform.MinuteErrorBuilder;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.util.StringUtils;
 import org.unidal.web.mvc.PageHandler;
@@ -61,6 +66,9 @@ public class Handler implements PageHandler<Context> {
 	private static final String DETAIL = "detail";
 
 	private static final String VIEW = "view";
+
+	@Inject
+    private FlowControl flowControl;
 
 	@Inject
 	private JspViewer m_jspViewer;
@@ -102,7 +110,7 @@ public class Handler implements PageHandler<Context> {
 
 			int longSqlTime = d.getSqlThreshold();
 
-			if (longSqlTime != 100 && longSqlTime != 500 && longSqlTime != 1000) {
+			if (longSqlTime != 100 && longSqlTime != 200 && longSqlTime != 500 && longSqlTime != 1000) {
 				double sec = (double) (longSqlTime);
 				NumberFormat nf = new DecimalFormat("#");
 				String option = "<option value=\"" + longSqlTime + "\"" + ">" + nf.format(sec) + " ms</option>";
@@ -156,13 +164,11 @@ public class Handler implements PageHandler<Context> {
 			request.setProperty("type", payload.getType());
 		}
 		if (!StringUtils.isEmpty(payload.getStatus())) {
-			request.setProperty("name", payload.getStatus());
+			request.setProperty("status", payload.getStatus());
 		}
 		if (m_service.isEligable(request)) {
 			ModelResponse<ProblemReport> response = m_service.invoke(request);
-			ProblemReport report = response.getModel();
-
-			return report;
+			return response.getModel();
 		} else {
 			throw new RuntimeException("Internal error: no eligible problem service registered for " + request + "!");
 		}
@@ -192,6 +198,9 @@ public class Handler implements PageHandler<Context> {
 		Model model = new Model(ctx);
 		Payload payload = ctx.getPayload();
 		normalize(model, payload);
+		if (!flowControl.canPass("/cat/r/p")) {
+			m_jspViewer.view(ctx, model);
+		}
 
 		ProblemReport report = null;
 		ProblemStatistics problemStatistics = new ProblemStatistics();
@@ -250,6 +259,12 @@ public class Handler implements PageHandler<Context> {
 			break;
 		case HOUR_GRAPH:
 			report = getHourlyReport(payload, DETAIL);
+			if (ip.equals(Constants.ALL)) {
+				problemStatistics.setAllIp(true);
+			} else {
+				problemStatistics.setIp(ip);
+			}
+			problemStatistics.visitProblemReport(report);
 			String type = payload.getType();
 			String state = payload.getStatus();
 			Date start = report.getStartTime();
@@ -317,6 +332,25 @@ public class Handler implements PageHandler<Context> {
 		case DETAIL:
 			showDetail(model, payload);
 			break;
+		case HOULY_REPORT_API:
+			report = getHourlyReport(payload, VIEW);
+			if (ip.equals(Constants.ALL)) {
+				problemStatistics.setAllIp(true);
+			} else {
+				problemStatistics.setIp(ip);
+			}
+			problemStatistics.visitProblemReport(report);
+			model.setReport(report);
+			model.setAllStatistics(problemStatistics);
+			ctx.getHttpServletResponse().getWriter().write(m_jsonBuilder.toJson(model));
+			return;
+		case MINUTES_ERROR_API:
+			report = showHourlyReport(model, payload);
+			model.setStartMinute(payload.getStartMinute());
+			model.setLastMinute(payload.getEndMinute());
+			model.setIpList(Arrays.stream(payload.getIps().split(",")).collect(Collectors.toList()));
+			ctx.getHttpServletResponse().getWriter().write(MinuteErrorBuilder.build(report, model));
+			return;
 		}
 		m_jspViewer.view(ctx, model);
 	}

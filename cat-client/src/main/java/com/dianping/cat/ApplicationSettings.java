@@ -29,6 +29,8 @@ public class ApplicationSettings {
 
 	private static int s_tree_length_size = 2000;
 
+	private static int s_max_tree_length_size = 5000;
+
 	static {
 		InputStream in = null;
 
@@ -73,5 +75,9 @@ public class ApplicationSettings {
 
 	public static int getTreeLengthLimit() {
 		return s_tree_length_size;
+	}
+
+	public static int getMaxTreeLengthLimit() {
+		return s_max_tree_length_size;
 	}
 }

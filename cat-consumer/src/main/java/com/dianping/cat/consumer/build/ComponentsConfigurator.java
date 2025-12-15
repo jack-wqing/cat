@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.dianping.cat.report.service.CompositeRemoteRefreshService;
 import org.unidal.initialization.Module;
 import org.unidal.lookup.configuration.AbstractResourceConfigurator;
 import org.unidal.lookup.configuration.Component;
@@ -115,6 +116,7 @@ public class ComponentsConfigurator extends AbstractResourceConfigurator {
 
 		all.add(A(CrossAnalyzer.class));
 		all.add(A(CrossDelegate.class));
+		all.add(C(CompositeRemoteRefreshService.class,null,CompositeRemoteRefreshService.class).req(ServerConfigManager.class));
 
 		all.add(C(IpConvertManager.class));
 		all.add(C(ReportManager.class, ID, DefaultReportManager.class).is(PER_LOOKUP) //

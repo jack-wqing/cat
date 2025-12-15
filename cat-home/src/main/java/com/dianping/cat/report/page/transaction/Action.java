@@ -33,6 +33,8 @@ public enum Action implements org.unidal.web.mvc.Action {
 
 	HISTORY_GROUP_REPORT("historyGroupReport"),
 
+	MINUTES_REPORT("minutesReport"),
+
 	HOURLY_GROUP_REPORT("groupReport");
 
 	private String m_name;

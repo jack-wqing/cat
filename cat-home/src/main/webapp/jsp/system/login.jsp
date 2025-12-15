@@ -19,7 +19,7 @@
 		<link rel="stylesheet" href="../assets/css/ace.onpage-help.css" />
 	</head>
 
-	<body class="login-layout">
+	<body class="login-layout blur-login">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">

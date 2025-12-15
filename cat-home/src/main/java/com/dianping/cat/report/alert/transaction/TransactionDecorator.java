@@ -51,6 +51,7 @@ public class TransactionDecorator extends Decorator implements Initializable {
 		datas.put("type", fields[0]);
 		datas.put("name", fields[1]);
 		datas.put("content", alert.getContent());
+		datas.put("host", alert.getHost());
 		datas.put("date", m_format.format(alert.getDate()));
 		datas.put("linkDate", m_linkFormat.format(alert.getDate()));
 

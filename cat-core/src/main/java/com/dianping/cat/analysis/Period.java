@@ -75,7 +75,6 @@ public class Period {
 				task.enableLogging(m_logger);
 
 				List<PeriodTask> analyzerTasks = m_tasks.get(name);
-
 				if (analyzerTasks == null) {
 					analyzerTasks = new ArrayList<PeriodTask>();
 					m_tasks.put(name, analyzerTasks);

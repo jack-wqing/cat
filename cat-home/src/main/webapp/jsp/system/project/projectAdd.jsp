@@ -24,7 +24,7 @@
 		<tr>
 			<td style="width:10%;">CAT上项目名称</td>
 			<td><input type="name" class="input-xlarge" name="project.domain" /></td>
-			<td style="color:red">注意：建议使用半角英文和半角符号(. -)。</td>
+			<td style="color:red">注意：告警消息通过配置邮件信息发出，建议使用半角英文和半角符号(. -)。</td>
 		</tr>
         <tr style="display: none">
 			<td style="width:10%;">CMDB项目名称</td>
@@ -52,14 +52,14 @@
 			<td>项目负责人</td>
 		</tr>
 		<tr>
-			<td style="width:10%;">项目组邮件</td>
+			<td style="width:10%;">告警接收人邮件<span style="color: red">*</span></td>
 			<td><input type="name" name="project.email" class="input-xxlarge" /></td>
-			<td>字段(多个，逗号分割)</td>
+			<td><span style="color: red">必填</span>字段(多个，逗号分割)</td>
 		</tr>
 		<tr>
 			<td>项目组号码</td>
 			<td><input type="name" name="project.phone" class="input-xxlarge" /></td>
-			<td>字段(多个，逗号分割)</td>
+			<td><span style="color: red">可以先填上，告警消息通过邮件不根据项目组号码</span>字段(多个，逗号分割)</td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center"><input class='btn btn-primary btn-sm' type="submit" name="submit" value="提交" />&nbsp;

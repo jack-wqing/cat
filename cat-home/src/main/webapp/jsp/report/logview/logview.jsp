@@ -14,7 +14,7 @@
 
 <c:choose>
 	<c:when test="${empty model.table}">
-		<div class="error">Sorry, the message is not there. It could be missing or archived.</div>
+		<div class="error"> 抱歉, 对应的message详情不存在.可能是存在丢失或者已被删除</div>
 	</c:when>
 	<c:otherwise>
 		<c:choose>

@@ -37,6 +37,8 @@ import org.unidal.web.mvc.annotation.ModulePagesMeta;
 
 						com.dianping.cat.system.page.business.Handler.class,
 
+						com.dianping.cat.system.page.refresh.Handler.class,
+
 						com.dianping.cat.system.page.permission.Handler.class	})
 public class SystemModule extends AbstractModule {
 

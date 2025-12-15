@@ -108,4 +108,6 @@ public class Constants {
 
 	public static final String CRASH = "crash";
 
+	public static final String  SEPARATOR_COMMA= ",";
+
 }

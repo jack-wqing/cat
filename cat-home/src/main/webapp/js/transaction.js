@@ -37,13 +37,13 @@ function historyGraphLineChart(cell,response){
 function selectByName(date, domain, ip, type) {
 	var queryname = $("#queryname").val();
 	window.location.href = "?domain=" + domain + "&type=" + type + "&date="
-			+ date + "&queryname=" + queryname + "&ip=" + ip;
+			+ date + "&queryname=" + encodeURI(queryname) + "&ip=" + ip;
 }
 
 function selectGroupByName(date, domain, ip, type) {
 	var queryname = $("#queryname").val();
 	window.location.href = "?op=groupReport&domain=" + domain + "&type=" + type + "&date="
-			+ date + "&queryname=" + queryname + "&ip=" + ip;
+			+ date + "&queryname=" + encodeURI(queryname) + "&ip=" + ip;
 }
 
 

@@ -12,5 +12,25 @@
             <name id="Cat-Test-Call" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5100.00" tps="0.00"/>
          </type>
       </remote>
+      <remote id="192.168.1.2:Feign.Client" role="Feign.Client" app="client" ip="192.168.1.2">
+         <type id="FeignService" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5000.00" tps="0.00">
+            <name id="Cat-Test-Service" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5000.00" tps="0.00"/>
+         </type>
+      </remote>
+      <remote id="192.168.1.0:Feign.Server" role="Feign.Server" app="server" ip="192.168.1.0">
+         <type id="FeignCall" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5100.00" tps="0.00">
+            <name id="Cat-Test-Call" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5100.00" tps="0.00"/>
+         </type>
+      </remote>
+      <remote id="192.168.1.2:3000:class:method2:Rpc.Client" role="Rpc.Client" app="client" ip="192.168.1.2:3000:class:method2">
+         <type id="Rpc.Server" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5000.00" tps="0.00">
+            <name id="Cat-Test-Service" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5000.00" tps="0.00"/>
+         </type>
+      </remote>
+      <remote id="192.168.1.0:3000:class:method1:Rpc.Server" role="Rpc.Server" app="server" ip="192.168.1.0:3000:class:method1">
+         <type id="Rpc.Client" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5100.00" tps="0.00">
+            <name id="Cat-Test-Call" totalCount="50" failCount="50" failPercent="0.00" avg="0.00" sum="5100.00" tps="0.00"/>
+         </type>
+      </remote>
    </local>
 </cross-report>

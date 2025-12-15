@@ -111,7 +111,7 @@ public class Handler implements PageHandler<Context> {
 				setAlertResult(model, 0);
 			} else {
 				SendMessageEntity message = new SendMessageEntity(payload.getGroup(), payload.getTitle(),	payload.getType(),
-										payload.getContent(), receivers);
+										payload.getContent(), receivers, null);
 
 				try {
 					boolean result = m_senderManager.sendAlert(AlertChannel.findByName(payload.getChannel()), message);

@@ -24,6 +24,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -33,7 +34,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
+import com.site.lookup.util.StringUtils;
+import org.slf4j.MDC;
 import org.unidal.helper.Joiners;
 import org.unidal.helper.Joiners.IBuilder;
 
@@ -53,6 +57,9 @@ public class CatFilter implements Filter {
 
 	private List<Handler> m_handlers = new ArrayList<Handler>();
 
+	public static final String TRACE_ID_KEY = "traceId";
+	public static final String TRACE_ID_SAMPLED = "sampled";
+
 	@Override
 	public void destroy() {
 	}
@@ -60,9 +67,36 @@ public class CatFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 							throws IOException,	ServletException {
+		if (isNeedCatFilter(request)) {
+			chain.doFilter(request, response);
+			return;
+		}
 		Context ctx = new Context((HttpServletRequest) request, (HttpServletResponse) response, chain, m_handlers);
 
 		ctx.handle();
+	}
+
+	private Boolean isNeedCatFilter(ServletRequest request) {
+		return isFeignRequest((HttpServletRequest) request);
+	}
+
+	private Boolean isFeignRequest(HttpServletRequest request) {
+		String origin = request.getHeader("feignOrigin");
+		if (Objects.equals(origin, "true")) {
+			return Boolean.TRUE;
+		}
+		Cookie[] cookies = request.getCookies();
+		if (cookies == null || cookies.length == 0) {
+			return Boolean.FALSE;
+		}
+		for (Cookie cookie : cookies) {
+			if (Objects.equals("origin", cookie.getName())
+					&& Objects.equals("feign", cookie.getValue())) {
+				return Boolean.TRUE;
+			}
+		}
+
+		return Boolean.FALSE;
 	}
 
 	protected String getOriginalUrl(ServletRequest request) {
@@ -114,15 +148,9 @@ public class CatFilter implements Filter {
 				boolean top = !Cat.getManager().hasContext();
 
 				ctx.setTop(top);
-
-				if (top) {
-					ctx.setMode(detectMode(req));
-					ctx.setType(CatConstants.TYPE_URL);
-
-					setTraceMode(req);
-				} else {
-					ctx.setType(CatConstants.TYPE_URL_FORWARD);
-				}
+				ctx.setMode(detectMode(req));
+				ctx.setType(CatConstants.TYPE_URL);
+				setTraceMode(req);
 
 				ctx.handle();
 			}
@@ -228,12 +256,32 @@ public class CatFilter implements Filter {
 
 				if (ctx.isTop()) {
 					logRequestClientInfo(req, type);
+					logRequestTrace(req, type);
 					logRequestPayload(req, type);
+					logRequestHost(req, type);
 				} else {
 					logRequestPayload(req, type);
 				}
 
 				ctx.handle();
+			}
+
+			protected void logRequestHost(HttpServletRequest req, String type) {
+				String remoteHostValue = req.getHeader("remote-host");
+				if (StringUtils.isNotEmpty(remoteHostValue)) {
+					Cat.logEvent(type, type + ".Host", Message.SUCCESS, remoteHostValue);
+				}
+			}
+
+			protected void logRequestTrace(HttpServletRequest req, String type) {
+				Object traceId = MDC.get(TRACE_ID_KEY);
+				if (traceId == null) {
+					return;
+				}
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder.append("traceId=").append(traceId);
+				stringBuilder.append("&sampled=").append(MDC.get(TRACE_ID_SAMPLED));
+				Cat.logEvent(type, type + ".Trace", Message.SUCCESS, stringBuilder.toString());
 			}
 
 			protected void logRequestClientInfo(HttpServletRequest req, String type) {
@@ -301,7 +349,6 @@ public class CatFilter implements Filter {
 
 			private String getRequestURI(HttpServletRequest req) {
 				String requestURI = req.getRequestURI();
-
 				if (s_patterns.size() == 0) {
 					return requestURI;
 				} else {

@@ -50,6 +50,7 @@ public class EventDecorator extends Decorator implements Initializable {
 		datas.put("domain", alert.getGroup());
 		datas.put("type", fields[0]);
 		datas.put("name", fields[1]);
+		datas.put("host", alert.getHost());
 		datas.put("content", alert.getContent());
 		datas.put("date", m_format.format(alert.getDate()));
 		datas.put("linkDate", m_linkFormat.format(alert.getDate()));

@@ -20,6 +20,7 @@ public class OsInfo extends BaseEntity<OsInfo> {
     private long committedVirtualMemory;
     private long totalSwapSpace;
     private long freeSwapSpace;
+    private long cupUsable;
 
     public OsInfo() {
     }
@@ -44,6 +45,8 @@ public class OsInfo extends BaseEntity<OsInfo> {
         }
 
         availableProcessors = other.getAvailableProcessors();
+
+        other
 
         systemLoadAverage = other.getSystemLoadAverage();
 

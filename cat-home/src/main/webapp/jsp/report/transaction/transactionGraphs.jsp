@@ -20,11 +20,13 @@
 	margin: 4px auto;
 }
 </style>
-<svg version="1.1" width="980" height="380" xmlns="http://www.w3.org/2000/svg">
+<svg version="1.1" width="980" height="575" xmlns="http://www.w3.org/2000/svg">
   ${model.graph1}
   ${model.graph2}
   ${model.graph3}
   ${model.graph4}
+  ${model.graph5}
+  ${model.graph6}
 </svg>
 <c:if test="${payload.ipAddress eq 'All' }">
 <table  class='table table-hover table-striped table-condensed '  style="width:100%;">

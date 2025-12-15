@@ -63,6 +63,8 @@ public class ChannelManager implements Task {
 
 	private Logger m_logger;
 
+	private static int MAX_RETRY_CHANNEL = 20;
+
 	public ChannelManager(Logger logger, List<InetSocketAddress> serverAddresses, ClientConfigManager configManager,
 							MessageIdFactory idFactory) {
 		m_logger = logger;
@@ -337,10 +339,17 @@ public class ChannelManager implements Task {
 		try {
 			int reconnectServers = m_activeChannelHolder.getActiveIndex();
 
+			//cat会通过reconnect强制把上报的channel掰回默认的(第一台)
+			if (reconnectServers >= 0) {
+				return;
+			}
+
 			if (reconnectServers == -1) {
 				reconnectServers = serverAddresses.size();
 			}
-			for (int i = 0; i < reconnectServers; i++) {
+			for (int retryCount = 0; reconnectServers > 0 && retryCount < MAX_RETRY_CHANNEL; retryCount++) {
+				int i = (int) (reconnectServers * Math.random());
+
 				ChannelFuture future = createChannel(serverAddresses.get(i));
 
 				if (future != null) {

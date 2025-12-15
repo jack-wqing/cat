@@ -179,7 +179,6 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 			for (String id : bucket.getIds()) {
 				String xml = bucket.findById(id);
 				T report = m_reportDelegate.parseXml(xml);
-
 				reports.put(id, report);
 			}
 

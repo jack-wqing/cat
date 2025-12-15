@@ -40,15 +40,15 @@ public class LongExecutionProblemHandler extends ProblemHandler implements Initi
 	@Inject
 	private ServerConfigManager m_configManager;
 
-	private int[] m_defaultLongServiceDuration = { 50, 100, 500, 1000, 3000, 5000 };
+	private int[] m_defaultLongServiceDuration = { 50, 100, 200, 500, 1000, 3000, 5000 };
 
-	private int[] m_defaultLongSqlDuration = { 100, 500, 1000, 3000, 5000 };
+	private int[] m_defaultLongSqlDuration = { 100, 200, 500, 1000, 3000, 5000 , 10000};
 
-	private int[] m_defaultLongUrlDuration = { 1000, 2000, 3000, 5000 };
+	private int[] m_defaultLongUrlDuration = {500, 1000, 1500, 2000, 3000, 5000 };
 
-	private int[] m_defalutLongCallDuration = { 100, 500, 1000, 3000, 5000 };
+	private int[] m_defalutLongCallDuration = { 100, 200, 500, 1000, 3000, 5000 };
 
-	private int[] m_defaultLongCacheDuration = { 10, 50, 100, 500 };
+	private int[] m_defaultLongCacheDuration = { 10, 50, 100, 200, 500 };
 
 	private Map<String, Integer> m_longServiceThresholds = new HashMap<String, Integer>();
 
@@ -186,7 +186,7 @@ public class LongExecutionProblemHandler extends ProblemHandler implements Initi
 
 		if (type.startsWith("Cache.")) {
 			processLongCache(machine, transaction, tree);
-		} else if (type.equals("SQL")) {
+		} else if (type.equals("SQL") || type.equals("SpaceCloud") || type.equals("OneService")) {
 			processLongSql(machine, transaction, tree);
 		} else if (m_configManager.isRpcClient(type)) {
 			processLongCall(machine, transaction, tree);

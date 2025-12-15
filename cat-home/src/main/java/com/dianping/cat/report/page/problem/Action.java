@@ -33,13 +33,19 @@ public enum Action implements org.unidal.web.mvc.Action {
 
 	HOULY_REPORT("view"),
 
+	HOULY_REPORT_API("viewApi"),
+
 	GROUP_GRAPHS("groupGraphs"),
 
 	HISTORY_GROUP_GRAPH("historyGroupGraph"),
 
 	HISTORY_GROUP_REPORT("historyGroupReport"),
 
-	HOURLY_GROUP_REPORT("groupReport");
+	HOURLY_GROUP_REPORT("groupReport"),
+
+	DETAIL_API("detailApi"),
+
+	MINUTES_ERROR_API("minutesErrorApi");
 
 	private String m_name;
 

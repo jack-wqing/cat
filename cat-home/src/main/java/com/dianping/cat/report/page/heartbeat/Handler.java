@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.dianping.cat.common.FlowControl;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.util.StringUtils;
 import org.unidal.web.mvc.PageHandler;
@@ -51,6 +52,10 @@ import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
 
 public class Handler implements PageHandler<Context> {
+
+    @Inject
+    private FlowControl flowControl;
+
 	@Inject
 	private GraphBuilder m_builder;
 
@@ -149,6 +154,9 @@ public class Handler implements PageHandler<Context> {
 		HeartbeatSvgGraph heartbeat = null;
 
 		normalize(model, payload);
+		if (!flowControl.canPass("/cat/r/h")) {
+			m_jspViewer.view(ctx, model);
+		}
 		switch (payload.getAction()) {
 		case VIEW:
 			heartbeat = showReport(model, payload);

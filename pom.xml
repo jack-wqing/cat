@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dianping.cat</groupId>
 	<artifactId>parent</artifactId>
-	<version>3.0.0</version>
+	<version>3.0.3-SNAPSHOT</version>
 	<name>parent</name>
 	<description>Central Application Tracking</description>
 	<packaging>pom</packaging>
@@ -71,7 +71,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.8.1</version>
+				<version>4.13.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mortbay.jetty</groupId>
@@ -107,7 +107,7 @@
 			<dependency>
 				<groupId>javax.servlet.jsp</groupId>
 				<artifactId>jsp-api</artifactId>
-				<version>2.1</version>
+				<version>2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>mysql</groupId>
@@ -115,14 +115,9 @@
 				<version>5.1.20</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.hadoop</groupId>
-				<artifactId>hadoop-client</artifactId>
-			<version>2.4.1</version>
-			</dependency>
-			<dependency>
 				<groupId>io.netty</groupId>
 				<artifactId>netty-all</artifactId>
-				<version>4.0.24.Final</version>
+				<version>4.1.42.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
@@ -142,13 +137,13 @@
 	        <dependency>
 	            <groupId>com.alibaba</groupId>
 	            <artifactId>fastjson</artifactId>
-				<version>1.2.47</version>
+				<version>1.2.83</version>
 			</dependency>
 			<dependency>
 			    <groupId>commons-codec</groupId>
 			    <artifactId>commons-codec</artifactId>
 			    <version>1.8</version>
-		  	</dependency>	
+		  	</dependency>
 			<dependency>
 	         	<groupId>commons-lang</groupId>
 	            <artifactId>commons-lang</artifactId>
@@ -270,21 +265,13 @@ org.eclipse.jdt.core.compiler.compliance=1.7
          <id>central</id>
          <name>Maven2 Central Repository</name>
          <layout>default</layout>
-         <url>http://repo1.maven.org/maven2</url>
-      </repository>
-      <repository>
-         <id>unidal.releases</id>
-         <url>http://unidal.org/nexus/content/repositories/releases/</url>
+         <url>https://repo1.maven.org/maven2</url>
       </repository>
    </repositories>
    <pluginRepositories>
       <pluginRepository>
          <id>central</id>
-         <url>http://repo1.maven.org/maven2</url>
-      </pluginRepository>
-      <pluginRepository>
-         <id>unidal.releases</id>
-         <url>http://unidal.org/nexus/content/repositories/releases/</url>
+         <url>https://repo1.maven.org/maven2</url>
       </pluginRepository>
    </pluginRepositories>
 	<properties>

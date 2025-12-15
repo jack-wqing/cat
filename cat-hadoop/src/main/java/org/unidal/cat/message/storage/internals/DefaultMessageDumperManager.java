@@ -78,7 +78,6 @@ public class DefaultMessageDumperManager extends ContainerHolder
 
 					dumper = lookup(MessageDumper.class);
 					dumper.initialize(hour);
-
 					m_dumpers.put(hour, dumper);
 					m_logger.info("create message dumper " + sdf.format(new Date(TimeUnit.HOURS.toMillis(hour))));
 				}

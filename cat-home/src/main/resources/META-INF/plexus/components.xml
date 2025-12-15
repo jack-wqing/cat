@@ -72,6 +72,10 @@
 			</requirements>
 		</component>
 		<component>
+			<role>com.dianping.cat.common.FlowControl</role>
+			<implementation>com.dianping.cat.common.FlowControl</implementation>
+		</component>
+		<component>
 			<role>com.dianping.cat.report.page.DomainGroupConfigManager</role>
 			<implementation>com.dianping.cat.report.page.DomainGroupConfigManager</implementation>
 			<requirements>
@@ -2510,7 +2514,9 @@
 			<role>org.unidal.dal.jdbc.datasource.DataSourceProvider</role>
 			<implementation>org.unidal.dal.jdbc.datasource.DefaultDataSourceProvider</implementation>
 			<configuration>
-				<datasourceFile>/data/appdatas/cat/datasources.xml</datasourceFile>
+				<datasourceFile>datasources.xml</datasourceFile>
+				<baseDirRef>CAT_HOME</baseDirRef>
+				<defaultBaseDir>/data/appdatas/cat/</defaultBaseDir>
 			</configuration>
 		</component>
 		<component>
@@ -2727,6 +2733,9 @@
 			<implementation>com.dianping.cat.report.page.problem.Handler</implementation>
 			<requirements>
 				<requirement>
+					<role>com.dianping.cat.common.FlowControl</role>
+				</requirement>
+				<requirement>
 					<role>com.dianping.cat.report.page.problem.JspViewer</role>
 				</requirement>
 				<requirement>
@@ -2765,6 +2774,9 @@
 			<implementation>com.dianping.cat.report.page.transaction.Handler</implementation>
 			<requirements>
 				<requirement>
+					<role>com.dianping.cat.common.FlowControl</role>
+				</requirement>
+				<requirement>
 					<role>com.dianping.cat.report.graph.svg.GraphBuilder</role>
 				</requirement>
 				<requirement>
@@ -2790,6 +2802,9 @@
 					<role-hint>transaction</role-hint>
 					<field-name>m_service</field-name>
 				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.page.transaction.transform.MinuteTransactionBuilder</role>
+				</requirement>
 			</requirements>
 		</component>
 		<component>
@@ -2806,9 +2821,16 @@
 			<implementation>com.dianping.cat.report.page.transaction.XmlViewer</implementation>
 		</component>
 		<component>
+			<role>com.dianping.cat.report.page.transaction.transform.MinuteTransactionBuilder</role>
+			<implementation>com.dianping.cat.report.page.transaction.transform.MinuteTransactionBuilder</implementation>
+		</component>
+		<component>
 			<role>com.dianping.cat.report.page.event.Handler</role>
 			<implementation>com.dianping.cat.report.page.event.Handler</implementation>
 			<requirements>
+				<requirement>
+					<role>com.dianping.cat.common.FlowControl</role>
+				</requirement>
 				<requirement>
 					<role>com.dianping.cat.report.graph.svg.GraphBuilder</role>
 				</requirement>
@@ -2851,6 +2873,9 @@
 			<role>com.dianping.cat.report.page.heartbeat.Handler</role>
 			<implementation>com.dianping.cat.report.page.heartbeat.Handler</implementation>
 			<requirements>
+				<requirement>
+					<role>com.dianping.cat.common.FlowControl</role>
+				</requirement>
 				<requirement>
 					<role>com.dianping.cat.report.graph.svg.GraphBuilder</role>
 				</requirement>
@@ -2917,6 +2942,9 @@
 			<role>com.dianping.cat.report.page.logview.Handler</role>
 			<implementation>com.dianping.cat.report.page.logview.Handler</implementation>
 			<requirements>
+				<requirement>
+					<role>com.dianping.cat.common.FlowControl</role>
+				</requirement>
 				<requirement>
 					<role>com.dianping.cat.report.page.logview.JspViewer</role>
 				</requirement>
@@ -3383,6 +3411,9 @@
 			<implementation>com.dianping.cat.report.page.business.Handler</implementation>
 			<requirements>
 				<requirement>
+					<role>com.dianping.cat.common.FlowControl</role>
+				</requirement>
+				<requirement>
 					<role>com.dianping.cat.report.page.business.JspViewer</role>
 				</requirement>
 				<requirement>
@@ -3486,6 +3517,39 @@
 			<requirements>
 				<requirement>
 					<role>com.dianping.cat.report.page.business.task.BusinessKeyHelper</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.page.problem.ProblemReportHandler</role>
+			<implementation>com.dianping.cat.report.page.problem.ProblemReportHandler</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.report.service.LocalModelService</role>
+					<role-hint>problem</role-hint>
+					<field-name>m_localProblemService</field-name>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.page.transaction.TransactionReportHandler</role>
+			<implementation>com.dianping.cat.report.page.transaction.TransactionReportHandler</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.report.service.LocalModelService</role>
+					<role-hint>transaction</role-hint>
+					<field-name>m_localTransactionService</field-name>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.page.event.EventReportHandler</role>
+			<implementation>com.dianping.cat.report.page.event.EventReportHandler</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.report.service.LocalModelService</role>
+					<role-hint>event</role-hint>
+					<field-name>m_localEventService</field-name>
 				</requirement>
 			</requirements>
 		</component>
@@ -3667,6 +3731,9 @@
 				<requirement>
 					<role>com.dianping.cat.report.alert.exception.ExceptionRuleConfigManager</role>
 				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.service.CompositeRemoteRefreshService</role>
+				</requirement>
 			</requirements>
 		</component>
 		<component>
@@ -3840,6 +3907,33 @@
 			<requirements>
 				<requirement>
 					<role>org.unidal.web.mvc.view.model.ModelHandler</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.system.page.refresh.Handler</role>
+			<implementation>com.dianping.cat.system.page.refresh.Handler</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.service.ProjectService</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.alert.exception.ExceptionAlert</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.page.transaction.service.TransactionReportService</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.page.problem.service.ProblemReportService</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.page.transaction.transform.TransactionMergeHelper</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.alert.exception.ExceptionRuleConfigManager</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.page.transaction.XmlViewer</role>
 				</requirement>
 			</requirements>
 		</component>

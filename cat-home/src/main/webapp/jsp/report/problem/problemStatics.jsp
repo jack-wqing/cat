@@ -88,7 +88,7 @@
 				&nbsp;<a href="#" class="${statistics.value.type}">&nbsp;&nbsp;</a>
 				&nbsp;&nbsp;${statistics.value.type}
 				</br>
-				<a href="?op=hourlyGraph&domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&reportType=${payload.reportType}&type=${statistics.value.type}${model.customDate}" class="history_graph_link" data-status="${typeIndex.index}">[:: show ::]</a>
+				<a href="?op=hourlyGraph&domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&reportType=${payload.reportType}&type=${statistics.value.type}${model.customDate}${payload.queryString}" class="history_graph_link" data-status="${typeIndex.index}">[:: show ::]</a>
 			</td>
 			<td rowspan="${w:size(statistics.value.status)*3}" class="right top">${w:format(statistics.value.count,'#,###,###,###,##0')}&nbsp;</td>
 			<c:forEach var="status" items="${statistics.value.status}"
@@ -97,7 +97,7 @@
 					<tr>
 				</c:if>
 				<td>
-					<a href="?op=hourlyGraph&domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&reportType=${payload.reportType}&type=${statistics.value.type}&status=${status.value.status}${model.customDate}" class="problem_status_graph_link" data-status="${statistics.value.type}${status.value.status}">[:: show ::]</a>
+					<a href="?op=hourlyGraph&domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&reportType=${payload.reportType}&type=${statistics.value.type}&status=${status.value.status}${model.customDate}${payload.queryString}" class="problem_status_graph_link" data-status="${statistics.value.type}${status.value.status}">[:: show ::]</a>
 					&nbsp;${status.value.status}
 				</td>
 				<td  class="right">${w:format(status.value.count,'#,###,###,###,##0')}&nbsp;</td>

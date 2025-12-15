@@ -49,6 +49,7 @@ import com.dianping.cat.message.io.TransportManager;
 import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.message.spi.internal.DefaultMessageTree;
+import java.util.Random;
 
 @Named(type = MessageManager.class)
 public class DefaultMessageManager extends ContainerHolder implements MessageManager, Initializable, LogEnabled {
@@ -77,6 +78,8 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 	private Map<String, TaggedTransaction> m_taggedTransactions;
 
 	private AtomicInteger m_sampleCount = new AtomicInteger();
+
+	private Random random = new Random();
 
 	private Logger m_logger;
 
@@ -160,6 +163,11 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 					ctx = new Context("Unknown", m_hostName, "");
 				}
 
+				double samplingRate = m_configManager.getSampleRatio();
+
+				if (samplingRate < 1.0 && hitSample(samplingRate)) {
+					ctx.m_tree.setHitSample(true);
+				}
 				m_context.set(ctx);
 				return ctx;
 			}
@@ -219,9 +227,8 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 	}
 
 	private boolean hitSample(double sampleRatio) {
-		int count = m_sampleCount.incrementAndGet();
-
-		return count % ((int) (1.0 / sampleRatio)) == 0;
+		int count = random.nextInt((int) (1.0 / sampleRatio));
+		return count == 0;
 	}
 
 	@Override
@@ -411,9 +418,15 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 		private void addTransactionChild(Message message, Transaction transaction) {
 			long treePeriod = trimToHour(m_tree.getMessage().getTimestamp());
 			long messagePeriod = trimToHour(message.getTimestamp() - 10 * 1000L); // 10 seconds extra time allowed
+			long messageMaxPeriod = trimToHour(message.getTimestamp() - 5 * 60 * 1000L); // 5 minutes max time allowed
 
-			if (treePeriod < messagePeriod || m_length >= ApplicationSettings.getTreeLengthLimit()) {
-				m_validator.truncateAndFlush(this, message.getTimestamp());
+			// 如果当前MessageTree已存在5min || MessageTree深度超过了5k,兜底进行提交并清空Context
+			if (treePeriod < messageMaxPeriod || m_length >= ApplicationSettings.getMaxTreeLengthLimit()) {
+				m_validator.truncateAndFlush(this, message.getTimestamp(), true);
+				Cat.logEvent("System", "clear_cat_context");
+				return;
+			} else if (treePeriod < messagePeriod || m_length >= ApplicationSettings.getTreeLengthLimit()) {
+				m_validator.truncateAndFlush(this, message.getTimestamp(), false);
 			}
 
 			transaction.addChild(message);
@@ -499,6 +512,10 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 				return false;
 			} else {
 				m_knownExceptions.add(e);
+				// 积累异常过大后清空
+				if (m_knownExceptions.size() > ApplicationSettings.getMaxTreeLengthLimit()) {
+					m_knownExceptions.clear();
+				}
 				return true;
 			}
 		}
@@ -588,7 +605,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			}
 		}
 
-		public void truncateAndFlush(Context ctx, long timestamp) {
+		public void truncateAndFlush(Context ctx, long timestamp, boolean cleanContext) {
 			MessageTree tree = ctx.m_tree;
 			Stack<Transaction> stack = ctx.m_stack;
 			Message message = tree.getMessage();
@@ -638,7 +655,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 				ctx.m_length = stack.size();
 				ctx.m_totalDurationInMicros = ctx.m_totalDurationInMicros + target.getDurationInMicros();
 
-				flush(t, false);
+				flush(t, cleanContext);
 			}
 		}
 

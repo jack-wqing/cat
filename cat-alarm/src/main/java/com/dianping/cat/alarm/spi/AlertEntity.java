@@ -38,6 +38,8 @@ public class AlertEntity {
 
 	private String m_domain;
 
+	private String m_host;
+
 	private String m_contactGroup;
 
 	private Map<String, Object> m_paras = new HashMap<String, Object>();
@@ -56,6 +58,14 @@ public class AlertEntity {
 		} else {
 			return false;
 		}
+	}
+
+	public String getHost() {
+		return m_host;
+	}
+
+	public void setHost(String m_host) {
+		this.m_host = m_host;
 	}
 
 	public String getContactGroup() {

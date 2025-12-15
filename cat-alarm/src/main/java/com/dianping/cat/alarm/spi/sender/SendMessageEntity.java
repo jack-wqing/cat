@@ -29,14 +29,17 @@ public class SendMessageEntity {
 
 	private String m_content;
 
+	private String m_level;
+
 	private List<String> m_receivers;
 
-	public SendMessageEntity(String group, String title, String type, String content, List<String> receivers) {
+	public SendMessageEntity(String group, String title, String type, String content, List<String> receivers, String level) {
 		m_group = group;
 		m_title = title;
 		m_type = type;
 		m_content = content;
 		m_receivers = receivers;
+		m_level = level;
 	}
 
 	public String getContent() {
@@ -68,6 +71,14 @@ public class SendMessageEntity {
 		} else {
 			return tmpResult;
 		}
+	}
+
+	public String getLevel() {
+		return m_level;
+	}
+
+	public void setLevel(String level) {
+		this.m_level = level;
 	}
 
 	public String getTitle() {

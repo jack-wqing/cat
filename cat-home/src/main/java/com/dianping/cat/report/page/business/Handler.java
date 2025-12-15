@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import com.dianping.cat.common.FlowControl;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.web.mvc.PageHandler;
 import org.unidal.web.mvc.annotation.InboundActionMeta;
@@ -38,6 +39,9 @@ import com.dianping.cat.service.ProjectService;
 import com.dianping.cat.system.page.business.config.BusinessTagConfigManager;
 
 public class Handler implements PageHandler<Context> {
+    @Inject
+    private FlowControl flowControl;
+
 	@Inject
 	private JspViewer m_jspViewer;
 
@@ -68,6 +72,9 @@ public class Handler implements PageHandler<Context> {
 		Action action = payload.getAction();
 
 		normalize(model, payload);
+		if (!flowControl.canPass("/cat/r/business")) {
+			m_jspViewer.view(ctx, model);
+		}
 
 		Date startDate = payload.getStartDate();
 		Date endDate = payload.getEndDate();

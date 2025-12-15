@@ -131,4 +131,57 @@ public class CrossInfoTest extends ComponentTestCase {
 		Assert.assertEquals(info.getRemoteRole(), "Pigeon.Client");
 		Assert.assertEquals(info.getApp(), "myDomain");
 	}
+
+	@Test
+	public void testParseFeignServerTransaction() throws Exception {
+		CrossAnalyzer analyzer = new CrossAnalyzer();
+
+		analyzer.setServerConfigManager(lookup(ServerConfigManager.class));
+		analyzer.setIpConvertManager(new IpConvertManager());
+
+		DefaultTransaction t = new DefaultTransaction("FeignService", "method1", null);
+		MessageTree tree = buildMockMessageTree();
+		CrossInfo info = analyzer.parseCrossTransaction(t, tree);
+
+		Message message = new DefaultEvent("Feign.Server.client", "192.168.7.71", null);
+		Message messageApp = new DefaultEvent("Feign.Server.app", "myDomain", null);
+		t.addChild(message);
+		t.addChild(messageApp);
+
+		info = analyzer.parseCrossTransaction(t, tree);
+
+		Assert.assertEquals(info.getLocalAddress(), "192.168.0.1");
+		Assert.assertEquals(info.getRemoteAddress(), "192.168.7.71");
+		Assert.assertEquals(info.getDetailType(), "FeignService");
+		Assert.assertEquals(info.getRemoteRole(), "Pigeon.Client");
+		Assert.assertEquals(info.getApp(), "myDomain");
+	}
+
+	@Test
+	public void testParseFeignClientTransaction() throws Exception {
+		CrossAnalyzer analyzer = new CrossAnalyzer();
+
+		analyzer.setServerConfigManager(lookup(ServerConfigManager.class));
+		analyzer.setIpConvertManager(new IpConvertManager());
+
+		DefaultTransaction t = new DefaultTransaction("FeignCall", "method1", null);
+		MessageTree tree = buildMockMessageTree();
+		CrossInfo info = analyzer.parseCrossTransaction(t, tree);
+
+		Assert.assertEquals(info.getLocalAddress(), "192.168.0.1");
+		Assert.assertEquals(info.getRemoteAddress(), null);
+
+		Message message = new DefaultEvent("Feign.Client.server", "10.1.1.1", null);
+		Message messageApp = new DefaultEvent("Feign.Client.app", "myDomain", null);
+		t.addChild(message);
+		t.addChild(messageApp);
+
+		info = analyzer.parseCrossTransaction(t, tree);
+
+		Assert.assertEquals(info.getLocalAddress(), "192.168.0.1");
+		Assert.assertEquals(info.getRemoteAddress(), "10.1.1.1");
+		Assert.assertEquals(info.getDetailType(), "FeignCall");
+		Assert.assertEquals(info.getRemoteRole(), "Pigeon.Server");
+		Assert.assertEquals(info.getApp(), "myDomain");
+	}
 }

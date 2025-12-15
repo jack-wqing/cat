@@ -420,6 +420,9 @@
 				<requirement>
 					<role>com.dianping.cat.config.server.ServerConfigManager</role>
 				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.service.CompositeRemoteRefreshService</role>
+				</requirement>
 			</requirements>
 		</component>
 		<component>
@@ -477,6 +480,15 @@
 				</requirement>
 				<requirement>
 					<role>com.dianping.cat.config.server.ServerFilterConfigManager</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.service.CompositeRemoteRefreshService</role>
+			<implementation>com.dianping.cat.report.service.CompositeRemoteRefreshService</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.config.server.ServerConfigManager</role>
 				</requirement>
 			</requirements>
 		</component>

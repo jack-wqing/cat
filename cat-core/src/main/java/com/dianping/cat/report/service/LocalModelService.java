@@ -71,7 +71,6 @@ public abstract class LocalModelService<T> implements Initializable {
 		if (domain == null || domain.length() == 0) {
 			domain = m_defaultDomain;
 		}
-
 		if (period.isCurrent()) {
 			analyzers = m_consumer.getCurrentAnalyzer(m_name);
 		} else if (period.isLast()) {

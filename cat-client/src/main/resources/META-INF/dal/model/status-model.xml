@@ -25,6 +25,8 @@
 		<attribute name="committed-virtual-memory" value-type="long" primitive="true" />
 		<attribute name="total-swap-space" value-type="long" primitive="true" />
 		<attribute name="free-swap-space" value-type="long" primitive="true" />
+		<attribute name="cpu-load" value-type="double" primitive="true" />
+		<attribute name="system-cpu-load" value-type="double" primitive="true" />
 	</entity>
 	<entity name="memory" class-name="MemoryInfo">
 		<attribute name="max" value-type="long" primitive="true" />

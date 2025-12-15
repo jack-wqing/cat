@@ -47,6 +47,10 @@ import com.dianping.cat.message.spi.MessageTree;
 @Named(type = ClientConfigManager.class)
 public class DefaultClientConfigManager implements LogEnabled, ClientConfigManager, Initializable {
 
+	public static File clientFile = null;
+
+	public static String appName = null;
+
 	private static final String PROPERTIES_FILE = "/META-INF/app.properties";
 
 	private ClientConfig m_config;
@@ -147,10 +151,15 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 
 	@Override
 	public void initialize() throws InitializationException {
-		String xml = Cat.getCatHome() + "client.xml";
-		File configFile = new File(xml);
+		File configFile;
+		if (DefaultClientConfigManager.clientFile != null) {
+			configFile = DefaultClientConfigManager.clientFile;
+		} else {
+			String xml = Cat.getCatHome() + "client.xml";
+			m_logger.info("client xml path " + xml);
+			configFile = new File(xml);
+		}
 
-		m_logger.info("client xml path " + xml);
 		initialize(configFile);
 	}
 
@@ -218,8 +227,13 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 	}
 
 	private ClientConfig loadConfigFromEnviroment() {
-		String appName = loadProjectName();
-
+		String appName = null;
+		if (DefaultClientConfigManager.appName != null) {
+			appName = DefaultClientConfigManager.appName;
+		} else {
+			appName = loadProjectName();
+		}
+		
 		if (appName != null) {
 			ClientConfig config = new ClientConfig();
 

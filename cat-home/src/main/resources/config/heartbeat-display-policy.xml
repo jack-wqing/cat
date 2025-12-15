@@ -4,6 +4,7 @@
       <metric id="LoadAverage" unit="1" delta="false" order="1" lable="个数" alert="true"/>
       <metric id="FreePhysicalMemory" unit="M" delta="false" order="1" lable="MB" alert="false"/>
       <metric id="FreeSwapSpaceSize" unit="M" delta="false" order="1" lable="MB" alert="false"/>
+      <metric id="CPU使用率" unit="%" delta="false" order="1" lable="%" alert="true"/>
    </group>
    <group id="GC" order="2">
       <metric id="ParNewCount" unit="1" delta="true" order="1" lable="次数" alert="true"/>

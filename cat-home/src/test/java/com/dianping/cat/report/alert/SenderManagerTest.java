@@ -35,7 +35,7 @@ public class SenderManagerTest extends ComponentTestCase {
 		SenderManager manager = lookup(SenderManager.class);
 
 		List<String> receivers = new ArrayList<String>();
-		SendMessageEntity message = new SendMessageEntity("group", "title11", "type", "content22", receivers);
+		SendMessageEntity message = new SendMessageEntity("group", "title11", "type", "content22", receivers, null);
 
 		receivers.add("yong.you@dianping.com");
 		receivers.add("yong.you2@dianping.com");

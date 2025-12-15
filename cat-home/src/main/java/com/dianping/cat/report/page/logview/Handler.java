@@ -21,6 +21,8 @@ package com.dianping.cat.report.page.logview;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+import com.dianping.cat.common.FlowControl;
+import com.dianping.cat.consumer.util.StringUtils;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.web.mvc.PageHandler;
 import org.unidal.web.mvc.annotation.InboundActionMeta;
@@ -38,6 +40,9 @@ import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
 
 public class Handler implements PageHandler<Context> {
+    @Inject
+    private FlowControl flowControl;
+
 	@Inject
 	private JspViewer m_jspViewer;
 
@@ -116,6 +121,9 @@ public class Handler implements PageHandler<Context> {
 		String messageId = getMessageId(payload);
 		String logView = null;
 		MessageId msgId = MessageId.parse(messageId);
+		if (!flowControl.canPass("/cat/r/m")) {
+			m_jspViewer.view(ctx, model);
+		}
 
 		if (checkStorageTime(msgId)) {
 			logView = getLogView(messageId, payload.isWaterfall());

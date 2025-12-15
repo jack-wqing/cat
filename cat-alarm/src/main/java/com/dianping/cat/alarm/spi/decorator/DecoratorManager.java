@@ -18,22 +18,27 @@
  */
 package com.dianping.cat.alarm.spi.decorator;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.dianping.cat.alarm.spi.AlertEntity;
+import com.dianping.cat.alarm.spi.AlertType;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
 import org.unidal.tuple.Pair;
 
-import com.dianping.cat.alarm.spi.AlertEntity;
-import com.dianping.cat.alarm.spi.AlertType;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 @Named
 public class DecoratorManager extends ContainerHolder implements Initializable {
 
 	private Map<String, Decorator> m_decorators = new HashMap<String, Decorator>();
+
+	protected DateFormat m_linkFormat = new SimpleDateFormat("yyyyMMddHH");
+
+	private final String LINK_URL_TEMPLATE = "http://%s/cat/r/h?domain=%s&ip=All&date=%s&reportType=day&op=view";
 
 	public Pair<String, String> generateTitleAndContent(AlertEntity alert) {
 		AlertType alertType = alert.getType();
@@ -42,11 +47,19 @@ public class DecoratorManager extends ContainerHolder implements Initializable {
 		if (decorator != null) {
 			String title = decorator.generateTitle(alert);
 			String content = decorator.generateContent(alert);
-
+			String date = m_linkFormat.format(alert.getDate());
+			if (AlertType.HeartBeat.getName().equalsIgnoreCase(alert.getType().getName())) {
+				String linkUrl = getLinkUrl(alert, date);
+				content = new StringBuilder(content).append("[查看详情：").append(linkUrl).append("]").toString();
+			}
 			return new Pair<String, String>(title, content);
 		} else {
 			throw new RuntimeException("error alert type:" + alert.getType());
 		}
+	}
+
+	private String getLinkUrl(AlertEntity alert, String date) {
+		return String.format(LINK_URL_TEMPLATE, alert.getHost(), alert.getDomain(), date);
 	}
 
 	@Override

@@ -6,12 +6,16 @@ import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.remoting.RemotingException;
 import com.alibaba.dubbo.remoting.TimeoutException;
 import com.alibaba.dubbo.rpc.*;
+import com.alibaba.dubbo.rpc.support.RpcUtils;
 import com.dianping.cat.Cat;
-import com.dianping.cat.message.*;
-import com.dianping.cat.message.internal.AbstractMessage;
-import com.dianping.cat.message.spi.MessageTree;
+import com.dianping.cat.message.Event;
+import com.dianping.cat.message.internal.DefaultEvent;
+import com.dianping.cat.message.Message;
+import com.dianping.cat.message.Transaction;
 import net.dubboclub.catmonitor.constants.CatConstants;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.MDC;
+import com.dianping.cat.message.internal.DefaultEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +32,8 @@ public class CatTransaction implements Filter {
     
     private final static String DUBBO_REMOTING_ERROR="DUBBO_REMOTING_ERROR";
 
+    public static final String TRACE_ID_KEY = "traceId";
+    public static final String TRACE_ID_SAMPLED = "sampled";
 
     private static final ThreadLocal<Cat.Context> CAT_CONTEXT = new ThreadLocal<Cat.Context>();
 
@@ -44,9 +50,13 @@ public class CatTransaction implements Filter {
         if(Constants.PROVIDER_SIDE.equals(sideKey)){
             type= CatConstants.CROSS_SERVER;
         }
-        Transaction transaction = Cat.newTransaction(type,loggerName);
-        Result result=null;
+
+        boolean init = false;
+        Transaction transaction = null;
+
         try{
+            transaction = Cat.newTransaction(type, loggerName);
+            logTraceId(type);
             Cat.Context context = getContext();
             if(Constants.CONSUMER_SIDE.equals(sideKey)){
                 createConsumerCross(url,transaction);
@@ -56,7 +66,26 @@ public class CatTransaction implements Filter {
                 Cat.logRemoteCallServer(context);
             }
             setAttachment(context);
+            init = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Result result=null;
+        try{
             result =  invoker.invoke(invocation);
+
+            if (!init) {
+                return result;
+            }
+
+            boolean isAsync = RpcUtils.isAsync(invoker.getUrl(), invocation);
+
+            //异步的不能判断是否有异常,这样会阻塞住接口(<AsyncRpcResult>hasException->getRpcResult->resultFuture.get()
+            if (isAsync) {
+                transaction.setStatus(Message.SUCCESS);
+                return result;
+            }
 
             if(result.hasException()){
                 //给调用接口出现异常进行打点
@@ -83,29 +112,33 @@ public class CatTransaction implements Filter {
             }
             return result;
         }catch (RuntimeException e){
-            Cat.logError(e);
-            Event event = null;
-            if(RpcException.class==e.getClass()){
-                Throwable caseBy = e.getCause();
-                if(caseBy!=null&&caseBy.getClass()==TimeoutException.class){
-                    event = Cat.newEvent(DUBBO_TIMEOUT_ERROR,loggerName);
-                }else{
-                    event = Cat.newEvent(DUBBO_REMOTING_ERROR,loggerName);
+            if (init) {
+                Cat.logError(e);
+                Event event;
+                if (RpcException.class == e.getClass()) {
+                    Throwable caseBy = e.getCause();
+                    if (caseBy != null && caseBy.getClass() == TimeoutException.class) {
+                        event = Cat.newEvent(DUBBO_TIMEOUT_ERROR, loggerName);
+                    } else {
+                        event = Cat.newEvent(DUBBO_REMOTING_ERROR, loggerName);
+                    }
+                } else {
+                    event = Cat.newEvent(DUBBO_BIZ_ERROR, loggerName);
                 }
-            }else{
-                event = Cat.newEvent(DUBBO_BIZ_ERROR,loggerName);
+                event.setStatus(e);
+                completeEvent(event);
+                transaction.addChild(event);
+                transaction.setStatus(e.getClass().getSimpleName());
             }
-            event.setStatus(e);
-            completeEvent(event);
-            transaction.addChild(event);
-            transaction.setStatus(e.getClass().getSimpleName());
             if(result==null){
                 throw e;
             }else{
                 return result;
             }
         }finally {
-            transaction.complete();
+            if (transaction != null) {
+                transaction.complete();
+            }
             CAT_CONTEXT.remove();
         }
     }
@@ -178,8 +211,11 @@ public class CatTransaction implements Filter {
     }
 
     private void completeEvent(Event event){
-        AbstractMessage message = (AbstractMessage) event;
-        message.setCompleted(true);
+        if (event instanceof DefaultEvent) {
+            ((DefaultEvent) event).setCompleted(true);
+            return;
+        }
+        event.complete();
     }
 
     private void createProviderCross(URL url,Transaction transaction){
@@ -195,5 +231,16 @@ public class CatTransaction implements Filter {
         completeEvent(crossServerEvent);
         transaction.addChild(crossAppEvent);
         transaction.addChild(crossServerEvent);
+    }
+
+    private static void logTraceId(String type) {
+        Object traceId = MDC.get(TRACE_ID_KEY);
+        if (traceId == null) {
+            return;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("traceId=").append(traceId);
+        stringBuilder.append("&sampled=").append(MDC.get(TRACE_ID_SAMPLED));
+        Cat.logEvent(type, type + ".Trace", Message.SUCCESS, stringBuilder.toString());
     }
 }

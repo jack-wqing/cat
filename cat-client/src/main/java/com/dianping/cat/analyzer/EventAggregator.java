@@ -45,7 +45,7 @@ public class EventAggregator {
 	public ConcurrentHashMap<String, ConcurrentHashMap<String, EventData>> getAndResetEvents() {
 		ConcurrentHashMap<String, ConcurrentHashMap<String, EventData>> cloned = m_events;
 
-		m_events = new ConcurrentHashMap<String, ConcurrentHashMap<String, EventData>>();
+		m_events = new ConcurrentHashMap<>();
 
 		for (Map.Entry<String, ConcurrentHashMap<String, EventData>> entry : cloned.entrySet()) {
 			String type = entry.getKey();

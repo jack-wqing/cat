@@ -64,8 +64,15 @@ public class CrossAnalyzerTest extends ComponentTestCase {
 	@Test
 	public void testProcess() throws Exception {
 		for (int i = 1; i <= 100; i++) {
-			MessageTree tree = ((DefaultMessageTree) generateMessageTree(i)).copyForTest();
-
+			MessageTree tree = ((DefaultMessageTree) generatePigeonMessageTree(i)).copyForTest();
+			m_analyzer.process(tree);
+		}
+		for (int i = 1; i <= 100; i++) {
+			MessageTree tree = ((DefaultMessageTree) generateFeignMessageTree(i)).copyForTest();
+			m_analyzer.process(tree);
+		}
+		for (int i = 1; i <= 100; i++) {
+			MessageTree tree = ((DefaultMessageTree) generateGrpcMessageTree(i)).copyForTest();
 			m_analyzer.process(tree);
 		}
 
@@ -78,7 +85,53 @@ public class CrossAnalyzerTest extends ComponentTestCase {
 		Assert.assertEquals(expectedCaller.replaceAll("\r", ""), reportCaller.toString().replaceAll("\r", ""));
 	}
 
-	protected MessageTree generateMessageTree(int i) {
+	private Object generateGrpcMessageTree(int i) {
+		MessageTree tree = new DefaultMessageTree();
+
+		tree.setMessageId("" + i);
+		tree.setDomain(m_domain);
+		tree.setHostName("group001");
+		tree.setIpAddress("192.168.1.1");
+
+		DefaultTransaction t;
+
+		if (i % 2 == 0) {
+			t = new DefaultTransaction("Rpc.Client", "Cat-Test-Call", null);
+			DefaultEvent event = new DefaultEvent("Rpc.Client.server", "192.168.1.0:3000:class:method1");
+
+			event.setTimestamp(m_timestamp + 5 * 60 * 1000);
+			event.setStatus(Message.SUCCESS);
+			t.addChild(event);
+
+			DefaultEvent eventApp = new DefaultEvent("Rpc.Client.app", "server");
+
+			eventApp.setTimestamp(m_timestamp + 5 * 60 * 1000 + 100);
+			eventApp.setStatus(Message.SUCCESS);
+			t.addChild(eventApp);
+		} else {
+			t = new DefaultTransaction("Rpc.Server", "Cat-Test-Service", null);
+			DefaultEvent event = new DefaultEvent("Rpc.Server.client", "192.168.1.2:3000:class:method2");
+
+			event.setTimestamp(m_timestamp + 5 * 60 * 1000);
+			event.setStatus(Message.SUCCESS);
+			t.addChild(event);
+
+			DefaultEvent eventApp = new DefaultEvent("Rpc.Server.app", "client");
+
+			eventApp.setTimestamp(m_timestamp + 5 * 60 * 1000 + 100);
+			eventApp.setStatus(Message.SUCCESS);
+			t.addChild(eventApp);
+		}
+
+		t.complete();
+		t.setDurationInMillis(i * 2);
+		t.setTimestamp(m_timestamp + 1000);
+		tree.setMessage(t);
+
+		return tree;
+	}
+
+	protected MessageTree generatePigeonMessageTree(int i) {
 		MessageTree tree = new DefaultMessageTree();
 
 		tree.setMessageId("" + i);
@@ -110,6 +163,52 @@ public class CrossAnalyzerTest extends ComponentTestCase {
 			t.addChild(event);
 
 			DefaultEvent eventApp = new DefaultEvent("PigeonService.app", "client");
+
+			eventApp.setTimestamp(m_timestamp + 5 * 60 * 1000 + 100);
+			eventApp.setStatus(Message.SUCCESS);
+			t.addChild(eventApp);
+		}
+
+		t.complete();
+		t.setDurationInMillis(i * 2);
+		t.setTimestamp(m_timestamp + 1000);
+		tree.setMessage(t);
+
+		return tree;
+	}
+
+	protected MessageTree generateFeignMessageTree(int i) {
+		MessageTree tree = new DefaultMessageTree();
+
+		tree.setMessageId("" + i);
+		tree.setDomain(m_domain);
+		tree.setHostName("group001");
+		tree.setIpAddress("192.168.1.1");
+
+		DefaultTransaction t;
+
+		if (i % 2 == 0) {
+			t = new DefaultTransaction("FeignCall", "Cat-Test-Call", null);
+			DefaultEvent event = new DefaultEvent("Feign.Client.server", "192.168.1.0");
+
+			event.setTimestamp(m_timestamp + 5 * 60 * 1000);
+			event.setStatus(Message.SUCCESS);
+			t.addChild(event);
+
+			DefaultEvent eventApp = new DefaultEvent("Feign.Client.app", "server");
+
+			eventApp.setTimestamp(m_timestamp + 5 * 60 * 1000 + 100);
+			eventApp.setStatus(Message.SUCCESS);
+			t.addChild(eventApp);
+		} else {
+			t = new DefaultTransaction("FeignService", "Cat-Test-Service", null);
+			DefaultEvent event = new DefaultEvent("Feign.Server.client", "192.168.1.2");
+
+			event.setTimestamp(m_timestamp + 5 * 60 * 1000);
+			event.setStatus(Message.SUCCESS);
+			t.addChild(event);
+
+			DefaultEvent eventApp = new DefaultEvent("Feign.Server.app", "client");
 
 			eventApp.setTimestamp(m_timestamp + 5 * 60 * 1000 + 100);
 			eventApp.setStatus(Message.SUCCESS);

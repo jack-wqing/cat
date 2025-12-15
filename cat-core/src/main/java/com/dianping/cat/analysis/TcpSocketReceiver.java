@@ -112,7 +112,6 @@ public final class TcpSocketReceiver implements LogEnabled {
 			@Override
 			protected void initChannel(SocketChannel ch) throws Exception {
 				ChannelPipeline pipeline = ch.pipeline();
-
 				pipeline.addLast("decode", new MessageDecoder());
 				pipeline.addLast("encode", new ClientMessageEncoder());
 			}

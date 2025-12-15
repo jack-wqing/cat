@@ -71,6 +71,7 @@ public class ProjectInfo extends BaseVisitor {
 		}
 		info.mergeType(type);
 		all.mergeType(type);
+		all.setType("All");
 	}
 
 	public void addCallerProjectInfo(String domain, TypeDetailInfo info) {
@@ -100,6 +101,7 @@ public class ProjectInfo extends BaseVisitor {
 		}
 		info.mergeType(type);
 		all.mergeType(type);
+		all.setType("All");
 	}
 
 	private void addServiceProject(String ip, String app, Type type) {
@@ -117,6 +119,7 @@ public class ProjectInfo extends BaseVisitor {
 		}
 		info.mergeType(type);
 		all.mergeType(type);
+		all.setType("All");
 	}
 
 	public Map<String, TypeDetailInfo> getAllCallProjectInfo() {

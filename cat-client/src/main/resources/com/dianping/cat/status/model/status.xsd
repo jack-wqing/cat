@@ -37,6 +37,8 @@
             <xs:attribute name="committed-virtual-memory" type="xs:long"/>
             <xs:attribute name="total-swap-space" type="xs:long"/>
             <xs:attribute name="free-swap-space" type="xs:long"/>
+            <xs:attribute name="cpu-load" type="xs:double"/>
+            <xs:attribute name="system-cpu-load" type="xs:double"/>
          </xs:extension>
       </xs:simpleContent>
    </xs:complexType>

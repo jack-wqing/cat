@@ -18,14 +18,12 @@
  */
 package com.dianping.cat.alarm.spi.sender;
 
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import com.dianping.cat.Cat;
 import com.dianping.cat.alarm.sender.entity.Sender;
 import com.dianping.cat.alarm.spi.AlertChannel;
+
+import java.net.URLEncoder;
+import java.util.List;
 
 public class MailSender extends AbstractSender {
 
@@ -58,17 +56,13 @@ public class MailSender extends AbstractSender {
 	}
 
 	private boolean sendEmail(SendMessageEntity message, String receiver, Sender sender) {
-		String title = message.getTitle().replaceAll(",", " ");
-		String content = message.getContent().replaceAll(",", " ");
-		String urlPrefix = sender.getUrl();
+		String content = message.getTitle() + " " +message.getContent();
 		String urlPars = m_senderConfigManager.queryParString(sender);
-		String time = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-
+		String urlPrefix = sender.getUrl();
 		try {
-			urlPars = urlPars.replace("${receiver}", receiver).replace("${title}", URLEncoder.encode(title, "utf-8"))
-									.replace("${content}", URLEncoder.encode(content, "utf-8"))
-									.replace("${time}", URLEncoder.encode(time, "utf-8"));
-
+			urlPars = urlPars.replace("${receiver}", URLEncoder.encode(receiver, "utf-8"))
+			                 .replace("${content}",	URLEncoder.encode(content, "utf-8"));
+			urlPars = String.format("%s&level=%s", urlPars, URLEncoder.encode(message.getLevel(), "utf-8"));
 		} catch (Exception e) {
 			Cat.logError(e);
 		}

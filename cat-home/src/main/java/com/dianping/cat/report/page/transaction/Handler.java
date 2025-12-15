@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.dianping.cat.common.FlowControl;
+import com.dianping.cat.report.page.transaction.transform.MinuteTransactionBuilder;
+import com.dianping.cat.report.page.transaction.transform.QueryMinuteTransactionParam;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.util.StringUtils;
 import org.unidal.web.mvc.PageHandler;
@@ -49,6 +52,8 @@ import com.dianping.cat.report.page.DomainGroupConfigManager;
 import com.dianping.cat.report.page.transaction.DisplayNames.TransactionNameModel;
 import com.dianping.cat.report.page.transaction.GraphPayload.AverageTimePayload;
 import com.dianping.cat.report.page.transaction.GraphPayload.DurationPayload;
+import com.dianping.cat.report.page.transaction.GraphPayload._99Payload;
+import com.dianping.cat.report.page.transaction.GraphPayload._999Payload;
 import com.dianping.cat.report.page.transaction.GraphPayload.FailurePayload;
 import com.dianping.cat.report.page.transaction.GraphPayload.HitPayload;
 import com.dianping.cat.report.page.transaction.service.TransactionReportService;
@@ -61,6 +66,9 @@ import com.dianping.cat.report.service.ModelResponse;
 import com.dianping.cat.report.service.ModelService;
 
 public class Handler implements PageHandler<Context> {
+
+    @Inject
+    private FlowControl flowControl;
 
 	@Inject
 	private GraphBuilder m_builder;
@@ -83,8 +91,12 @@ public class Handler implements PageHandler<Context> {
 	@Inject
 	private DomainGroupConfigManager m_configManager;
 
+	private static JsonBuilder m_jsonBuilder = new JsonBuilder();
+
 	@Inject(type = ModelService.class, value = TransactionAnalyzer.ID)
 	private ModelService<TransactionReport> m_service;
+	@Inject
+	private MinuteTransactionBuilder minuteTransactionBuilder;
 
 	private void buildDistributionInfo(Model model, String type, String name, TransactionReport report) {
 		PieGraphChartVisitor chartVisitor = new PieGraphChartVisitor(type, name);
@@ -123,11 +135,16 @@ public class Handler implements PageHandler<Context> {
 			String graph3 = m_builder.build(
 									new AverageTimePayload("Average Duration Over Time", "Time (min)",	"Average Duration (ms)", transactionName));
 			String graph4 = m_builder.build(new FailurePayload("Failures Over Time", "Time (min)", "Count",	transactionName));
+			String graph5 = m_builder.build(new _999Payload("99.99Line", "Time (min)", "99.99Line(ms)",	transactionName));
+			String graph6 = m_builder.build(new _99Payload("99Line", "Time (min)", "99Line(ms)",	transactionName));
 
 			model.setGraph1(graph1);
 			model.setGraph2(graph2);
 			model.setGraph3(graph3);
 			model.setGraph4(graph4);
+			model.setGraph5(graph5);
+			model.setGraph5(graph5);
+			model.setGraph6(graph6);
 		}
 	}
 
@@ -144,7 +161,7 @@ public class Handler implements PageHandler<Context> {
 		}
 
 		chart.addItems(items);
-		model.setPieChart(new JsonBuilder().toJson(chart));
+		model.setPieChart(m_jsonBuilder.toJson(chart));
 	}
 
 	private TransactionReport filterReportByGroup(TransactionReport report, String domain, String group) {
@@ -213,8 +230,18 @@ public class Handler implements PageHandler<Context> {
 		
 		Model model = new Model(ctx);
 		Payload payload = ctx.getPayload();
+        normalize(model, payload);
+		if (!flowControl.canPass("/cat/r/t")) {
+			if (payload.isXml()) {
+				m_xmlViewer.view(ctx, model);
+			} else if (payload.isJson()){
+				ctx.getHttpServletResponse().getWriter().write(m_jsonBuilder.toJson(model.getReport()));
+				return;
+			} else {
+				m_jspViewer.view(ctx, model);
+			}
+		}
 
-		normalize(model, payload);
 		String domain = payload.getDomain();
 		Action action = payload.getAction();
 		String ipAddress = payload.getIpAddress();
@@ -224,7 +251,10 @@ public class Handler implements PageHandler<Context> {
 		String ip = payload.getIpAddress();
 		Date start = payload.getHistoryStartDate();
 		Date end = payload.getHistoryEndDate();
-
+		if (ip == null || ip.length() == 0) {
+			payload.setIp(Constants.ALL);
+			ip = Constants.ALL;
+		}
 		if (StringUtils.isEmpty(group)) {
 			group = m_configManager.queryDefaultGroup(domain);
 			payload.setGroup(group);
@@ -310,6 +340,15 @@ public class Handler implements PageHandler<Context> {
 			model.setReport(report);
 			buildTransactionNameGraph(model, report, type, name, ip);
 			break;
+		case MINUTES_REPORT:
+			report = getHourlyGraphReport(model, payload);
+			if (name == null || name.length() == 0) {
+				name = Constants.ALL;
+			}
+			report = m_mergeHelper.mergeAllNames(report, ip, name);
+			QueryMinuteTransactionParam param = buildParam(report, payload);
+			ctx.getHttpServletResponse().getWriter().write(MinuteTransactionBuilder.build(param));
+			return;
 		case HISTORY_GROUP_GRAPH:
 			report = m_reportService.queryReport(domain, start, end);
 			report = filterReportByGroup(report, domain, group);
@@ -323,9 +362,24 @@ public class Handler implements PageHandler<Context> {
 
 		if (payload.isXml()) {
 			m_xmlViewer.view(ctx, model);
+		} else if (payload.isJson()){
+			ctx.getHttpServletResponse().getWriter().write(m_jsonBuilder.toJson(model.getReport()));
+			return;
 		} else {
 			m_jspViewer.view(ctx, model);
 		}
+	}
+
+	private QueryMinuteTransactionParam buildParam(TransactionReport report, Payload payload) {
+		QueryMinuteTransactionParam param = new QueryMinuteTransactionParam();
+		param.setReport(report);
+		param.setIp(payload.getIp());
+		param.setType(payload.getType());
+		param.setName(payload.getName() == null || payload.getName().length() == 0 ? Constants.ALL : payload.getName());
+		param.setDomain(payload.getDomain());
+		param.setStartMinute(payload.getStartMinute());
+		param.setEndMinute(payload.getEndMinute());
+		return param;
 	}
 
 	private void normalize(Model model, Payload payload) {

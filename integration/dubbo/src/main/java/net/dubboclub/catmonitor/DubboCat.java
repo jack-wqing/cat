@@ -6,7 +6,7 @@ import com.dianping.cat.Cat;
  * Created by bieber on 2015/11/16.
  */
 public class DubboCat {
-    
+
     private static boolean isEnable=true;
 
     /**
@@ -28,6 +28,12 @@ public class DubboCat {
      * @return
      */
     public static boolean isEnable(){
-        return Cat.getManager().isCatEnabled()&&isEnable;
+        boolean isCatEnabled = false;
+        try {
+            isCatEnabled = Cat.getManager().isCatEnabled();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return isCatEnabled && isEnable;
     }
 }

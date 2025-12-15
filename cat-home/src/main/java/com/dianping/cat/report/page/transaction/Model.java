@@ -52,6 +52,10 @@ public class Model extends AbstractReportModel<Action, ReportPage, Context> {
 
 	private String m_graph4;
 
+	private String m_graph5;
+
+	private String m_graph6;
+
 	private String m_hitTrend;
 
 	private String m_mobileResponse;
@@ -159,6 +163,22 @@ public class Model extends AbstractReportModel<Action, ReportPage, Context> {
 
 	public void setGraph4(String graph4) {
 		m_graph4 = graph4;
+	}
+
+	public String getGraph5() {
+		return m_graph5;
+	}
+
+	public void setGraph5(String graph5) {
+		this.m_graph5 = graph5;
+	}
+
+	public String getGraph6() {
+		return m_graph6;
+	}
+
+	public void setGraph6(String graph6) {
+		this.m_graph6 = graph6;
 	}
 
 	public List<String> getGroupIps() {

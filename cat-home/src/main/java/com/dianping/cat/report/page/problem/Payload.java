@@ -25,6 +25,16 @@ import com.dianping.cat.mvc.AbstractReportPayload;
 import com.dianping.cat.report.ReportPage;
 
 public class Payload extends AbstractReportPayload<Action, ReportPage> {
+
+	@FieldMeta("periodStr")
+	private String m_periodStr = "CURRENT";
+
+	@FieldMeta("queryType")
+	private String m_queryType = "view";
+
+	@FieldMeta("ip")
+	private String m_ip = "All";
+
 	@FieldMeta("op")
 	private Action m_action;
 
@@ -64,6 +74,15 @@ public class Payload extends AbstractReportPayload<Action, ReportPage> {
 	@FieldMeta("group")
 	private String m_group;
 
+	@FieldMeta("startMinute")
+	private int startMinute = 0;
+
+	@FieldMeta("endMinute")
+	private int endMinute = 59;
+
+	@FieldMeta("ips")
+	private String ips = "";
+
 	public Payload() {
 		super(ReportPage.PROBLEM);
 	}
@@ -71,6 +90,30 @@ public class Payload extends AbstractReportPayload<Action, ReportPage> {
 	@Override
 	public Action getAction() {
 		return m_action;
+	}
+
+	public void setPeriodStr(String periodStr) {
+		this.m_periodStr = periodStr;
+	}
+
+	public String getPeriodStr() {
+		return this.m_periodStr;
+	}
+
+	public void setIp(String m_ip) {
+		this.m_ip = m_ip;
+	}
+
+	public void setQueryType(String m_queryType) {
+		this.m_queryType = m_queryType;
+	}
+
+	public String getIp() {
+		return m_ip;
+	}
+
+	public String getQueryType() {
+		return m_queryType;
 	}
 
 	public void setAction(String action) {
@@ -185,6 +228,30 @@ public class Payload extends AbstractReportPayload<Action, ReportPage> {
 
 	public void setUrlThreshold(int longTime) {
 		m_urlThreshold = longTime;
+	}
+
+	public int getStartMinute() {
+		return startMinute;
+	}
+
+	public void setStartMinute(int startMinute) {
+		this.startMinute = startMinute;
+	}
+
+	public int getEndMinute() {
+		return endMinute;
+	}
+
+	public void setEndMinute(int endMinute) {
+		this.endMinute = endMinute;
+	}
+
+	public String getIps() {
+		return ips;
+	}
+
+	public void setIps(String ips) {
+		this.ips = ips;
 	}
 
 	@Override

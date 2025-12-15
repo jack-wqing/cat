@@ -42,7 +42,6 @@ public class HistoricalProblemService extends BaseHistoricalModelService<Problem
 		String domain = request.getDomain();
 		long date = request.getStartTime();
 		ProblemReport report = getReportFromDatabase(date, domain);
-		;
 
 		return report;
 	}

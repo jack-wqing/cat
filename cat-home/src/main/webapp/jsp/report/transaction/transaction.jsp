@@ -10,7 +10,7 @@
 <jsp:useBean id="model"	type="com.dianping.cat.report.page.transaction.Model" scope="request" />
 <c:set var="report" value="${model.report}"/>
 
-<a:hourly_report title="Transaction Report${empty payload.type ? '' : ' :: '}<a href='?domain=${model.domain}&date=${model.date}&type=${payload.encodedType}'>${payload.type}</a>" navUrlPrefix="ip=${model.ipAddress}&queryname=${model.queryName}&domain=${model.domain}${empty payload.type ? '' : '&type='}${payload.encodedType}" timestamp="${w:format(model.creatTime,'yyyy-MM-dd HH:mm:ss')}">
+<a:hourly_report title="Transaction Report${empty payload.type ? '' : ' :: '}<a href='?domain=${model.domain}&date=${model.date}&type=${payload.encodedType}'>${payload.type}</a>" navUrlPrefix="ip=${model.ipAddress}&queryname=${w:urlEncode(model.queryName)}&domain=${model.domain}${empty payload.type ? '' : '&type='}${payload.encodedType}" timestamp="${w:format(model.creatTime,'yyyy-MM-dd HH:mm:ss')}">
 <jsp:attribute name="subtitle">${w:format(report.startTime,'yyyy-MM-dd HH:mm:ss')} to ${w:format(report.endTime,'yyyy-MM-dd HH:mm:ss')}</jsp:attribute>
 <jsp:body>
 
@@ -18,21 +18,21 @@
 	<tr class="left">
 		<th>&nbsp;[&nbsp; <c:choose>
 				<c:when test="${model.ipAddress eq 'All'}">
-					<a href="?domain=${model.domain}&date=${model.date}&type=${payload.encodedType}&queryname=${model.queryName}"
+					<a href="?domain=${model.domain}&date=${model.date}&type=${payload.encodedType}&queryname=${w:urlEncode(model.queryName)}"
 						class="current">All</a>
 				</c:when>
 				<c:otherwise>
-					<a href="?domain=${model.domain}&date=${model.date}&type=${payload.encodedType}&queryname=${model.queryName}">All</a>
+					<a href="?domain=${model.domain}&date=${model.date}&type=${payload.encodedType}&queryname=${w:urlEncode(model.queryName)}">All</a>
 				</c:otherwise>
 			</c:choose> &nbsp;]&nbsp; <c:forEach var="ip" items="${model.ips}">
    	  		&nbsp;[&nbsp;
    	  		<c:choose>
 					<c:when test="${model.ipAddress eq ip}">
-						<a href="?domain=${model.domain}&ip=${ip}&date=${model.date}&type=${payload.encodedType}&queryname=${model.queryName}"
+						<a href="?domain=${model.domain}&ip=${ip}&date=${model.date}&type=${payload.encodedType}&queryname=${w:urlEncode(model.queryName)}"
 							class="current">${ip}</a>
 					</c:when>
 					<c:otherwise>
-						<a href="?domain=${model.domain}&ip=${ip}&date=${model.date}&type=${payload.encodedType}&queryname=${model.queryName}">${ip}</a>
+						<a href="?domain=${model.domain}&ip=${ip}&date=${model.date}&type=${payload.encodedType}&queryname=${w:urlEncode(model.queryName)}">${ip}</a>
 					</c:otherwise>
 				</c:choose>
    	 		&nbsp;]&nbsp;
@@ -68,8 +68,9 @@
 				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=min">Min</a>(ms)</th>
 				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=max">Max</a>(ms)</th>
 				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=avg">Avg</a>(ms)</th>
-				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=95line">95Line</a>(ms)</th>
-				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=99line">99.9Line</a>(ms)</th>
+				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=99line">99Line</a>(ms)</th>
+				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=99.9line">99.9Line</a>(ms)</th>
+				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=99.99line">99.99Line</a>(ms)</th>
 				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=std">Std</a>(ms)</th>
 				<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&sort=total">QPS</a></th>
 			</tr>
@@ -86,8 +87,9 @@
 					<td>${w:format(e.min,'###,##0.#')}</td>
 					<td>${w:format(e.max,'###,##0.#')}</td>
 					<td>${w:format(e.avg,'###,##0.0')}</td>
-					<td>${w:format(e.line95Value,'###,##0.0')}</td>
 					<td>${w:format(e.line99Value,'###,##0.0')}</td>
+					<td>${w:format(e.line999Value,'###,##0.0')}</td>
+					<td>${w:format(e.line9999Value,'###,##0.0')}</td>
 					<td>${w:format(e.std,'###,##0.0')}</td>
 					<td>${w:format(e.tps,'###,##0.0')}</td>
 				</tr>
@@ -102,19 +104,20 @@
 			</th></tr>
 			<tr>
 			<th  style="text-align: left;"><a href="?op=graphs&domain=${report.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}" class="graph_link" data-status="-1">[:: show ::]</a>
-			<a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=type&queryname=${model.queryName}">Name</a></th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=total&queryname=${model.queryName}">Total</a></th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=failure&queryname=${model.queryName}">Failure</a></th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=failurePercent&queryname=${model.queryName}">Failure%</a></th>
+			<a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=type&queryname=${w:urlEncode(model.queryName)}">Name</a></th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=total&queryname=${w:urlEncode(model.queryName)}">Total</a></th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=failure&queryname=${w:urlEncode(model.queryName)}">Failure</a></th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=failurePercent&queryname=${w:urlEncode(model.queryName)}">Failure%</a></th>
 			<th class="right">Sample Link</th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=min&queryname=${model.queryName}">Min</a>(ms)</th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=max&queryname=${model.queryName}">Max</a>(ms)</th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=avg&queryname=${model.queryName}">Avg</a>(ms)</th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=95line&queryname=${model.queryName}">95Line</a>(ms)</th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=99line&queryname=${model.queryName}">99.9Line</a>(ms)</th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=std&queryname=${model.queryName}">Std</a>(ms)</th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=total&queryname=${model.queryName}">QPS</a></th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=total&queryname=${model.queryName}">Percent%</a></th></tr>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=min&queryname=${w:urlEncode(model.queryName)}">Min</a>(ms)</th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=max&queryname=${w:urlEncode(model.queryName)}">Max</a>(ms)</th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=avg&queryname=${w:urlEncode(model.queryName)}">Avg</a>(ms)</th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=99line&queryname=${w:urlEncode(model.queryName)}">99Line</a>(ms)</th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=999line&queryname=${w:urlEncode(model.queryName)}">99.9Line</a>(ms)</th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=9999line&queryname=${w:urlEncode(model.queryName)}">99.99Line</a>(ms)</th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=std&queryname=${w:urlEncode(model.queryName)}">Std</a>(ms)</th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=total&queryname=${w:urlEncode(model.queryName)}">QPS</a></th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&sort=total&queryname=${w:urlEncode(model.queryName)}">Percent%</a></th></tr>
 			<tr class="graphs"><td colspan="13" style="display:none"><div id="-1" style="display:none"></div></td></tr>
 			<c:forEach var="item" items="${model.displayNameReport.results}" varStatus="status">
 				<c:set var="e" value="${item.detail}"/>
@@ -139,10 +142,12 @@
 					<td>${w:format(e.avg,'###,##0.0')}</td>
 					<c:choose>
 						<c:when test="${status.index > 0}">
-							<td>${w:format(e.line95Value,'###,##0.0')}</td>
 							<td>${w:format(e.line99Value,'###,##0.0')}</td>
+							<td>${w:format(e.line999Value,'###,##0.0')}</td>
+							<td>${w:format(e.line9999Value,'###,##0.0')}</td>
 						</c:when>
 						<c:otherwise>
+							<td class="center">-</td>
 							<td class="center">-</td>
 							<td class="center">-</td>
 						</c:otherwise>

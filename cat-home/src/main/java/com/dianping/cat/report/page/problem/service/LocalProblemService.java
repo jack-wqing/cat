@@ -20,17 +20,19 @@ package com.dianping.cat.report.page.problem.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import com.dianping.cat.Cat;
+import com.dianping.cat.CatConstants;
+import com.dianping.cat.consumer.problem.model.entity.*;
+import com.dianping.cat.message.Message;
+import com.dianping.cat.message.Transaction;
+import com.dianping.cat.report.page.problem.Payload;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.consumer.problem.ProblemAnalyzer;
 import com.dianping.cat.consumer.problem.ProblemReportMerger;
-import com.dianping.cat.consumer.problem.model.entity.Entry;
-import com.dianping.cat.consumer.problem.model.entity.JavaThread;
-import com.dianping.cat.consumer.problem.model.entity.Machine;
-import com.dianping.cat.consumer.problem.model.entity.ProblemReport;
-import com.dianping.cat.consumer.problem.model.entity.Segment;
 import com.dianping.cat.consumer.problem.model.transform.DefaultSaxParser;
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.mvc.ApiPayload;
@@ -39,6 +41,10 @@ import com.dianping.cat.report.ReportBucketManager;
 import com.dianping.cat.report.service.LocalModelService;
 import com.dianping.cat.report.service.ModelPeriod;
 import com.dianping.cat.report.service.ModelRequest;
+import com.dianping.cat.consumer.problem.model.transform.DefaultXmlBuilder;
+import org.unidal.webres.resource.loader.ClassLoaders;
+
+import javax.crypto.Mac;
 
 @Named(type = LocalModelService.class, value = LocalProblemService.ID)
 public class LocalProblemService extends LocalModelService<ProblemReport> {
@@ -62,9 +68,39 @@ public class LocalProblemService extends LocalModelService<ProblemReport> {
 		return filter.buildXml(report);
 	}
 
+	public String buildReport(ModelRequest request, ModelPeriod period, String domain, Payload payload)
+			throws Exception {
+		Transaction t = Cat.newTransaction(CatConstants.TYPE_CALL, "new_problem_build_report");
+
+		Filter filter = new Filter(payload.getIp(), payload.getType(), payload.getQueryType(), payload.getStatus());
+		List<ProblemReport> reports = super.getReport(period, domain);
+		ProblemReport report = new ProblemReport();
+
+		if (reports != null) {
+			report.setDomain(domain);
+			ProblemReportMerger merger = new ProblemReportMerger(report);
+
+			for (ProblemReport tmp : reports) {
+				filter.filter(tmp).accept(merger);
+			}
+		}
+
+		if (report.getIps().isEmpty() && period.isLast()) {
+			long startTime = request.getStartTime();
+			report = filter.filter(getReportFromLocalDisk(startTime, domain));
+		}
+		DefaultXmlBuilder xmlBuilder = new DefaultXmlBuilder(true, new StringBuilder(DEFAULT_SIZE));
+
+		t.setStatus(Message.SUCCESS);
+		t.complete();
+		return xmlBuilder.buildXml(report);
+	}
+
 	@Override
 	public String buildReport(ModelRequest request, ModelPeriod period, String domain, ApiPayload payload)
 							throws Exception {
+		Transaction t = Cat.newTransaction(CatConstants.TYPE_CALL, "old_problem_build_report");
+
 		List<ProblemReport> reports = super.getReport(period, domain);
 		ProblemReport report = null;
 
@@ -81,6 +117,9 @@ public class LocalProblemService extends LocalModelService<ProblemReport> {
 			long startTime = request.getStartTime();
 			report = getReportFromLocalDisk(startTime, domain);
 		}
+
+		t.setStatus(Message.SUCCESS);
+		t.complete();
 		return filterReport(payload, report);
 	}
 
@@ -170,6 +209,113 @@ public class LocalProblemService extends LocalModelService<ProblemReport> {
 			if ("detail".equals(m_queryType)) {
 				super.visitThread(thread);
 			}
+		}
+	}
+
+	private static class Filter {
+		private String m_ip;
+
+		private String m_type;
+
+		// view is show the summary,detail show the thread info
+		private String m_queryType;
+
+		private String m_status;
+
+		public Filter(String ip, String type, String queryType, String status) {
+			m_ip = ip;
+			m_type = type;
+			m_queryType = queryType;
+			m_status = status;
+		}
+
+		public ProblemReport filter(ProblemReport report) {
+			ProblemReport ret = new ProblemReport(report.getDomain());
+			ret.setStartTime(report.getStartTime());
+			ret.setEndTime(report.getEndTime());
+
+			for (String ip : report.getIps()) {
+				ret.addIp(ip);
+			}
+
+			if (m_ip == null || "All".equals(m_ip)) {
+				for (Machine machine : report.getMachines().values()) {
+					ret.addMachine(filterMachine(machine));
+				}
+			} else {
+				Machine machine = report.getMachines().get(m_ip);
+				if (machine != null) {
+					ret.addMachine(filterMachine(machine));
+				}
+			}
+
+			return ret;
+		}
+
+		public Machine filterMachine(Machine machine) {
+			Machine ret = new Machine(machine.getIp());
+
+			if (m_type != null && m_status != null) {
+				String id = m_type + ":" + m_status;
+				Entity tmp = machine.getEntities().get(id);
+				if (tmp != null) {
+					ret.addEntity(filterEntity(tmp));
+				}
+				return ret;
+			}
+
+			for (Entity entity : machine.getEntities().values()) {
+				if (m_type != null && !m_type.equals(entity.getType())) {
+					continue;
+				}
+				if (m_status != null && !m_status.equals(entity.getStatus())) {
+					continue;
+				}
+				ret.addEntity(filterEntity(entity));
+			}
+
+			return ret;
+		}
+
+		public Entity filterEntity(Entity entity) {
+			Entity ret = new Entity(entity.getId());
+			ret.setType(entity.getType());
+			ret.setStatus(entity.getStatus());
+			if ("view".equals(m_queryType)) {
+				for (Duration duration : entity.getDurations().values()) {
+					ret.addDuration(duration);
+				}
+			} else {
+				for (JavaThread thread : entity.getThreads().values()) {
+					ret.addThread(filterThread(thread));
+				}
+				for (Duration duration : entity.getDurations().values()) {
+					Duration d = new Duration(duration.getValue());
+					d.setCount(duration.getCount());
+					List<String> messages = duration.getMessages();
+					for (String message : messages) {
+						d.addMessage(message);
+					}
+					ret.addDuration(d);
+				}
+			}
+			return ret;
+		}
+
+		public JavaThread filterThread(JavaThread thread) {
+			JavaThread ret = new JavaThread(thread.getId());
+			ret.setGroupName(thread.getGroupName());
+			ret.setName(thread.getName());
+			for (Segment seg : thread.getSegments().values()) {
+				Segment tmp = new Segment();
+				tmp.setId(seg.getId());
+				tmp.setCount(seg.getCount());
+				for (String message : seg.getMessages()) {
+					tmp.addMessage(message);
+				}
+				ret.addSegment(tmp);
+			}
+			return ret;
 		}
 	}
 }

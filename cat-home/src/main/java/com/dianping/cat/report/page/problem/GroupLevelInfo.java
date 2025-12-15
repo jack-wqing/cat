@@ -80,6 +80,39 @@ public class GroupLevelInfo {
 		return this;
 	}
 
+	public GroupLevelInfo display4Api(ProblemReport report) {
+		Machine machine = report.getMachines().get(m_model.getIpAddress());
+		if (machine == null) {
+			return null;
+		}
+		Collection<Entity> entities = machine.getEntities().values();
+
+		for (Entity entity : entities) {
+			Map<String, JavaThread> threads = entity.getThreads();
+
+			for (java.util.Map.Entry<String, JavaThread> entry : threads.entrySet()) {
+				JavaThread thread = entry.getValue();
+
+				String groupName = thread.getGroupName();
+				GroupStatistics statistics = findOrCreatGroupStatistics(groupName, m_minutes);
+				statistics.add(thread.getSegments(), entity.getType());
+			}
+		}
+		long currentTimeMillis = System.currentTimeMillis();
+		long currentHours = currentTimeMillis - currentTimeMillis % (60 * 60 * 1000);
+
+		if (currentHours == m_model.getLongDate()) {
+			for (int i = m_minutes; i >= 0; i--) {
+				m_datas.add(getShowDetailByMinte(i));
+			}
+		} else {
+			for (int i = 0; i <= m_minutes; i++) {
+				m_datas.add(getShowDetailByMinte(i));
+			}
+		}
+		return this;
+	}
+
 	public GroupStatistics findOrCreatGroupStatistics(String groupName, int lastMinute) {
 		m_minutes = lastMinute;
 

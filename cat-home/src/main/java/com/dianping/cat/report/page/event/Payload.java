@@ -45,6 +45,39 @@ public class Payload extends AbstractReportPayload<Action, ReportPage> {
 	@FieldMeta("group")
 	private String m_group;
 
+	@FieldMeta("periodStr")
+	private String m_periodStr = "CURRENT";
+
+	@FieldMeta("queryType")
+	private String m_queryType = "view";
+
+	@FieldMeta("ip")
+	private String m_ip = "All";
+
+	public void setPeriodStr(String periodStr) {
+		this.m_periodStr = periodStr;
+	}
+
+	public String getPeriodStr() {
+		return this.m_periodStr;
+	}
+
+	public void setIp(String m_ip) {
+		this.m_ip = m_ip;
+	}
+
+	public void setQueryType(String m_queryType) {
+		this.m_queryType = m_queryType;
+	}
+
+	public String getIp() {
+		return m_ip;
+	}
+
+	public String getQueryType() {
+		return m_queryType;
+	}
+
 	public Payload() {
 		super(ReportPage.EVENT);
 	}
