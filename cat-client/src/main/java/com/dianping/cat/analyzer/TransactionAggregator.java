@@ -34,10 +34,12 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Default transaction aggregator
  */
+// Transaction消息 本地聚合
 public class TransactionAggregator {
 
 	private static TransactionAggregator s_instance = new TransactionAggregator();
 
+	// type-name-data
 	private volatile ConcurrentHashMap<String, ConcurrentHashMap<String, TransactionData>> m_transactions = new ConcurrentHashMap<String, ConcurrentHashMap<String, TransactionData>>();
 
 	public static TransactionAggregator getInstance() {
@@ -169,6 +171,7 @@ public class TransactionAggregator {
 		return -1;
 	}
 
+	// Transaction 丢失聚合
 	public class TransactionData {
 
 		private String m_type;
@@ -181,8 +184,10 @@ public class TransactionAggregator {
 
 		private AtomicLong m_sum = new AtomicLong();
 
+		// 持续周期
 		private ConcurrentHashMap<Integer, AtomicInteger> m_durations = new ConcurrentHashMap<Integer, AtomicInteger>();
 
+		// 服务未传回暂不支持
 		private ConcurrentHashMap<Integer, AtomicInteger> m_longDurations = new ConcurrentHashMap<Integer, AtomicInteger>();
 
 		public TransactionData(String type, String name) {

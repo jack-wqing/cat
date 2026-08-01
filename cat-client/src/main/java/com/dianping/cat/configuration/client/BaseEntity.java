@@ -35,7 +35,7 @@ public abstract class BaseEntity<T> implements IEntity<T>, Formattable {
    public void formatTo(Formatter formatter, int flags, int width, int precision) {
       boolean compact = (precision == 0);
       DefaultXmlBuilder builder = new DefaultXmlBuilder(compact);
-
+      // 类转换成XML
       formatter.format("%s", builder.buildXml(this));
    }
 

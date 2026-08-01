@@ -24,6 +24,7 @@ import com.dianping.cat.message.spi.MessageManager;
 /**
  * default metric
  */
+// 业务指标数据
 public class DefaultMetric extends AbstractMessage implements Metric {
 	private MessageManager m_manager;
 

@@ -1,8 +1,18 @@
+初始化：
+    1、Cat.initialize()，初始化配置
+    2、Module初始化：
+       1、 TransportManager(DefaultTransportManager): 传输层管理
+           MessageSender(TcpSocketSender): 消息队列管理
+                ChannelHandler:
+       2、心跳消息+本地刷新
+       3、未抽样的消息进行聚合发送
+
+
 重要组件说明:
     ChannelManager:
         1、使用netty组件: 启动之后通过客户端配置的服务地址拉取服务端配置的路由地址，默认选择第一个进行连接
         2、之后每10秒进行一次检测，如果发现当前连接不可用或者服务端配置进行了更新，则重新初始化客户端链接，默认使用是第一个服务地址
-        **问题: 每个服务都是通过服务端配置的路由，一般都是默认路由：则所有的机器都会链接同一个服务端节点
+        **服务端进行domain hash返回
 
     TcpSocketSender[MessageSender]: 队列的长度可以通过app.properties:cat.queue.length设置，默认5000
         1、初始化ChannelManager,并且注册JVM回调钩子管理ChannelManager的状态
@@ -27,7 +37,7 @@
                     }
 
     DefaultTransportManager[TransportManager]:
-        1、初始化TcpSocketSender,返回MessageSender
+        1、初始化TcpSocketSender, 返回MessageSender
 
     DefaultMessageManager[MessageManager]:
         1、每个线程通过ThreadLocal保存自己的Context[维护一个消息树MessageTree]
@@ -42,6 +52,8 @@
                                 3.end: 进行Context.end操作
                                 4.start: 进行Context.start的操作
                         TaggedDefaultTransaction默认缓存: 1024
+
+                    4. forked操作 + tagged bind的操作
         4、初始化MessageIdFactory 标记文件信息
         注: 每个线程的消息树: 维护的message个数最多为2000
         说明: 每个线程一个Context, Root节点会发送后端，当MessageTree的长多超过2000会切割发送+消息树中的时间周期；TaggedDefaultTransaction默认缓存1024
@@ -77,4 +89,6 @@
 
 **
 cat-domain.mark: 记录当前小时的的索引，messageId得偏移量
+
+
 

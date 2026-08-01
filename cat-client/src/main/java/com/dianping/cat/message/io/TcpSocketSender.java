@@ -52,7 +52,7 @@ import com.dianping.cat.status.StatusExtensionRegister;
 /**
  * Tcp Message Sender: 管理消息发送
  */
-
+// 消息发送，队列管理
 @Named
 public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 
@@ -112,6 +112,7 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 			}
 		});
 
+		// 自定义心跳信息
 		StatusExtensionRegister.getInstance().register(new StatusExtension() {
 
 			@Override
@@ -187,13 +188,14 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 			}
 		}
 	}
-
+	// 定义的原子消息
 	private void processAtomicMessage() {
 		while (true) {
 			if (shouldMerge(m_atomicQueue)) {
 				MessageTree tree = mergeTree(m_atomicQueue);
+				// 合并进入主队列
 				boolean result = m_queue.offer(tree);
-
+				// 记录
 				if (!result) {
 					logQueueFullInfo(tree);
 				}
@@ -202,7 +204,7 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 			}
 		}
 	}
-
+	// 非atomic 直接发送
 	private void processNormalMessage() {
 		while (true) {
 			ChannelFuture channel = m_channelManager.channel();
@@ -234,7 +236,7 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 			}
 		}
 	}
-
+	// 异步发送
 	@Override
 	public void run() {
 		m_active = true;
@@ -262,15 +264,17 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 			}
 		}
 	}
-
+	// send
 	@Override
 	public void send(MessageTree tree) {
 		if (!m_configManager.isBlock()) {
 			double sampleRatio = m_configManager.getSampleRatio();
 
 			if (tree.canDiscard() && sampleRatio < 1.0 && (!tree.isHitSample())) {
+				// 本地聚合
 				processTreeInClient(tree);
 			} else {
+				// 入队列
 				offer(tree);
 			}
 		}
@@ -280,6 +284,7 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 		LocalAggregator.aggregate(tree);
 	}
 
+	// 编码直接发送
 	public void sendInternal(ChannelFuture channel, MessageTree tree) {
 		if (tree.getMessageId() == null) {
 			tree.setMessageId(m_factory.getNextId());
@@ -296,6 +301,7 @@ public class TcpSocketSender implements Task, MessageSender, LogEnabled {
 		}
 	}
 
+	// 头消息延后30S,  队列大于200进行聚合
 	private boolean shouldMerge(MessageQueue queue) {
 		MessageTree tree = queue.peek();
 

@@ -26,6 +26,7 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
  * default client message statistic
  */
+// 默认的消息统计，生产超出
 @Named(type = MessageStatistics.class)
 public class DefaultMessageStatistics implements MessageStatistics {
 	private long m_produced;

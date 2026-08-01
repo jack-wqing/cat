@@ -6,6 +6,7 @@ import static com.dianping.cat.configuration.client.Constants.ENTITY_DOMAIN;
 import com.dianping.cat.configuration.client.BaseEntity;
 import com.dianping.cat.configuration.client.IVisitor;
 
+// 应用标识（核心，必填）id:ip
 public class Domain extends BaseEntity<Domain> {
    private String m_id;
 

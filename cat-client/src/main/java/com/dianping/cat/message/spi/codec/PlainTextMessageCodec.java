@@ -54,6 +54,7 @@ import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 /**
  * PlainTextMessageCodec: message Code
  */
+// 文本编码
 public class PlainTextMessageCodec implements MessageCodec {
 	public static final String ID = "plain-text";
 

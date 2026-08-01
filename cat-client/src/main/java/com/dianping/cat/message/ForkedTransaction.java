@@ -21,6 +21,7 @@ package com.dianping.cat.message;
 /**
  * fork transaction
  */
+// 跨线程，直接传递事务对象给子线程  适合new Thread
 public interface ForkedTransaction extends Transaction {
 	public void fork();
 

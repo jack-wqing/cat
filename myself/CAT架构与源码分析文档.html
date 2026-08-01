@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAT 架构与源码分析文档</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; color: #333; background: #fafafa; }
+  body { display: flex; }
+
+  /* 左侧目录 */
+  #toc {
+    width: 300px;
+    flex-shrink: 0;
+    background: #1e293b;
+    color: #cbd5e1;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 24px 16px;
+    border-right: 1px solid #0f172a;
+  }
+  #toc .toc-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    padding-bottom: 14px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #334155;
+  }
+  #toc .toc-meta {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  #toc ul { list-style: none; }
+  #toc li { margin: 2px 0; }
+  #toc a {
+    display: block;
+    padding: 6px 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 4px;
+    transition: all .15s;
+    border-left: 2px solid transparent;
+  }
+  #toc a:hover { background: #334155; color: #fff; border-left-color: #60a5fa; }
+  #toc a.lvl2 { padding-left: 22px; font-size: 12px; color: #94a3b8; }
+  #toc a.lvl3 { padding-left: 38px; font-size: 12px; color: #64748b; }
+  #toc a.active { background: #3b82f6; color: #fff; }
+
+  /* 右侧内容 */
+  #content {
+    flex: 1;
+    padding: 40px 56px 80px;
+    max-width: 1100px;
+    line-height: 1.75;
+  }
+  #content h1 { font-size: 30px; margin: 48px 0 16px; padding-bottom: 10px; border-bottom: 2px solid #3b82f6; color: #0f172a; }
+  #content h1:first-child { margin-top: 0; }
+  #content h2 { font-size: 24px; margin: 40px 0 14px; color: #1e3a8a; padding-left: 10px; border-left: 4px solid #3b82f6; }
+  #content h3 { font-size: 19px; margin: 28px 0 10px; color: #1e293b; }
+  #content h4 { font-size: 16px; margin: 22px 0 8px; color: #334155; }
+  #content p { margin: 10px 0; }
+  #content ul, #content ol { margin: 10px 0 10px 28px; }
+  #content li { margin: 4px 0; }
+  #content code {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+    font-size: 13px;
+    color: #db2777;
+  }
+  #content pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 16px 20px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 14px 0;
+    font-size: 13px;
+    line-height: 1.55;
+    font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+  }
+  #content pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+  #content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 14px 0;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    font-size: 13px;
+  }
+  #content th, #content td {
+    border: 1px solid #e2e8f0;
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  #content th { background: #3b82f6; color: #fff; font-weight: 600; }
+  #content tr:nth-child(even) td { background: #f8fafc; }
+  #content blockquote {
+    border-left: 4px solid #fbbf24;
+    background: #fffbeb;
+    padding: 10px 16px;
+    margin: 14px 0;
+    color: #78350f;
+    border-radius: 0 4px 4px 0;
+  }
+  #content a { color: #2563eb; text-decoration: none; word-break: break-all; }
+  #content a:hover { text-decoration: underline; }
+  #content hr { border: none; border-top: 1px solid #e2e8f0; margin: 36px 0; }
+  #content strong { color: #0f172a; }
+
+  /* 滚动条美化 */
+  #toc::-webkit-scrollbar, #content::-webkit-scrollbar { width: 8px; height: 8px; }
+  #toc::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+  #content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+  /* 移动端折叠 */
+  #toc-toggle { display: none; }
+  @media (max-width: 900px) {
+    body { flex-direction: column; }
+    #toc { width: 100%; height: auto; position: relative; max-height: 40vh; }
+    #content { padding: 20px; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="toc">
+  <div class="toc-title">CAT 架构与源码分析</div>
+  <div class="toc-meta">
+    版本:3.0.3-SNAPSHOT<br>
+    默认 TCP 端口:2280<br>
+    生成时间:2026-08-01
+  </div>
+  <ul>
+    <li><a href="#sec-1">一、项目整体架构</a></li>
+    <li><a href="#sec-1-1" class="lvl2">1.1 模块划分</a></li>
+    <li><a href="#sec-1-2" class="lvl2">1.2 核心工作原理</a></li>
+    <li><a href="#sec-1-3" class="lvl2">1.3 多语言客户端与集成</a></li>
+    <li><a href="#sec-2">二、服务端启动流程源码分析</a></li>
+    <li><a href="#sec-2-1" class="lvl2">2.1 服务端架构</a></li>
+    <li><a href="#sec-2-2" class="lvl2">2.2 启动入口(Servlet)</a></li>
+    <li><a href="#sec-2-3" class="lvl2">2.3 Module 体系与依赖链</a></li>
+    <li><a href="#sec-2-4" class="lvl2">2.4 完整启动时序</a></li>
+    <li><a href="#sec-2-5" class="lvl2">2.5 服务端启动时序图</a></li>
+    <li><a href="#sec-3">三、客户端启动流程源码分析</a></li>
+    <li><a href="#sec-3-1" class="lvl2">3.1 客户端架构</a></li>
+    <li><a href="#sec-3-2" class="lvl2">3.2 入口类 Cat(懒加载)</a></li>
+    <li><a href="#sec-3-3" class="lvl2">3.3 启动序列</a></li>
+    <li><a href="#sec-3-4" class="lvl2">3.4 关键初始化点</a></li>
+    <li><a href="#sec-3-5" class="lvl2">3.5 客户端启动时序图</a></li>
+    <li><a href="#sec-4">四、客户端发送 → 服务端接收整体流程图</a></li>
+    <li><a href="#sec-5">五、关键源码深度分析</a></li>
+    <li><a href="#sec-5-1" class="lvl2">5.1 客户端发送端关键源码</a></li>
+    <li><a href="#sec-5-2" class="lvl2">5.2 服务端接收端关键源码</a></li>
+    <li><a href="#sec-5-3" class="lvl2">5.3 关键参数速查表</a></li>
+    <li><a href="#sec-6">六、设计要点总结</a></li>
+    <li><a href="#sec-7">附:关键文件清单</a></li>
+  </ul>
+</nav>
+
+<main id="content">
+
+<h1 id="sec-1">一、项目整体架构</h1>
+
+<p>CAT 是大众点评开源的<strong>实时应用监控系统</strong>,提供 Transaction / Event / Heartbeat / Metric 四类消息的采集、传输、聚合、告警与可视化。</p>
+
+<h2 id="sec-1-1">1.1 模块划分</h2>
+
+<pre><code>┌──────────────────────────────────────────────────────────────────┐
+│                    cat-home (Web 控制台,顶层入口)                  │
+│   CatServlet → CatHomeModule → Jetty/Tomcat                      │
+│   报告展示 / 报警配置 / 路由下发 (/cat/s/router)                   │
+└──────────────┬───────────────────────────────────┬───────────────┘
+               │ 依赖                              │ 依赖
+   ┌───────────▼──────────┐          ┌────────────▼────────────┐
+   │  cat-consumer         │          │  cat-hadoop             │
+   │  12 个 MessageAnalyzer│          │  logview 存储 / HDFS    │
+   │  (transaction/event/  │          │  MessageDumper          │
+   │   problem/heartbeat/  │          └────────────┬────────────┘
+   │   dump/state/cross/   │                       │ 依赖
+   │   matrix/dependency/  │                       │
+   │   storage/top/business)                       │
+   └───────────┬──────────┘                       │
+               │ 依赖                              │
+   ┌───────────▼───────────────────────────────────▼──────────────┐
+   │                cat-core (核心服务端组件)                       │
+   │  TcpSocketReceiver (Netty :2280)                             │
+   │  MessageDecoder → DefaultMessageHandler → RealtimeConsumer   │
+   │  PeriodManager / Period / PeriodTask / MessageQueue(30000)    │
+   │  ServerConfigManager / ReportBucket / Storage                │
+   └───────────┬───────────────────────────────────────────────────┘
+               │ 依赖
+   ┌───────────▼───────────────────────────────────────────────────┐
+   │              cat-client (Java 客户端 SDK)                     │
+   │  Cat(门面) → DefaultMessageProducer → DefaultMessageManager   │
+   │  → TcpSocketSender (队列5000) → ChannelManager (Netty)        │
+   │  NativeMessageCodec (NT1 二进制协议)                          │
+   └────────────────────────────────────────────────────────────────┘
+
+   ┌──────────────────────────────────────────────────────────────┐
+   │  lib/  多语言客户端 SDK:C / C++ / Go / Python / Node.js /    │
+   │        C# / Erlang  (大部分基于 ccat C 库 FFI)               │
+   ├──────────────────────────────────────────────────────────────┤
+   │  integration/  框架集成:Spring / Dubbo / MyBatis / Log4j /   │
+   │                Druid / Elasticsearch / SpringBoot            │
+   └──────────────────────────────────────────────────────────────┘</code></pre>
+
+<h2 id="sec-1-2">1.2 核心工作原理</h2>
+
+<p>CAT 的核心思想是 <strong>"客户端埋点 → TCP 异步上报 → 服务端实时分桶聚合 → 报告落盘"</strong>:</p>
+
+<ol>
+  <li><strong>客户端</strong>:业务代码通过 <code>Cat.newTransaction()</code> 等 API 在 ThreadLocal 中构建 <code>MessageTree</code>,事务 <code>complete()</code> 时通过 <code>TcpSocketSender</code> 异步入队,后台线程用 Netty 以 <code>NT1</code> 二进制协议发送到服务端。</li>
+  <li><strong>服务端</strong>:<code>Netty ServerBootstrap</code> 在 2280 端口收字节流 → <code>MessageDecoder</code> 长度分帧解码 → <code>DefaultMessageHandler</code> 同步调用 <code>RealtimeConsumer.consume()</code> → 按消息<strong>时间戳定位 Period(1 小时一桶)</strong> → 按 <code>domain.hashCode()</code> 分流到每个 Analyzer 类型独立的 <code>ArrayBlockingQueue(30000)</code> → <code>PeriodTask</code> 线程消费 → 各 Analyzer <code>process()</code> 累积到内存 Report → 周期结束 <code>doCheckpoint(true)</code> 落盘(本地文件 + MySQL)。</li>
+</ol>
+
+<h2 id="sec-1-3">1.3 多语言客户端与集成</h2>
+
+<ul>
+  <li><strong>lib/</strong> 目录提供多语言 SDK:C / C++ / Go(v1、v2) / Python / Node.js / C# / Erlang。大部分语言基于 ccat C 库通过 FFI 调用。</li>
+  <li><strong>integration/</strong> 目录提供主流框架的集成适配:
+    <ul>
+      <li><strong>Spring / SpringBoot / SpringMVC-AOP</strong>:<code>CatAspect</code> 切面自动埋点</li>
+      <li><strong>Apache Dubbo / Dubbo</strong>:<code>CatFilter</code> 集成 RPC 调用链</li>
+      <li><strong>MyBatis</strong>:<code>CatMybatisPlugin</code> 拦截 SQL</li>
+      <li><strong>Druid</strong>:<code>DruidCatFilter</code> 数据源监控</li>
+      <li><strong>Log4j / Log4j2 / Logback</strong>:<code>CatAppender</code> 把日志作为 Event 上报</li>
+      <li><strong>Elasticsearch-Jetty</strong>:集成 ES 查询</li>
+      <li><strong>Context</strong>:<code>CatContextImpl</code> 用于跨服务传递 CAT 上下文(支持分布式调用链)</li>
+    </ul>
+  </li>
+</ul>
+
+<hr>
+
+<h1 id="sec-2">二、服务端启动流程源码分析</h1>
+
+<h2 id="sec-2-1">2.1 服务端架构</h2>
+
+<p>CAT 服务端采用<strong>分层流水线 + 时间分桶 + 多 Analyzer 并行</strong>的架构,核心由"接收 → 分发 → 分析 → 存储"四层组成,通过 <code>PeriodManager</code> 按小时切分周期,实现高吞吐实时聚合。</p>
+
+<h4>四层分层架构</h4>
+
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│  ① 接收层 (Network Layer)                                            │
+│    TcpSocketReceiver (Netty ServerBootstrap, 端口 2280)              │
+│    ├─ bossGroup / workerGroup 各 24 线程 (Linux 用 Epoll)            │
+│    └─ MessageDecoder (ByteToMessageDecoder)                         │
+│         └─ 半包处理 + CodecHandler 分派 (NT1/PT1) → DefaultMessageTree │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           ▼ (Netty worker 线程内同步调用)
+┌─────────────────────────────────────────────────────────────────────┐
+│  ② 分发层 (Dispatch Layer)                                          │
+│    DefaultMessageHandler → RealtimeConsumer.consume(tree)            │
+│    └─ PeriodManager.findPeriod(timestamp)  ← 按消息时间戳定位小时桶   │
+│    └─ Period.distribute(tree)                                        │
+│         ├─ 按 domain.hashCode() % tasks.size() 分流(同 domain 同实例)│
+│         ├─ 一个 tree 广播到全部 12 个 analyzer 类型                   │
+│         └─ 队列满则故障转移到下一 task                                │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           ▼ (ArrayBlockingQueue, 容量 30000, offer 非阻塞)
+┌─────────────────────────────────────────────────────────────────────┐
+│  ③ 分析层 (Analysis Layer)                                          │
+│    PeriodTask 线程(默认每 analyzer 2 个)→ AbstractMessageAnalyzer    │
+│    └─ analyze(queue): while(!isTimeout()) poll + process(tree)      │
+│    └─ 12 种 Analyzer 并行:                                          │
+│       transaction / event / problem / heartbeat / dump / state /   │
+│       cross / matrix / dependency / storage / top / business        │
+│    └─ 累积到内存 Report(TransactionReport / EventReport / ...)      │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           ▼ (周期结束 doCheckpoint)
+┌─────────────────────────────────────────────────────────────────────┐
+│  ④ 存储层 (Storage Layer)                                           │
+│    ReportManager → storeHourlyReports(startTime, policy, index)    │
+│    ├─ LocalReportBucket  → 本地文件 ${CAT_HOME}/bucket/...          │
+│    └─ HourlyReportDao    → MySQL (FILE_AND_DB 时)                  │
+│    Dump 专用:MessageDumperManager → LocalMessageBucketManager      │
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+
+<h4>核心组件协作表</h4>
+
+<table>
+  <tr><th>组件</th><th>职责</th><th>关键文件</th></tr>
+  <tr><td><code>TcpSocketReceiver</code></td><td>Netty 服务端,2280 端口接收字节流,内部类 MessageDecoder 长度分帧</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/TcpSocketReceiver.java">cat-core/.../TcpSocketReceiver.java</a></td></tr>
+  <tr><td><code>MessageDecoder</code></td><td>4 字节长度前缀分帧 + CodecHandler 分派解码(NT1/PT1)</td><td>同上(内部类)</td></tr>
+  <tr><td><code>DefaultMessageHandler</code></td><td>桥接 Decoder → Consumer,懒加载 MessageConsumer</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/DefaultMessageHandler.java">cat-core/.../DefaultMessageHandler.java</a></td></tr>
+  <tr><td><code>RealtimeConsumer</code></td><td>MessageConsumer 实现,按时间戳找 Period 并分发</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/RealtimeConsumer.java">cat-core/.../RealtimeConsumer.java</a></td></tr>
+  <tr><td><code>PeriodManager</code></td><td>周期管理线程,每秒轮询,按小时启停 Period(预启动 3 分钟、宽限 3 分钟)</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/PeriodManager.java">cat-core/.../PeriodManager.java</a></td></tr>
+  <tr><td><code>Period</code></td><td>1 小时周期,持有各 analyzer 的 PeriodTask + MessageQueue(30000),按 domain hash 分流</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/Period.java">cat-core/.../Period.java</a></td></tr>
+  <tr><td><code>PeriodTask</code></td><td>消费线程任务,循环 poll 队列交给 analyzer.process,周期结束 finish</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/PeriodTask.java">cat-core/.../PeriodTask.java</a></td></tr>
+  <tr><td><code>AbstractMessageAnalyzer</code></td><td>分析基类,提供 analyze 循环 + doCheckpoint 模板</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/AbstractMessageAnalyzer.java">cat-core/.../AbstractMessageAnalyzer.java</a></td></tr>
+  <tr><td><code>DefaultMessageAnalyzerManager</code></td><td>管理 12 种 analyzer 名单与实例缓存,按 startTime + name 创建</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/DefaultMessageAnalyzerManager.java">cat-core/.../DefaultMessageAnalyzerManager.java</a></td></tr>
+  <tr><td><code>ServerConfigManager</code></td><td>服务端配置(DB config 表 / server.xml),支持 TimerSyncTask 热更新</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/config/server/ServerConfigManager.java">cat-core/.../ServerConfigManager.java</a></td></tr>
+  <tr><td><code>ReportManager</code> / <code>ReportBucket</code></td><td>报告生命周期与本地文件读写(LocalReportBucket)</td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/report/DefaultReportManager.java">cat-core/.../DefaultReportManager.java</a></td></tr>
+</table>
+
+<h4>线程模型</h4>
+
+<table>
+  <tr><th>线程/池</th><th>数量</th><th>职责</th></tr>
+  <tr><td>Netty bossGroup</td><td>24</td><td>接受客户端连接</td></tr>
+  <tr><td>Netty workerGroup</td><td>24</td><td>读取/解码/分发消息(同步调用 consume)</td></tr>
+  <tr><td>PeriodManager</td><td>1</td><td>每秒轮询,按小时启停 Period</td></tr>
+  <tr><td>PeriodTask</td><td>12 类型 × 2(默认)</td><td>消费各 analyzer 队列,执行 process</td></tr>
+  <tr><td>EndTaskThread</td><td>临时</td><td>周期结束时异步 finish + 落盘</td></tr>
+</table>
+
+<h4>周期(Period)机制</h4>
+
+<ul>
+  <li><strong>时长</strong>:1 小时一个 Period(<code>RealtimeConsumer.HOUR</code>)。</li>
+  <li><strong>预启动</strong>:当前周期结束前 3 分钟(<code>aheadTime</code>)启动下一周期,保证跨小时消息无缝接入。</li>
+  <li><strong>宽限</strong>:周期结束后再宽限 3 分钟(<code>extraTime</code>)处理迟到消息,之后才真正 finish。</li>
+  <li><strong>触发方式</strong>:<code>PeriodManager.run()</code> 用 <code>Thread.sleep(1000)</code> 轮询 + <code>PeriodStrategy</code> 状态机(非 Timer/ScheduledExecutor)。</li>
+</ul>
+
+<h4>12 种 Analyzer 体系</h4>
+
+<p>同一棵 MessageTree 会被广播到全部 12 种 analyzer 队列并行处理,各 analyzer 职责单一:</p>
+
+<table>
+  <tr><th>Analyzer</th><th>ID</th><th>职责</th></tr>
+  <tr><td>TransactionAnalyzer</td><td>transaction</td><td>事务耗时/次数/区间分布聚合</td></tr>
+  <tr><td>EventAnalyzer</td><td>event</td><td>事件计数聚合</td></tr>
+  <tr><td>ProblemAnalyzer</td><td>problem</td><td>问题检测(长请求、错误、LongSQL 等)</td></tr>
+  <tr><td>HeartbeatAnalyzer</td><td>heartbeat</td><td>客户端心跳状态聚合</td></tr>
+  <tr><td>DumpAnalyzer</td><td>dump</td><td>原始消息转储(走 MessageDumperManager,非 ReportManager)</td></tr>
+  <tr><td>StateAnalyzer</td><td>state</td><td>客户端状态分析</td></tr>
+  <tr><td>CrossAnalyzer</td><td>cross</td><td>服务调用关系分析</td></tr>
+  <tr><td>MatrixAnalyzer</td><td>matrix</td><td>矩阵分析(调用路径聚合)</td></tr>
+  <tr><td>DependencyAnalyzer</td><td>dependency</td><td>服务依赖分析</td></tr>
+  <tr><td>StorageAnalyzer</td><td>storage</td><td>存储分析(SQL/Cache/RPC)</td></tr>
+  <tr><td>TopAnalyzer</td><td>top</td><td>Top 排序分析(优先处理)</td></tr>
+  <tr><td>BusinessAnalyzer</td><td>business</td><td>业务指标分析</td></tr>
+</table>
+
+<h4>存储架构</h4>
+
+<ul>
+  <li><strong>中途 checkpoint</strong>:<code>doCheckpoint(false)</code> → 仅写本地文件(FILE),JVM shutdown hook 触发。</li>
+  <li><strong>周期结束</strong>:<code>doCheckpoint(true)</code> → 同时写本地文件 + MySQL(FILE_AND_DB)。</li>
+  <li><strong>本地文件</strong>:<code>LocalReportBucket</code> 写到 <code>${CAT_HOME}/bucket/{analyzer}/{domain}/{hour}/</code>,采用 snappy 压缩。</li>
+  <li><strong>Dump 特殊</strong>:<code>DumpAnalyzer</code> 不走 ReportManager,用 <code>MessageDumperManager</code> + <code>LocalMessageBucketManager</code> 存储原始消息,支持 logview 查询。</li>
+</ul>
+
+<hr>
+
+<h2 id="sec-2-2">2.2 启动入口(非 Listener,而是 Servlet)</h2>
+
+<p><code>web.xml</code> 配置 <a href="file:///f:/work-project/cat/cat-home/src/main/webapp/WEB-INF/web.xml">cat-home/src/main/webapp/WEB-INF/web.xml</a> 中 <code>cat-servlet</code> 的 <code>load-on-startup=1</code>:</p>
+
+<pre><code>&lt;servlet&gt;
+    &lt;servlet-name&gt;cat-servlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.dianping.cat.servlet.CatServlet&lt;/servlet-class&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;</code></pre>
+
+<p><a href="file:///f:/work-project/cat/cat-home/src/main/java/com/dianping/cat/servlet/CatServlet.java">CatServlet.java</a> 继承 unidal 框架的 <code>AbstractContainerServlet</code>,核心 <code>initComponents()</code>:</p>
+
+<pre><code>protected void initComponents(ServletConfig servletConfig) throws ServletException {
+    ModuleContext ctx = new DefaultModuleContext(getContainer());
+    ModuleInitializer initializer = ctx.lookup(ModuleInitializer.class);
+    ctx.setAttribute("cat-client-config-file", getConfigFile(..., "client.xml"));
+    ctx.setAttribute("cat-server-config-file", getConfigFile(..., "server.xml"));
+    initializer.execute(ctx);   // 触发整个 Module 体系
+}</code></pre>
+
+<h2 id="sec-2-3">2.3 Module 体系与依赖链</h2>
+
+<p>unidal 框架通过 <code>Module</code> 接口 + <code>ModuleInitializer</code> 按依赖深度优先执行,顶层模块在 <a href="file:///f:/work-project/cat/cat-home/src/main/java/com/dianping/cat/build/ComponentsConfigurator.java">ComponentsConfigurator.java</a> 中注册为 <code>cat-home</code>:</p>
+
+<pre><code>CatHomeModule (顶层)
+├── CatConsumerModule ── CatCoreModule ── CatClientModule
+└── CatHadoopModule   ── CatCoreModule ── CatClientModule</code></pre>
+
+<p><code>AbstractModule</code> 的两个核心方法:</p>
+<ul>
+  <li><code>setup(ctx)</code>:在所有 <code>execute()</code> 之前执行,<strong>仅顶层模块调用</strong>。</li>
+  <li><code>execute(ctx)</code>:按依赖深度优先顺序,<strong>叶子模块先执行</strong>。</li>
+</ul>
+
+<h2 id="sec-2-4">2.4 完整启动时序</h2>
+
+<h4>阶段 1 — CatHomeModule.setup() 最先执行(启动 Netty)</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-home/src/main/java/com/dianping/cat/CatHomeModule.java">CatHomeModule.java</a></p>
+
+<pre><code>protected void setup(ModuleContext ctx) throws Exception {
+    final TcpSocketReceiver messageReceiver = ctx.lookup(TcpSocketReceiver.class);
+    messageReceiver.init();         // ★ 启动 Netty 2280
+    Runtime.getRuntime().addShutdownHook(... messageReceiver.destory() ...);
+}</code></pre>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/TcpSocketReceiver.java">TcpSocketReceiver.java</a> 用 Netty <code>ServerBootstrap</code>:</p>
+
+<pre><code>private int m_port = 2280;   // 默认端口,硬编码
+public synchronized void startServer(int port) {
+    boolean linux = getOSMatches("Linux");
+    int threads = 24;
+    ServerBootstrap bootstrap = new ServerBootstrap();
+    m_bossGroup   = linux ? new EpollEventLoopGroup(threads) : new NioEventLoopGroup(threads);
+    m_workerGroup = linux ? new EpollEventLoopGroup(threads) : new NioEventLoopGroup(threads);
+    bootstrap.group(m_bossGroup, m_workerGroup)
+             .channel(linux ? EpollServerSocketChannel.class : NioServerSocketChannel.class)
+             .childHandler(new ChannelInitializer&lt;SocketChannel&gt;() {
+                 protected void initChannel(SocketChannel ch) {
+                     ch.pipeline()
+                       .addLast("decode", new MessageDecoder())        // 内部类
+                       .addLast("encode", new ClientMessageEncoder());
+                 }
+             })
+             .childOption(ChannelOption.SO_KEEPALIVE, true)
+             .childOption(ChannelOption.TCP_NODELAY, true)
+             .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+    m_future = bootstrap.bind(port).sync();   // 绑定 2280
+}</code></pre>
+
+<h4>阶段 2 — 各 execute() 按依赖深度优先执行</h4>
+
+<p>顺序:client → core → consumer/hadoop → home</p>
+
+<table>
+  <tr><th>顺序</th><th>Module</th><th>关键动作</th></tr>
+  <tr><td>1</td><td><code>CatClientModule.execute</code></td><td><code>MilliSecondTimer.initialize</code> / 注册 <code>CatThreadListener</code> / <code>lookup(ClientConfigManager)</code> 触发其 <code>initialize()</code> 解析 client.xml / <code>Cat.getInstance().setContainer(...)</code> 触发 <code>MessageManager.initialize()</code> / <code>lookup(TransportManager)</code> 触发 <code>DefaultTransportManager.initialize()</code></td></tr>
+  <tr><td>2</td><td><code>CatCoreModule.execute</code></td><td><code>lookup(ServersUpdaterManager)</code> 触发定时刷新服务端列表</td></tr>
+  <tr><td>3</td><td><code>CatConsumerModule.execute</code></td><td><strong>空实现</strong>(Analyzer 在被 <code>Period</code> lookup 时才创建,12 个 Analyzer 已通过 <a href="file:///f:/work-project/cat/cat-consumer/src/main/java/com/dianping/cat/consumer/build/ComponentsConfigurator.java">cat-consumer ComponentsConfigurator</a> 注册到 IoC 容器)</td></tr>
+  <tr><td>4</td><td><code>CatHadoopModule.execute</code></td><td>启动 <code>LogviewProcessor</code> logview 清理线程</td></tr>
+  <tr><td>5</td><td><code>CatHomeModule.execute</code></td><td>启动 <code>ReportReloadTask</code> / <strong><code>lookup(MessageConsumer.class)</code></strong> 触发 <code>RealtimeConsumer.initialize()</code> 启动 <code>PeriodManager</code> 线程 / <code>isJobMachine()</code> 时启动 <code>DefaultTaskConsumer</code> / <code>isAlertMachine()</code> 时 <code>alarmManager.startAlarm()</code></td></tr>
+</table>
+
+<h4>阶段 3 — RealtimeConsumer.initialize() 启动消息处理引擎</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/RealtimeConsumer.java">RealtimeConsumer.java</a></p>
+
+<pre><code>public static final long HOUR = 60 * 60 * 1000L;
+
+public void initialize() throws InitializationException {
+    m_periodManager = new PeriodManager(HOUR, m_analyzerManager, m_serverStateManager, m_logger);
+    m_periodManager.init();                          // 启动第一个 Period
+    Threads.forGroup("cat").start(m_periodManager);  // 启动周期管理线程
+}</code></pre>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/PeriodManager.java">PeriodManager.java</a> 用 <strong><code>Thread.sleep(1000)</code> 轮询 + <code>PeriodStrategy</code> 状态机</strong>(不是 Timer/ScheduledExecutor):</p>
+
+<pre><code>public void run() {
+    while (m_active) {
+        long now = System.currentTimeMillis();
+        long value = m_strategy.next(now);   // 正=开新周期,负=结束旧周期,0=无操作
+        if (value > 0)      startPeriod(value);
+        else if (value < 0) Threads.forGroup("cat").start(new EndTaskThread(-value));
+        Thread.sleep(1000L);                  // 每秒轮询
+    }
+}</code></pre>
+
+<p><code>PeriodStrategy(duration=1H, extraTime=3min, aheadTime=3min)</code> 在当前周期结束前 3 分钟<strong>预启动下一周期</strong>,保证跨小时无缝。</p>
+
+<h2 id="sec-2-5">2.5 服务端启动时序图</h2>
+
+<pre><code>Servlet容器启动
+    │
+    ▼
+CatServlet.init (load-on-startup=1)
+    │
+    ▼
+ModuleInitializer.execute(ctx)
+    │
+    ├─(1) CatHomeModule.setup()  ← 最先执行
+    │     └─ ctx.lookup(TcpSocketReceiver.class)
+    │           └─ 注入 ServerConfigManager.initialize()  (读 DB config 表 / server.xml)
+    │     └─ messageReceiver.init() → startServer(2280)
+    │           └─ Netty ServerBootstrap.bind(2280)  ★ 端口已监听
+    │
+    ├─(2) CatClientModule.execute()  ← 叶子先执行
+    │     └─ MilliSecondTimer / lookup ClientConfigManager / setContainer → MessageManager.initialize
+    │
+    ├─(3) CatCoreModule.execute()
+    │     └─ lookup ServersUpdaterManager
+    │
+    ├─(4) CatConsumerModule.execute() (空)
+    ├─(5) CatHadoopModule.execute() → LogviewProcessor 线程
+    │
+    └─(6) CatHomeModule.execute()  ← 最后执行
+          ├─ Threads.forGroup("cat").start(ReportReloadTask)
+          ├─ ctx.lookup(MessageConsumer.class)  ★ 触发 RealtimeConsumer.initialize()
+          │     └─ new PeriodManager(HOUR) → startPeriod(currentHour)
+          │           └─ Period 构造:为每个 analyzer × 线程数 创建 PeriodTask + MessageQueue(30000)
+          │           └─ Threads.forGroup("Cat-RealtimeConsumer").start(task)  // 启动消费线程
+          │     └─ Threads.forGroup("cat").start(m_periodManager)  // 每秒轮询切周期
+          ├─ if(isJobMachine)  start DefaultTaskConsumer
+          ├─ if(isAlertMachine) alarmManager.startAlarm()
+          └─ addShutdownHook → consumer.doCheckpoint()</code></pre>
+
+<hr>
+
+<h1 id="sec-3">三、客户端启动流程源码分析</h1>
+
+<h2 id="sec-3-1">3.1 客户端架构</h2>
+
+<p>CAT 客户端采用<strong>门面 API + ThreadLocal 上下文 + 异步队列 + Netty 通信</strong>的分层架构,核心由五层组成,通过双队列 + 后台线程实现业务线程与网络的解耦。</p>
+
+<h4>五层分层架构</h4>
+
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│  ① API 门面层 (Facade Layer)                                         │
+│    Cat (静态门面,懒加载)                                            │
+│    └─ Cat.newTransaction / logEvent / logError / logMetric / logHeartbeat│
+│         └─ DefaultMessageProducer (薄封装,无状态)                   │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  ② 上下文管理层 (Context Layer)                                      │
+│    DefaultMessageManager                                             │
+│    └─ ThreadLocal&lt;Context&gt; (每线程一个)                              │
+│         ├─ Context 内含 MessageTree + Stack&lt;Transaction&gt;             │
+│         ├─ start(tran):压栈 / 作为子节点                              │
+│         └─ end(tran):pop 栈,栈空时 copy(tree) → flush                │
+│    └─ MessageIdFactory (mmap 持久化 mark 文件,ID 格式 domain-ipHex-hour-index)│
+└──────────────────────────┬──────────────────────────────────────────┘
+                           ▼ flush(tree)
+┌─────────────────────────────────────────────────────────────────────┐
+│  ③ 异步发送层 (Sender Layer)                                         │
+│    TcpSocketSender (MessageSender 实现,同时是后台 Task)              │
+│    ├─ 双队列:ArrayBlockingQueue(5000) × 2                          │
+│    │   ├─ m_queue       (普通消息)                                  │
+│    │   └─ m_atomicQueue (原子消息,可合并)                           │
+│    ├─ 采样丢弃:canDiscard && ratio&lt;1.0 && !hitSample → LocalAggregator│
+│    └─ 原子消息合并:30s 或 200 条触发,打包成 _CatMergeTree           │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           ▼ 后台线程 poll + encode
+┌─────────────────────────────────────────────────────────────────────┐
+│  ④ 编码层 (Codec Layer)                                             │
+│    NativeMessageCodec (ID = "NT1", 二进制协议)                      │
+│    └─ [4字节长度][NT1][10个HEADER字符串][消息体 t/T/E/M/H/L]        │
+│       数值用 LEB128 varint,字符串用 varint+UTF8                     │
+│    └─ 输出 Netty ByteBuf (PooledByteBufAllocator)                   │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           ▼ channel.writeAndFlush(buf)
+┌─────────────────────────────────────────────────────────────────────┐
+│  ⑤ 网络通信层 (Transport Layer)                                     │
+│    ChannelManager (Netty Bootstrap, NioSocketChannel)               │
+│    ├─ Netty pipeline 为空(无 encoder,直接写 ByteBuf)               │
+│    ├─ 路由热更新:每 10s 对比 routers 配置,变化则重建 channel       │
+│    ├─ 断连检测:连续 3 次 stalled 才关闭                             │
+│    └─ 重连:强制掰回默认服务器,最多 20 次重试                        │
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+
+<h4>核心组件协作表</h4>
+
+<table>
+  <tr><th>组件</th><th>职责</th><th>关键文件</th></tr>
+  <tr><td><code>Cat</code></td><td>静态门面,懒加载单例,委托给 producer/manager</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/Cat.java">cat-client/.../Cat.java</a></td></tr>
+  <tr><td><code>DefaultMessageProducer</code></td><td>API 实现,构造 Transaction/Event 并交给 manager</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/internal/DefaultMessageProducer.java">cat-client/.../DefaultMessageProducer.java</a></td></tr>
+  <tr><td><code>DefaultMessageManager</code></td><td>ThreadLocal 上下文管理,持有 Context(tree+stack),触发 flush</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/internal/DefaultMessageManager.java">cat-client/.../DefaultMessageManager.java</a></td></tr>
+  <tr><td><code>DefaultMessageTree</code></td><td>消息树,含 domain/host/ip/thread/messageId + 根 message</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/spi/internal/DefaultMessageTree.java">cat-client/.../DefaultMessageTree.java</a></td></tr>
+  <tr><td><code>MessageIdFactory</code></td><td>生成全局唯一 ID,mmap 持久化 mark 文件</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/internal/MessageIdFactory.java">cat-client/.../MessageIdFactory.java</a></td></tr>
+  <tr><td><code>NativeMessageCodec</code></td><td>NT1 二进制编码,输出 Netty ByteBuf</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/spi/codec/NativeMessageCodec.java">cat-client/.../NativeMessageCodec.java</a></td></tr>
+  <tr><td><code>TcpSocketSender</code></td><td>双队列 + 后台发送线程 + 采样丢弃 + 原子合并</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/TcpSocketSender.java">cat-client/.../TcpSocketSender.java</a></td></tr>
+  <tr><td><code>ChannelManager</code></td><td>Netty 连接管理,路由热更新,断连检测与重连</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/ChannelManager.java">cat-client/.../ChannelManager.java</a></td></tr>
+  <tr><td><code>DefaultClientConfigManager</code></td><td>解析 client.xml + HTTP 拉取动态路由/采样率/阻塞开关</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/configuration/DefaultClientConfigManager.java">cat-client/.../DefaultClientConfigManager.java</a></td></tr>
+  <tr><td><code>DefaultTransportManager</code></td><td>装配 TcpSocketSender,收集启用的 server 地址</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/DefaultTransportManager.java">cat-client/.../DefaultTransportManager.java</a></td></tr>
+</table>
+
+<h4>线程模型</h4>
+
+<table>
+  <tr><th>线程</th><th>数量</th><th>职责</th></tr>
+  <tr><td>业务线程</td><td>N(应用)</td><td>构造 MessageTree,complete 时 offer 入队(非阻塞,不等待网络)</td></tr>
+  <tr><td>cat-TcpSocketSender</td><td>1</td><td>轮询队列,合并原子消息,编码 + writeAndFlush</td></tr>
+  <tr><td>cat-ChannelManager</td><td>1</td><td>每 10s 路由检查 / 断连检测 / 重连 / saveMark</td></tr>
+  <tr><td>Netty NioEventLoopGroup</td><td>1</td><td>实际 TCP 读写(daemon 线程)</td></tr>
+  <tr><td>StatusUpdateTask</td><td>1</td><td>每 60s 心跳上报,每 3 分钟刷新路由配置</td></tr>
+  <tr><td>LocalAggregator.DataUploader</td><td>1</td><td>采样丢弃消息的本地聚合后上传</td></tr>
+</table>
+
+<h4>MessageTree 与 ThreadLocal 上下文</h4>
+
+<ul>
+  <li><strong>无独立 ContextManager</strong>:cat-client 中没有 <code>ContextManager</code> 类,线程上下文由 <code>DefaultMessageManager</code> 的私有字段 <code>ThreadLocal&lt;Context&gt; m_context</code> 直接管理,内部类 <code>Context</code> 持有 <code>MessageTree m_tree</code> + <code>Stack&lt;Transaction&gt; m_stack</code>。</li>
+  <li><strong>栈式嵌套</strong>:<code>newTransaction</code> 时 <code>start</code> 压栈并作为父事务子节点;根事务直接 <code>tree.setMessage</code>。</li>
+  <li><strong>complete 触发 flush</strong>:<code>end</code> 弹栈,栈空时 <code>tree.copy()</code> 后 <code>flush</code>(浅拷贝,主线程复用 tree 容器)。</li>
+  <li><strong>树保护</strong>:节点数 ≥ 2000 跨小时则 <code>truncateAndFlush</code>(打包发送 + Next 事件链接);≥ 5000 强制清空。</li>
+</ul>
+
+<h4>双队列发送机制</h4>
+
+<ul>
+  <li><strong>普通队列 <code>m_queue</code></strong>:容量 5000,后台线程 <code>poll(5ms)</code> 取出后 <code>sendInternal</code>。</li>
+  <li><strong>原子队列 <code>m_atomicQueue</code></strong>:同类原子消息(如 Metric)累积 <strong>30 秒或 200 条</strong>触发合并,打包成一个 <code>_CatMergeTree</code> 事务再入普通队列,大幅减少网络包。</li>
+  <li><strong>非阻塞 offer</strong>:队列满立即返回 false,统计 loss,不阻塞业务线程。</li>
+  <li><strong>采样降级</strong>:<code>canDiscard=true</code>(普通 Transaction/Event)在采样率&lt;1.0 且未命中时走 <code>LocalAggregator</code> 本地聚合,完全不占网络;<code>setDiscard(false)</code>(Error/Heartbeat/Metric)强制上报。</li>
+</ul>
+
+<h4>路由与重连机制</h4>
+
+<ul>
+  <li><strong>动态路由</strong>:<code>DefaultClientConfigManager.refreshConfig()</code> 通过 HTTP 拉 <code>http://{server}:{httpPort}/cat/s/router?op=json</code> 获取 routers(分号分隔的 ip:port)、block、sample。</li>
+  <li><strong>热更新</strong>:<code>ChannelManager</code> 每 10 秒比较 <code>getRouters()</code> 与本地缓存,变化则 <code>initChannel</code> 重建连接。</li>
+  <li><strong>断连检测</strong>:通道不活跃累计 <code>m_channelStalledTimes</code>,连续 3 次才真正关闭,避免偶发抖动误判。</li>
+  <li><strong>强制重连默认服务器</strong>:<code>reconnectDefaultServer</code> 注释明确"强制把上报的 channel 掰回默认的(第一台)",在原 server 列表随机选,最多重试 20 次。</li>
+  <li><strong>MessageId 持久化</strong>:<code>MessageIdFactory</code> 用 mmap(1MB)把当前小时戳+计数写到 <code>cat-{domain}.mark</code>,每 10 秒 <code>saveMark</code>,重启同小时 <code>index+1000</code> 续接避免 ID 冲突。</li>
+</ul>
+
+<hr>
+
+<h2 id="sec-3-2">3.2 入口类 Cat(懒加载,无 static 块)</h2>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/Cat.java">Cat.java</a></p>
+
+<p>是静态门面,持有单例 <code>s_instance</code> 和 <code>volatile boolean s_init</code>:</p>
+
+<pre><code>private static Cat s_instance = new Cat();
+private static volatile boolean s_init = false;
+
+private static void checkAndInitialize() {     // 每次调用 getManager/getProducer 时触发
+    if (!s_init) {
+        initialize(new File(getCatHome(), "client.xml"));
+    }
+}</code></pre>
+
+<p>业务代码第一次调用 <code>Cat.newTransaction(...)</code> 会触发 <code>checkAndInitialize()</code>。</p>
+
+<h2 id="sec-3-3">3.3 启动序列(CatClientModule.execute)</h2>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/CatClientModule.java">CatClientModule.java</a></p>
+
+<pre><code>protected void execute(final ModuleContext ctx) throws Exception {
+    MilliSecondTimer.initialize();                                        // 1. 毫秒计时器
+    Threads.addListener(new CatThreadListener(ctx));                    // 2. 线程监听
+    ClientConfigManager clientConfigManager = ctx.lookup(ClientConfigManager.class); // 3. 触发配置解析
+    Cat.getInstance().setContainer(((DefaultModuleContext) ctx).getContainer());      // 4. 触发 MessageManager/Producer 初始化
+    ctx.lookup(TransportManager.class);                                  // 5. 触发 TransportManager/TcpSocketSender/ChannelManager 初始化
+    if (clientConfigManager.isCatEnabled()) {
+        Threads.forGroup("cat").start(ctx.lookup(StatusUpdateTask.class));   // 6. 心跳上报线程(60s)
+        Threads.forGroup("cat").start(new LocalAggregator.DataUploader());     // 7. 本地聚合上传
+    }
+}</code></pre>
+
+<h2 id="sec-3-4">3.4 关键初始化点</h2>
+
+<h4>(1) 配置加载</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/configuration/DefaultClientConfigManager.java">DefaultClientConfigManager.java</a></p>
+
+<pre><code>public void initialize() throws InitializationException {
+    File configFile = new File(Cat.getCatHome() + "client.xml");
+    initialize(configFile);
+}
+public void initialize(File configFile) {
+    ClientConfig globalConfig = DefaultSaxParser.parse(Files.forIO().readFrom(configFile, "utf-8"));
+    ClientConfig warConfig  = loadConfigFromEnviroment();   // 从 /META-INF/app.properties 拿 app.name
+    globalConfig.accept(new ClientConfigMerger(warConfig)); // 合并
+    warConfig.accept(new ClientConfigValidator());          // 校验:端口默认 2280、http-port 8080、enabled=true
+    m_config = warConfig;
+    refreshConfig();   // HTTP 拉 http://{server}:{httpPort}/cat/s/router?op=json 拿动态路由
+}</code></pre>
+
+<p><strong>默认端口</strong>定义在 <a href="file:///f:/work-project/cat/lib/java/src/main/java/com/dianping/cat/configuration/client/entity/Server.java">Server.java</a>:</p>
+
+<pre><code>public class Server extends BaseEntity&lt;Server&gt; {
+    private int port = 2280;        // TCP 数据上报端口
+    private int httpPort = 8080;    // HTTP 路由拉取端口
+    private boolean enabled = true;
+}</code></pre>
+
+<h4>(2) MessageIdFactory</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/internal/MessageIdFactory.java">MessageIdFactory.java</a></p>
+
+<p>用 <strong>mmap</strong>(1MB)把当前小时戳 + 计数器持久化到 <code>${CAT_HOME}/cat-{domain}.mark</code>,每 10 秒落盘,JVM 退出加 shutdown hook。重启同小时会 <code>index + 1000</code> 续接避免 ID 冲突。ID 格式:<code>{domain}-{ipHex}-{hour}-{index}</code>。</p>
+
+<pre><code>public void initialize(String domain) throws IOException {
+    m_domain = domain;
+    m_ipAddress = genIpHex();                  // 把本机 IP 转成 hex
+    m_processID = getProcessID();              // 通过 RuntimeMXBean 拿 PID
+    File mark = createMarkFile(domain);         // 创建 {CAT_HOME}/cat-{domain}.mark
+    m_markFile = new RandomAccessFile(mark, "rw");
+    m_markChannel = m_markFile.getChannel();
+    m_byteBuffer = m_markChannel.map(MapMode.READ_WRITE, 0, 1024 * 1024L);  // mmap 1MB
+    // ...从 mark 文件读取上次时间戳与 index,同小时则 +1000 续接...
+    saveMark();
+    Runtime.getRuntime().addShutdownHook(...);
+}</code></pre>
+
+<h4>(3) Netty 客户端 + ChannelManager</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/TcpSocketSender.java">TcpSocketSender.java</a></p>
+
+<pre><code>public void initialize(List&lt;InetSocketAddress&gt; addresses) {
+    m_channelManager = new ChannelManager(m_logger, addresses, m_configManager, m_factory);
+    Threads.forGroup("cat").start(this);              // 发送线程
+    Threads.forGroup("cat").start(m_channelManager);  // 路由/重连检查线程(10s)
+    Runtime.getRuntime().addShutdownHook(... shutdown() ...);
+}</code></pre>
+
+<p><strong>双队列设计</strong>:</p>
+
+<pre><code>public static final int SIZE = ApplicationSettings.getQueueSize();   // 默认 5000
+private MessageQueue m_queue       = new DefaultMessageQueue(SIZE);  // 普通消息
+private MessageQueue m_atomicQueue = new DefaultMessageQueue(SIZE);  // 原子消息(可合并)</code></pre>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/ChannelManager.java">ChannelManager.java</a> 用 Netty <code>Bootstrap</code>,<strong>Netty pipeline 是空的</strong>(无任何 handler):</p>
+
+<pre><code>bootstrap.group(new NioEventLoopGroup(1, daemonThreadFactory))
+         .channel(NioSocketChannel.class)
+         .option(ChannelOption.SO_KEEPALIVE, true)
+         .handler(new ChannelInitializer&lt;Channel&gt;() {
+             protected void initChannel(Channel ch) { }  // 空!
+         });</code></pre>
+
+<p>业务线程之外用 <code>NativeMessageCodec</code> 预先编好 <code>ByteBuf</code>,直接 <code>channel.writeAndFlush(buf)</code>。</p>
+
+<h2 id="sec-3-5">3.5 客户端启动时序图</h2>
+
+<pre><code>业务代码首次调用 Cat.newTransaction()
+    │
+    ▼
+Cat.checkAndInitialize()  (双检锁)
+    │
+    ▼
+Cat.initialize(new File(CAT_HOME + "client.xml"))
+    │
+    ▼
+ContainerLoader.getDefaultContainer()  ← Plexus IoC 容器
+    │
+    ▼
+ctx.lookup(Module.class, "cat-client") → CatClientModule
+    │
+    ▼
+ModuleInitializer.execute(ctx, CatClientModule)
+    │
+    ▼
+CatClientModule.execute(ctx):
+    (1) MilliSecondTimer.initialize()
+    (2) Threads.addListener(CatThreadListener)
+    (3) lookup(ClientConfigManager) → DefaultClientConfigManager.initialize()
+          ├─ 解析 CAT_HOME/client.xml (SAX)
+          ├─ 加载 /META-INF/app.properties 拿 app.name
+          ├─ ClientConfigMerger 合并 / ClientConfigValidator 校验
+          └─ refreshConfig() → HTTP 拉 /cat/s/router?op=json 拿 routers / block / sample
+    (4) Cat.getInstance().setContainer(container)
+          ├─ container.lookup(MessageManager.class) → DefaultMessageManager.initialize()
+          │     ├─ 从 ClientConfigManager 拿 Domain / 本机 hostName / IP
+          │     └─ MessageIdFactory.initialize(domain)  ★ mmap 创建 cat-{domain}.mark
+          └─ container.lookup(MessageProducer.class) → DefaultMessageProducer
+    (5) lookup(TransportManager) → DefaultTransportManager.initialize()
+          ├─ 收集启用 server → InetSocketAddress(ip, 2280)
+          └─ m_tcpSocketSender.initialize(addresses):
+                ├─ new ChannelManager(...)   ← Netty Bootstrap + 优先用 routers 配置
+                ├─ Threads.forGroup("cat").start(TcpSocketSender)        ★ 发送线程
+                └─ Threads.forGroup("cat").start(ChannelManager)          ★ 路由/重连线程(10s)
+    (6) if(isCatEnabled()):
+          ├─ Threads.forGroup("cat").start(StatusUpdateTask)        ← 心跳(60s)
+          └─ Threads.forGroup("cat").start(LocalAggregator.DataUploader)  ← 采样本地聚合上传</code></pre>
+
+<hr>
+
+<h1 id="sec-4">四、客户端发送 → 服务端接收 整体流程图</h1>
+
+<pre><code>═══════════════════════════ 客户端 (cat-client) ═════════════════════════════
+
+  业务线程
+  ────────────────────────────────────────────────────────────────────────
+  Cat.newTransaction("URL","/index")
+        │ 委托 DefaultMessageProducer
+        ▼
+  DefaultMessageProducer.newTransaction
+        │ m_manager.setup()  ← 若无 ThreadLocal&lt;Context&gt; 则创建
+        │   └─ new DefaultMessageTree(填 domain/host/ip/thread)
+        │   └─ push 到 m_stack
+        ▼
+  DefaultTransaction (业务执行...)
+        │ 业务逻辑
+        ▼
+  transaction.complete()
+        │ 计算 duration = (nanoTime - start) / 1000
+        ▼
+  DefaultMessageManager.end(this)
+        │ Context.end: pop 栈顶 → 栈空时 copy(tree) → manager.flush(tree,true)
+        ▼
+  DefaultMessageManager.flush
+        │ MessageSender sender = TransportManager.getSender()  → TcpSocketSender
+        ▼
+  TcpSocketSender.send(tree)
+        │ 采样判断:canDiscard && sampleRatio&lt;1.0 && !hitSample → LocalAggregator (本地聚合,不上报)
+        │ 否则 offer(tree):
+        │     isAtomicMessage? → m_atomicQueue : m_queue  (各 5000 容量 ArrayBlockingQueue)
+        ▼
+  ┌───────────────────── 队列分界(异步) ─────────────────────┐
+                                                              │
+  cat-TcpSocketSender 后台线程                                  │
+  ──────────────────────────────────────────────────────────────
+  while(m_active) {                                            │
+      processAtomicMessage();  // 合并原子消息(30s 或 200 条触发)│
+      processNormalMessage():  //                              │
+        channel = m_channelManager.channel();                  │
+        tree = m_queue.poll(5ms);                               │
+        if (tree != null) {                                    │
+            sendInternal(channel, tree):                       │
+              ├─ if (tree.getMessageId()==null) setMessageId   │
+              ├─ ByteBuf buf = m_codec.encode(tree);  ← NativeMessageCodec NT1
+              │       ┌─────────────────────────────────┐      │
+              │       │ 4 bytes length  (body 长度)    │      │
+              │       │ 3 bytes "NT1" 版本标识          │      │
+              │       │ 10 个 HEADER 字符串(varint+UTF8)│      │
+              │       │ 消息体(递归 t/T/E/M/H/L)       │      │
+              │       │   数值用 varint,字符串用 varlen │      │
+              │       └─────────────────────────────────┘      │
+              └─ channel.writeAndFlush(buf);  ← Netty 异步写   │
+        } else Thread.sleep(5);                                 │
+  }                                                             │
+
+  cat-ChannelManager 后台线程(独立,每 10s)
+  ──────────────────────────────────────────────────────────────
+  run() { saveMark(); checkServerChanged(); doubleCheckActiveServer();
+           reconnectDefaultServer(); sleep(10s); }
+  ↑ 路由热更新 / stalled 检测(连续3次)/ 强制重连默认服务器(最多 20 次)
+
+
+═══════════════════════════ 网络 (TCP :2280) ══════════════════════════════
+
+  Netty NioSocketChannel ─── TCP 字节流 ───► Netty ServerSocketChannel
+
+
+═══════════════════════════ 服务端 (cat-core / cat-consumer) ═══════════════
+
+  Netty worker 线程 (24 个,Linux 用 Epoll)
+  ────────────────────────────────────────────────────────────────────────
+  MessageDecoder.decode(ctx, buffer, out)   ← TcpSocketReceiver 内部类
+        │ 半包处理:readableBytes&lt;4 等待; readableBytes&lt;length+4 等待
+        │ 读取完整一帧 [4字节长度][length字节body]
+        ▼
+  CodecHandler.decode(buf)
+        │ 读 buf[4..7] 3字节 magic
+        ├─ "PT1" → PlainTextMessageCodec.decode   (文本协议,调试用)
+        └─ "NT1" → NativeMessageCodec.decode      (默认二进制)
+        │   解析 HEADER(domain/host/ip/thread/messageId/parent/root/...) + 消息体
+        ▼
+  MessageTreeFormat.format(tree)
+  tree.setBuffer(readBytes)   // 保留原始 buffer 供 DumpAnalyzer
+        ▼
+  DefaultMessageHandler.handle(tree)
+        │ if (m_consumer==null) m_consumer = lookup(MessageConsumer.class); // 懒加载
+        ▼
+  RealtimeConsumer.consume(tree)        ← 同步调用,在 Netty worker 线程内
+        │ long timestamp = tree.getMessage().getTimestamp();
+        │ Period period = m_periodManager.findPeriod(timestamp);  // 按时间戳找小时桶
+        │ if (period==null) m_serverStateManager.addNetworkTimeError(1);
+        ▼
+  Period.distribute(tree)               ← 一个 tree 广播到所有 analyzer 类型
+        │ for each analyzerName in [transaction, event, problem, heartbeat, dump,
+        │                            state, cross, matrix, dependency, storage, top, business]:
+        │     index = Math.abs(domain.hashCode()) % tasks.size();   // 同 domain 进同一 analyzer
+        │     boolean ok = tasks.get(index).enqueue(tree);          // ArrayBlockingQueue.offer (非阻塞)
+        │     if (!ok && manyTasks) tasks.get((index+1)%size).enqueue(tree);  // 故障转移
+        │ if (fail) serverStateManager.addMessageTotalLoss(domain, 1);
+        ▼
+  ┌─────────────── 队列分界(每 analyzer × 实例一个队列,容量 30000) ───────────┐
+  │                                                                          │
+  PeriodTask 线程(线程名:{Analyzer}-{hour}-{index},默认每 analyzer 2 个)
+  ────────────────────────────────────────────────────────────────────────────
+  PeriodTask.run()
+        │ m_analyzer.analyze(m_queue);
+        ▼
+  AbstractMessageAnalyzer.analyze(queue)
+        │ while (!isTimeout() && isActive()) {  // timeout = startTime + 1H + 3min
+        │     MessageTree tree = queue.poll();  // 5ms 超时阻塞
+        │     if (tree != null) process(tree);   // 子类实现
+        │ }
+        │ while ((tree=queue.poll()) != null) process(tree);  // 超时后 drain 残留
+        ▼
+  ConcreteAnalyzer.process(tree)   ← TransactionAnalyzer / EventAnalyzer / ProblemAnalyzer ...
+        │ 例如 TransactionAnalyzer:
+        │   report = m_reportManager.getHourlyReport(startTime, domain, true);
+        │   for (Transaction t : tree.findOrCreateTransactions())
+        │       processTransaction(report, tree, t);   // 累加 Type/Name/Range/Duration 分布
+        ▼
+  内存 Report 对象(TransactionReport / EventReport / ProblemReport ...)
+
+  周期结束触发(PeriodManager 检测到超出 startTime + HOUR + EXTRA)
+  ────────────────────────────────────────────────────────────────────────────
+  EndTaskThread
+        │ period.finish() → 每个 PeriodTask.finish()
+        ▼
+  PeriodTask.finish()
+        │ m_analyzer.doCheckpoint(true);   // atEnd=true
+        ▼
+  AbstractMessageAnalyzer.doCheckpoint(true)
+        │ m_reportManager.storeHourlyReports(startTime, FILE_AND_DB, index);
+        ▼
+  DefaultReportManager / ReportBucket
+        ├─ LocalReportBucket  → 本地文件 ${CAT_HOME}/bucket/{analyzer}/{domain}/{hour}/...
+        └─ HourlyReportDao / HourlyReportContentDao → MySQL  (FILE_AND_DB 时)</code></pre>
+
+<hr>
+
+<h1 id="sec-5">五、关键源码深度分析</h1>
+
+<h2 id="sec-5-1">5.1 客户端发送端关键源码</h2>
+
+<h4>(1) 采样丢弃机制</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/TcpSocketSender.java">TcpSocketSender.send()</a></p>
+
+<pre><code>public void send(MessageTree tree) {
+    if (!m_configManager.isBlock()) {     // 全局阻塞开关
+        double sampleRatio = m_configManager.getSampleRatio();
+        if (tree.canDiscard() && sampleRatio < 1.0 && (!tree.isHitSample())) {
+            processTreeInClient(tree);    // 本地聚合,不上报网络
+        } else {
+            offer(tree);
+        }
+    }
+}</code></pre>
+
+<p><code>setDiscard(false)</code> 的消息(Error/Heartbeat/Metric)强制上报,普通 Transaction/Event 走采样。</p>
+
+<h4>(2) 后台轮询发送(不是定时批量,而是 5ms 忙循环)</h4>
+
+<pre><code>public void run() {
+    m_active = true;
+    while (m_active) {
+        processAtomicMessage();    // 合并原子队列(30s 或 200 条触发)
+        processNormalMessage();    // 发送普通队列
+    }
+    processAtomicMessage();
+    while (true) { /* drain 残留 */ }
+}
+private void processNormalMessage() {
+    ChannelFuture channel = m_channelManager.channel();
+    if (channel != null) {
+        MessageTree tree = m_queue.poll();
+        if (tree != null) {
+            sendInternal(channel, tree);
+            tree.setMessage(null);  // 释放引用
+        } else { Thread.sleep(5); }
+    } else { Thread.sleep(5); }     // 等 channel 重连
+}</code></pre>
+
+<h4>(3) NativeMessageCodec NT1 协议</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/spi/codec/NativeMessageCodec.java">NativeMessageCodec.java</a></p>
+
+<pre><code>+----+----+----+--------+--------+----+----+--------+--------+--------+--------+--------+--------+--------+--------+---------+--------+---------+---------+---------+---------+---------+
+| L1 | L2 | L3 | L4 (4字节长度,值为后续字节数) |  'N'| 'T'| '1' | domain(varstr) | hostName | ipAddress | threadGroupName | threadId | threadName | messageId | parentMessageId | rootMessageId | sessionToken | 消息体(递归 t/T/E/M/H/L) |
++----+----+----+--------+--------+----+----+--------+--------+--------+--------+--------+--------+--------+--------+--------+---------+--------+---------+---------+---------+---------+---------+</code></pre>
+
+<ul>
+  <li><code>varstr</code> = <code>varint(长度) + UTF-8 bytes</code></li>
+  <li>数值(timestamp/duration)用 <strong>LEB128 varint</strong>(类 Protobuf,小数值省字节)</li>
+  <li>消息类型字节:<code>'t'</code> 事务开始 / <code>'T'</code> 事务结束 / <code>'E'</code> 事件 / <code>'M'</code> 指标 / <code>'H'</code> 心跳 / <code>'L'</code> Trace</li>
+</ul>
+
+<h4>(4) 原子消息合并</h4>
+
+<p>每 30 秒或累积 200 条触发,把多条原子消息打包成一个 <code>_CatMergeTree</code> 事务,大幅减少网络包数量。</p>
+
+<h2 id="sec-5-2">5.2 服务端接收端关键源码</h2>
+
+<h4>(1) 半包解码</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/TcpSocketReceiver.java">TcpSocketReceiver.MessageDecoder</a> 继承 Netty <code>ByteToMessageDecoder</code>:</p>
+
+<pre><code>protected void decode(ChannelHandlerContext ctx, ByteBuf buffer, List&lt;Object&gt; out) {
+    if (buffer.readableBytes() < 4) return;           // 不足 4 字节,等
+    buffer.markReaderIndex();
+    int length = buffer.readInt();                    // 读 4 字节长度
+    buffer.resetReaderIndex();
+    if (buffer.readableBytes() < length + 4) return; // 不够一帧,等
+
+    if (length > 0) {
+        ByteBuf readBytes = buffer.readBytes(length + 4);
+        DefaultMessageTree tree = (DefaultMessageTree) CodecHandler.decode(readBytes);
+        tree.setBuffer(readBytes);      // 保留 buffer 给 DumpAnalyzer
+        m_handler.handle(tree);         // 同步调用,在 Netty worker 线程内
+        if (++m_processCount % 1000 == 0) {
+            m_serverStateManager.addMessageTotal(1000);
+        }
+    }
+}</code></pre>
+
+<h4>(2) 按 domain hash 分流(同一消息广播到所有 analyzer)</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/Period.java">Period.distribute()</a></p>
+
+<pre><code>public void distribute(MessageTree tree) {
+    m_serverStateManager.addMessageTotal(tree.getDomain(), 1);
+    String domain = tree.getDomain();
+    boolean success = true;
+    for (Entry&lt;String, List&lt;PeriodTask&gt;&gt; entry : m_tasks.entrySet()) {
+        List&lt;PeriodTask&gt; tasks = entry.getValue();
+        int index = 0;
+        boolean manyTasks = tasks.size() > 1;
+        if (manyTasks) index = Math.abs(domain.hashCode()) % length;  // 同 domain 进同 analyzer
+        boolean ok = tasks.get(index).enqueue(tree);
+        if (!ok && manyTasks) {
+            ok = tasks.get((index + 1) % length).enqueue(tree);  // 故障转移
+        }
+        if (!ok) success = false;
+    }
+    if (!success && !tree.isProcessLoss()) {
+        m_serverStateManager.addMessageTotalLoss(tree.getDomain(), 1);
+        tree.setProcessLoss(true);
+    }
+}</code></pre>
+
+<h4>(3) 分析循环 + 周期 checkpoint</h4>
+
+<p>文件:<a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/AbstractMessageAnalyzer.java">AbstractMessageAnalyzer</a></p>
+
+<pre><code>public void analyze(MessageQueue queue) {
+    while (!isTimeout() && isActive()) {
+        MessageTree tree = queue.poll();
+        if (tree != null) {
+            try { process(tree); }
+            catch (Throwable e) { if (++m_errors==1 || m_errors%10000==0) Cat.logError(e); }
+        }
+    }
+    while (true) {                     // 超时后 drain 残留
+        MessageTree tree = queue.poll();
+        if (tree == null) break;
+        try { process(tree); } catch (...) { }
+    }
+}
+public synchronized void doCheckpoint(boolean atEnd) {
+    if (atEnd && !isLocalMode()) {
+        m_reportManager.storeHourlyReports(getStartTime(), FILE_AND_DB, m_index);
+    } else {
+        m_reportManager.storeHourlyReports(getStartTime(), FILE, m_index);
+    }
+}</code></pre>
+
+<h2 id="sec-5-3">5.3 关键参数速查表</h2>
+
+<table>
+  <tr><th>维度</th><th>参数</th><th>值</th><th>来源</th></tr>
+  <tr><td>客户端</td><td>发送队列容量</td><td>5000(可配 <code>cat.queue.length</code>)</td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/ApplicationSettings.java">ApplicationSettings</a></td></tr>
+  <tr><td>客户端</td><td>队列 poll 超时</td><td>5 ms</td><td><code>DefaultMessageQueue.poll</code></td></tr>
+  <tr><td>客户端</td><td>空闲 sleep</td><td>5 ms</td><td><code>processNormalMessage</code></td></tr>
+  <tr><td>客户端</td><td>ChannelManager 检查周期</td><td>10 s</td><td><code>ChannelManager.run</code></td></tr>
+  <tr><td>客户端</td><td>通道 stalled 关闭阈值</td><td>连续 3 次</td><td><code>isChannelStalled</code></td></tr>
+  <tr><td>客户端</td><td>重连最大重试</td><td>20 次</td><td><code>MAX_RETRY_CHANNEL</code></td></tr>
+  <tr><td>客户端</td><td>原子消息合并阈值</td><td>200 条 或 30 秒</td><td><code>MAX_CHILD_NUMBER</code> / <code>MAX_DURATION</code></td></tr>
+  <tr><td>客户端</td><td>树截断阈值</td><td>2000 节点 / 硬截断 5000</td><td><code>ApplicationSettings</code></td></tr>
+  <tr><td>协议</td><td>默认协议</td><td><code>NT1</code>(native binary)</td><td><code>NativeMessageCodec.ID</code></td></tr>
+  <tr><td>服务端</td><td>监听端口</td><td><strong>2280</strong></td><td><code>TcpSocketReceiver.m_port</code></td></tr>
+  <tr><td>服务端</td><td>Netty boss/worker 线程</td><td>各 24(Linux 用 Epoll)</td><td><code>startServer</code></td></tr>
+  <tr><td>服务端</td><td>Period 时长</td><td>1 小时</td><td><code>RealtimeConsumer.HOUR</code></td></tr>
+  <tr><td>服务端</td><td>Period extra/ahead time</td><td>3 分钟</td><td><code>PeriodStrategy</code></td></tr>
+  <tr><td>服务端</td><td>PeriodManager 轮询周期</td><td>1 秒</td><td><code>PeriodManager.run</code></td></tr>
+  <tr><td>服务端</td><td>每个 PeriodTask 队列容量</td><td>30000</td><td><code>Period.QUEUE_SIZE</code></td></tr>
+  <tr><td>服务端</td><td>每 analyzer 线程数</td><td>默认 2(可配 <code>{name}-analyzer-threads</code>)</td><td><code>getThreadsOfRealtimeAnalyzer</code></td></tr>
+  <tr><td>服务端</td><td>checkpoint 存储</td><td>atEnd=true → FILE_AND_DB;否则 FILE</td><td><code>doCheckpoint</code></td></tr>
+  <tr><td>服务端</td><td>12 个 Analyzer</td><td>transaction/event/problem/heartbeat/dump/state/cross/matrix/dependency/storage/top/business</td><td><a href="file:///f:/work-project/cat/cat-consumer/src/main/java/com/dianping/cat/consumer/build/ComponentsConfigurator.java">cat-consumer ComponentsConfigurator</a></td></tr>
+</table>
+
+<hr>
+
+<h1 id="sec-6">六、设计要点总结</h1>
+
+<ol>
+  <li><strong>客户端全异步 + 采样降级</strong>:<code>ArrayBlockingQueue.offer</code> 非阻塞(满则丢)保证业务线程不被阻塞;采样率&lt;1.0 时通过 <code>LocalAggregator</code> 在客户端本地聚合,完全不占网络。</li>
+  <li><strong>Netty pipeline 为空</strong>:客户端依赖业务线程外预先 <code>NativeMessageCodec.encode</code> 出 <code>ByteBuf</code>,直接 <code>writeAndFlush</code>,无需 encoder。</li>
+  <li><strong>服务端无全局队列</strong>:Netty worker 线程同步调用 <code>RealtimeConsumer.consume</code> → 直接按时间戳定位 Period → 按 domain hash 入对应 analyzer 队列。<strong>避免全局锁竞争</strong>。</li>
+  <li><strong>按时间分桶 + 预启动</strong>:1 小时一个 Period,提前 3 分钟启动下一周期,宽限 3 分钟处理迟到消息,保证跨小时无缝。</li>
+  <li><strong>同 domain 同 analyzer</strong>:hash 取模分流,保证同一 domain 的消息进同一 analyzer 实例,减少锁竞争且保证报告一致。</li>
+  <li><strong>多 analyzer 并行消费</strong>:一棵 MessageTree 广播到 12 种 analyzer 队列并行处理,各 analyzer 职责单一。</li>
+  <li><strong>周期结束双写</strong>:atEnd=true 时同时写本地文件和 MySQL,中途 checkpoint 仅写文件。</li>
+  <li><strong>路由热更新</strong>:客户端每 10 秒比较服务端下发的 routers 配置,变化则重建 channel;服务端通过 <code>/cat/s/router?op=json</code> HTTP 接口下发。</li>
+</ol>
+
+<hr>
+
+<h1 id="sec-7">附:关键文件清单</h1>
+
+<h3>客户端(cat-client)</h3>
+
+<table>
+  <tr><th>类</th><th>路径</th></tr>
+  <tr><td><code>Cat</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/Cat.java">cat-client/.../Cat.java</a></td></tr>
+  <tr><td><code>CatClientModule</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/CatClientModule.java">cat-client/.../CatClientModule.java</a></td></tr>
+  <tr><td><code>DefaultMessageProducer</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/internal/DefaultMessageProducer.java">cat-client/.../DefaultMessageProducer.java</a></td></tr>
+  <tr><td><code>DefaultMessageManager</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/internal/DefaultMessageManager.java">cat-client/.../DefaultMessageManager.java</a></td></tr>
+  <tr><td><code>DefaultMessageTree</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/spi/internal/DefaultMessageTree.java">cat-client/.../DefaultMessageTree.java</a></td></tr>
+  <tr><td><code>MessageIdFactory</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/internal/MessageIdFactory.java">cat-client/.../MessageIdFactory.java</a></td></tr>
+  <tr><td><code>NativeMessageCodec</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/spi/codec/NativeMessageCodec.java">cat-client/.../NativeMessageCodec.java</a></td></tr>
+  <tr><td><code>TcpSocketSender</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/TcpSocketSender.java">cat-client/.../TcpSocketSender.java</a></td></tr>
+  <tr><td><code>ChannelManager</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/message/io/ChannelManager.java">cat-client/.../ChannelManager.java</a></td></tr>
+  <tr><td><code>DefaultClientConfigManager</code></td><td><a href="file:///f:/work-project/cat/cat-client/src/main/java/com/dianping/cat/configuration/DefaultClientConfigManager.java">cat-client/.../DefaultClientConfigManager.java</a></td></tr>
+</table>
+
+<h3>服务端(cat-core / cat-consumer)</h3>
+
+<table>
+  <tr><th>类</th><th>路径</th></tr>
+  <tr><td><code>CatServlet</code></td><td><a href="file:///f:/work-project/cat/cat-home/src/main/java/com/dianping/cat/servlet/CatServlet.java">cat-home/.../CatServlet.java</a></td></tr>
+  <tr><td><code>CatHomeModule</code></td><td><a href="file:///f:/work-project/cat/cat-home/src/main/java/com/dianping/cat/CatHomeModule.java">cat-home/.../CatHomeModule.java</a></td></tr>
+  <tr><td><code>TcpSocketReceiver</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/TcpSocketReceiver.java">cat-core/.../TcpSocketReceiver.java</a></td></tr>
+  <tr><td><code>DefaultMessageHandler</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/DefaultMessageHandler.java">cat-core/.../DefaultMessageHandler.java</a></td></tr>
+  <tr><td><code>RealtimeConsumer</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/RealtimeConsumer.java">cat-core/.../RealtimeConsumer.java</a></td></tr>
+  <tr><td><code>PeriodManager</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/PeriodManager.java">cat-core/.../PeriodManager.java</a></td></tr>
+  <tr><td><code>Period</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/Period.java">cat-core/.../Period.java</a></td></tr>
+  <tr><td><code>PeriodTask</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/PeriodTask.java">cat-core/.../PeriodTask.java</a></td></tr>
+  <tr><td><code>AbstractMessageAnalyzer</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/AbstractMessageAnalyzer.java">cat-core/.../AbstractMessageAnalyzer.java</a></td></tr>
+  <tr><td><code>DefaultMessageAnalyzerManager</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/analysis/DefaultMessageAnalyzerManager.java">cat-core/.../DefaultMessageAnalyzerManager.java</a></td></tr>
+  <tr><td><code>ServerConfigManager</code></td><td><a href="file:///f:/work-project/cat/cat-core/src/main/java/com/dianping/cat/config/server/ServerConfigManager.java">cat-core/.../ServerConfigManager.java</a></td></tr>
+  <tr><td>12 个 Analyzer</td><td><a href="file:///f:/work-project/cat/cat-consumer/src/main/java/com/dianping/cat/consumer/">cat-consumer/.../</a></td></tr>
+</table>
+
+<hr>
+
+<p style="text-align:center;color:#94a3b8;font-size:12px;">文档生成时间:2026-08-01</p>
+
+</main>
+
+<script>
+  // 滚动同步:点击目录跳转,并高亮当前激活项
+  const tocLinks = document.querySelectorAll('#toc a[href^="#"]');
+  const sections = [];
+  tocLinks.forEach(link => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) sections.push({ link, target });
+  });
+
+  // 点击高亮
+  tocLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  // 滚动监听,自动高亮当前章节
+  const content = document.getElementById('content');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 80;
+    let current = sections[0];
+    sections.forEach(s => {
+      if (s.target.offsetTop <= scrollY) current = s;
+    });
+    if (current) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      current.link.classList.add('active');
+      // 让激活项在 TOC 可视范围内
+      const toc = document.getElementById('toc');
+      const linkTop = current.link.offsetTop;
+      if (linkTop < toc.scrollTop || linkTop > toc.scrollTop + toc.clientHeight - 50) {
+        toc.scrollTop = linkTop - toc.clientHeight / 2;
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

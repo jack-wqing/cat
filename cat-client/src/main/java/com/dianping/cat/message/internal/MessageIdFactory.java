@@ -43,6 +43,7 @@ import com.dianping.cat.util.CleanupHelper;
 /**
  * MessageIdFactory: cat-domain.mark文件
  */
+// 记录cat-domain.mark 持久化文件，防止重启重复
 @Named
 public class MessageIdFactory {
 	public static final long HOUR = 3600 * 1000L;
@@ -60,7 +61,7 @@ public class MessageIdFactory {
 	private MappedByteBuffer m_byteBuffer;
 
 	private RandomAccessFile m_markFile;
-
+	// 可以有服务端的 ip
 	private Map<String, AtomicInteger> m_map = new ConcurrentHashMap<String, AtomicInteger>(100);
 
 	private int m_retry;

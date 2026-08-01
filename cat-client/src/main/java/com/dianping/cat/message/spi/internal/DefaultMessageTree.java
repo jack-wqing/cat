@@ -38,6 +38,7 @@ import com.dianping.cat.message.spi.codec.PlainTextMessageCodec;
 /**
  * default message tree
  */
+// Default Tree
 public class DefaultMessageTree implements MessageTree {
 
 	private ByteBuf m_buf;
@@ -63,11 +64,11 @@ public class DefaultMessageTree implements MessageTree {
 	private String m_threadId;
 
 	private String m_threadName;
-
+	// 客户端没用
 	private MessageId m_formatMessageId;
 
 	private boolean m_discard = true;
-
+	// 客户单没用
 	private boolean m_processLoss = false;
 
 	private boolean m_hitSample = false;

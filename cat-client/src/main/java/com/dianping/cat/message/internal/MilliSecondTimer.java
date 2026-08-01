@@ -25,7 +25,7 @@ import java.util.concurrent.locks.LockSupport;
  */
 
 /**
- * milli second timer
+ * 事件基准
  */
 public class MilliSecondTimer {
 	private static long m_baseTime;

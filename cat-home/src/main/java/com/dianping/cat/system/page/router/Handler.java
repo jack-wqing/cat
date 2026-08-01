@@ -43,7 +43,7 @@ import org.unidal.web.mvc.annotation.PayloadMeta;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.*;
-// 路由信息的获取
+// 路由handler
 public class Handler implements PageHandler<Context> {
 
 	@Inject
@@ -67,6 +67,7 @@ public class Handler implements PageHandler<Context> {
 	private JsonBuilder m_jsonBuilder = new JsonBuilder();
 
 	private String buildRouterInfo(String ip, String domain, RouterConfig config) {
+		// 客户端ip所属组
 		String group = m_configManager.queryServerGroupByIp(ip);
 		Domain domainConfig = m_configManager.getRouterConfig().findDomain(domain);
 		List<Server> servers = new ArrayList<Server>();
@@ -176,9 +177,11 @@ public class Handler implements PageHandler<Context> {
 
 	private Map<String, String> buildKvs(RouterConfig report, String domain, String ip) {
 		Map<String, String> kvs = new HashMap<String, String>();
-
+		// client ip所属网络组
 		kvs.put("block", String.valueOf(m_configManager.shouldBlock(ip)));
+		// 可以使用的机器
 		kvs.put("routers", buildRouterInfo(ip, domain, report));
+		// 单独的抽象配置
 		kvs.put("sample", String.valueOf(buildSampleInfo(domain)));
 		kvs.put("startTransactionTypes", m_filterManager.getAtomicStartTypes());
 		kvs.put("matchTransactionTypes", m_filterManager.getAtomicMatchTypes());

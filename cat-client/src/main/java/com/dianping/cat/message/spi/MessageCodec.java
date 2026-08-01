@@ -23,6 +23,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Message Tree Codec: PT1(toString) + NT1(Sender)
  */
+// 消息编解码
 public interface MessageCodec {
 	/**
 		* decode buf to message tree

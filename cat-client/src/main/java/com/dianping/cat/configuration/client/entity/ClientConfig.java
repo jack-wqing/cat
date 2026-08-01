@@ -8,23 +8,29 @@ import java.util.Map;
 import com.dianping.cat.configuration.client.BaseEntity;
 import com.dianping.cat.configuration.client.IVisitor;
 
+// 客户端配置映射 client.xml文件
 public class ClientConfig extends BaseEntity<ClientConfig> {
    private String m_mode;
 
    private Boolean m_enabled = true;
 
+   // 心跳上报是否dump锁信息，dump锁线上有影响
    private Boolean m_dumpLocked;
 
    private List<Server> m_servers = new ArrayList<Server>();
 
+   // 实际只是单Domain
    private Map<String, Domain> m_domains = new LinkedHashMap<String, Domain>();
 
+   // 真实为使用
    private Bind m_bind;
 
+   // 可以在client xml配置，但真是未使用
    private Map<String, Property> m_properties = new LinkedHashMap<String, Property>();
 
    private String m_baseLogDir = "target/catlog";
 
+   // 记录动态未识别的 config上配置的属性
    private Map<String, String> m_dynamicAttributes = new LinkedHashMap<String, String>();
 
    public ClientConfig() {

@@ -21,6 +21,7 @@ package com.dianping.cat.message.io;
 /**
  * transport: 管理MessageSender
  */
+// 传输层
 public interface TransportManager {
 	public MessageSender getSender();
 }

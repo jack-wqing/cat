@@ -1,0 +1,12 @@
+源码生成说明：mvn -pl cat-home generate-sources
+           mvn -pl cat-core generate-sources
+
+核心工作原理：客户端埋点 -> TCP异步上报 -> 服务端实时分桶聚合 -> 报告罗盘
+    客户端：业务代码通过 Cat.newTransaction()等API在ThreadLocal中构建MessageTree，事务complete时通过TcpSocketSender异步入队,
+          后台线程用Netty以NT1二进制协议发送到服务端
+    服务端：Netty ServerBootstrap 在2280端口接收字节流 -> MessageDecoder长度分帧解码 -> DefaultMessageHandler同步调用 RealTimeConsumer.consume()->
+          按消息“时间戳定位Period(1小时桶)”-> 按 domain.hashCode() 分流到每个Analyzer类型独立的ArrayBlockingQueue(30000)->PeriodTask线程消费->各Analyzer.process() 累计
+          到内存Report -> 周期结束doCheckpoint(true)落盘(本地文件+MySql)
+
+客户端： trace时跨进程是：“X-CAT-”开头的请求头
+

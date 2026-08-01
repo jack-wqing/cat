@@ -30,6 +30,7 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
  * Message Tree 消息匹配
  */
+// 客户端小事务 流量整形
 public class AtomicTreeParser {
 
 	private List<String> m_startTypes = new ArrayList<String>();
@@ -44,7 +45,6 @@ public class AtomicTreeParser {
 			m_matchTypes = Splitters.by(";").noEmptyItem().split(matchTypes);
 		}
 	}
-	// 只有Transaction类型的消息才会判断是否是 atomic类型的消息；其它类型都是atomic类型的
 	public boolean isAtomicMessage(MessageTree tree) {
 		Message message = tree.getMessage();
 

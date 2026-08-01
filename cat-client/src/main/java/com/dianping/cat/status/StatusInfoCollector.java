@@ -44,6 +44,7 @@ import com.dianping.cat.status.model.entity.StatusInfo;
 import com.dianping.cat.status.model.entity.ThreadsInfo;
 import com.dianping.cat.status.model.transform.BaseVisitor;
 
+// 客户端生产消息统计 MessageStatistics
 public class StatusInfoCollector extends BaseVisitor {
 	private MessageStatistics m_statistics;
 

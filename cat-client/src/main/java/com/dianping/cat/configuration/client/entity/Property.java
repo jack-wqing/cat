@@ -6,6 +6,7 @@ import static com.dianping.cat.configuration.client.Constants.ENTITY_PROPERTY;
 import com.dianping.cat.configuration.client.BaseEntity;
 import com.dianping.cat.configuration.client.IVisitor;
 
+// name : text
 public class Property extends BaseEntity<Property> {
    private String m_name;
 

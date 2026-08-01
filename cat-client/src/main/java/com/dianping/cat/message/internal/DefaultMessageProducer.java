@@ -40,6 +40,7 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
  * Default Message Producer
  */
+// 消息生产者
 @Named(type = MessageProducer.class)
 public class DefaultMessageProducer implements MessageProducer {
 	@Inject
@@ -62,7 +63,7 @@ public class DefaultMessageProducer implements MessageProducer {
 	public boolean isEnabled() {
 		return m_manager.isMessageEnabled();
 	}
-
+	// log开头的直接完成，不需要complete
 	@Override
 	public void logError(String message, Throwable cause) {
 		if (Cat.getManager().isCatEnabled()) {
@@ -190,7 +191,7 @@ public class DefaultMessageProducer implements MessageProducer {
 		}
 
 		DefaultForkedTransaction transaction = new DefaultForkedTransaction(type, name, m_manager);
-
+		// 为什么这里直接linkAsRunAway
 		if (m_manager instanceof DefaultMessageManager) {
 			((DefaultMessageManager) m_manager).linkAsRunAway(transaction);
 		}
@@ -234,6 +235,7 @@ public class DefaultMessageProducer implements MessageProducer {
 		if (tree.getMessageId() == null) {
 			tree.setMessageId(createMessageId());
 		}
+		// 创建Tagged
 		DefaultTaggedTransaction transaction = new DefaultTaggedTransaction(type, name, tag, m_manager);
 
 		m_manager.start(transaction, true);

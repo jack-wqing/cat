@@ -38,6 +38,7 @@ import com.dianping.cat.status.StatusUpdateTask;
 /**
  * cat client module
  */
+// 客户端模块初始化
 @Named(type = Module.class, value = CatClientModule.ID)
 public class CatClientModule extends AbstractModule {
 	public static final String ID = "cat-client";

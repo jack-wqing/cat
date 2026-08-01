@@ -44,6 +44,7 @@ import com.dianping.cat.message.spi.MessageStatistics;
 import com.dianping.cat.status.model.entity.Extension;
 import com.dianping.cat.status.model.entity.StatusInfo;
 
+// 每分钟客户端的心跳采集服务 上报CAT + 周期性刷新客户端配置
 @Named
 public class StatusUpdateTask implements Task, Initializable {
 	@Inject
@@ -144,6 +145,7 @@ public class StatusUpdateTask implements Task, Initializable {
 			int second = cal.get(Calendar.SECOND);
 
 			// try to avoid send heartbeat at 59-01 second
+			// 避开每分钟的临界点(59~01秒),防止时间戳跨分钟导致统计错乱
 			if (second < 2 || second > 58) {
 				try {
 					Thread.sleep(1000);
@@ -179,6 +181,7 @@ public class StatusUpdateTask implements Task, Initializable {
 				StatusInfoCollector collector = new StatusInfoCollector(m_statistics, m_jars);
 
 				try {
+					// 用 StatusInfoCollector 采集 JVM/线程/内存/GC/线程池/ClassLoader 等指标
 					status.accept(collector.setDumpLocked(m_manager.isDumpLocked()));
 
 					buildExtensionData(status);
@@ -199,7 +202,7 @@ public class StatusUpdateTask implements Task, Initializable {
 				long current = System.currentTimeMillis() / 1000 / 60;
 				int min = (int) (current % (60));
 
-				// refresh config 3 minute
+				// refresh config 3 minute 三分钟刷新本地配置
 				if (min % 3 == 0) {
 					m_manager.refreshConfig();
 				}

@@ -45,7 +45,8 @@ import com.site.helper.JsonBuilder;
 import com.site.helper.Splitters;
 
 /**
- * 默认的客户端配置
+ * 默认的客户端配置 统一管理配置：client.xml + app.properties + 服务端动态路由
+ * 因为懒加载，所以其它项目集成可以容器启动期间生成app.properties文件，或者手动Cat初始化
  */
 @Named(type = ClientConfigManager.class)
 public class DefaultClientConfigManager implements LogEnabled, ClientConfigManager {
@@ -73,10 +74,12 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 	public void enableLogging(Logger logger) {
 		m_logger = logger;
 	}
-
+	// 懒加载
 	private ClientConfig getConfig() {
 		if (!m_initialized.get()) {
+			// 加载client.mxl
 			m_config.accept(new ClientXmlLoader());
+			// app.name: default->Unknown
 			m_config.accept(new AppPropertyLoader());
 			m_config.accept(new ConfigValidator());
 
@@ -97,7 +100,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 		// shouldn't reach here
 		return new Domain("Known").setEnabled(true);
 	}
-
+	// 慢调用阈值
 	@Override
 	public int getLongThresholdByDuration(String key, int duration) {
 		List<Integer> values = m_longConfigs.get(key);
@@ -127,7 +130,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 	public double getSampleRatio() {
 		return m_sampleRate;
 	}
-
+	// 服务router配置
 	private String getServerConfigUrl() {
 		List<Server> servers = getConfig().getServers();
 		int size = servers.size();
@@ -156,6 +159,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 		return 1024;
 	}
 
+	// 框架初始化，默认source未设置任何属性
 	@Override
 	public void initialize(ClientConfig source) {
 		source.accept(new ConfigExtractor(m_config));
@@ -200,7 +204,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 			String matchTypes = routerConfig.getValue("matchTransactionTypes");
 
 			m_atomicTreeParser.init(startTypes, matchTypes);
-
+			// 慢调用配置
 			for (ProblemLongType longType : ProblemLongType.values()) {
 				final String name = longType.getName();
 				String propertyName = name + "s";
@@ -228,7 +232,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 	}
 
 	// if no domain specified, then try to get it from /META-INF/app.properties
-	// 自动补充 domain
+	// 使用/META-INF/app.properties 补充应用信息
 	private class AppPropertyLoader extends BaseVisitor {
 		private String getAppNameFromProperties() {
 			String appName = "Unknown";
@@ -279,6 +283,8 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 	}
 
 	// if the config is NOT well prepared, then try to load from ${CAT_HOME}/client.xml
+	// 加载/data/appdatas/cat/client.xml
+	// 只有domain server 起作用
 	private class ClientXmlLoader extends BaseVisitor {
 		@Override
 		public void visitConfig(ClientConfig config) {
@@ -323,7 +329,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 			s.mergeAttributes(server);
 		}
 	}
-
+	// Visitor
 	private static class ConfigExtractor extends BaseVisitor {
 		private ClientConfig m_config;
 

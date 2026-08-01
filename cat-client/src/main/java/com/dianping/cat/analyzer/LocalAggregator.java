@@ -31,8 +31,10 @@ import com.dianping.cat.util.Threads.Task;
  * client消息处理不过来的时候: client本地进行聚合处理
  * 	1.1s执行一次，客户端的transactionAggregator 和 eventAggregator得统计发送操作
  */
+// 本地降级聚合器，在消息无法上报服务端时,在客户端本地把消息聚合成统计指标后再上报,避免数据丢失。
 public class LocalAggregator {
 
+	// 丢弃， 未采用
 	public static void aggregate(MessageTree tree) {
 		analyzerProcessTree(tree);
 	}

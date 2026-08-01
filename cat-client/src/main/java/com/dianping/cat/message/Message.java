@@ -32,9 +32,7 @@ package com.dianping.cat.message;
 	* @see Event, Heartbeat, Transaction
 	*/
 
-/**
- * message
- */
+// messageId: {domain-id}-{ipHex}-{hour}-{index}
 public interface Message {
 	public static final String SUCCESS = "0";
 

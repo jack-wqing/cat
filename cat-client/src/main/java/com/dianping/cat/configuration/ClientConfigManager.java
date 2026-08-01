@@ -28,6 +28,8 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
  * ClientConfig Manager
  */
+// 客户端配置管理类
+// 把客户端client.xml + app.properties + 服务端动态下发的router配置 三处配置源统一封装，堆外提供查询接口，屏蔽底层细节
 public interface ClientConfigManager {
 	public Domain getDomain();
 

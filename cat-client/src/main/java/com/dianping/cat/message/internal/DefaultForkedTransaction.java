@@ -50,6 +50,7 @@ public class DefaultForkedTransaction extends DefaultTransaction implements Fork
 		}
 	}
 
+	// 新线程fork
 	@Override
 	public void fork() {
 		MessageManager manager = getManager();

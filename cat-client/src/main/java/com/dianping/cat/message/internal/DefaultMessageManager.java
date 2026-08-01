@@ -54,6 +54,7 @@ import com.dianping.cat.message.spi.internal.DefaultMessageTree;
  * Default Thread Local Message Manager
  */
 
+// 消息管理 start 和 end
 @Named(type = MessageManager.class)
 public class DefaultMessageManager extends ContainerHolder implements MessageManager, Initializable, LogEnabled {
 
@@ -78,6 +79,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 
 	private TransactionHelper m_validator = new TransactionHelper();
 
+	// TaggedTransaction 扩线程使用的Transaction
 	private Map<String, TaggedTransaction> m_taggedTransactions;
 
 	private AtomicInteger m_sampleCount = new AtomicInteger();
@@ -93,6 +95,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 		}
 	}
 
+	// tagged类型处理： 子设置父关联
 	@Override
 	public void bind(String tag, String title) {
 		TaggedTransaction t = m_taggedTransactions.get(tag);
@@ -127,7 +130,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			}
 		}
 	}
-
+	// 刷新消息 调用发送
 	public void flush(MessageTree tree, boolean clearContext) {
 		MessageSender sender = m_transportManager.getSender();
 
@@ -244,7 +247,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			m_logger.error("error when create mark file", e);
 		}
 
-		// initialize the tagged transaction cache
+		// initialize the tagged transaction cache 1024
 		final int size = m_configManager.getTaggedTransactionCacheSize();
 
 		m_taggedTransactions = new LinkedHashMap<String, TaggedTransaction>(size * 4 / 3 + 1, 0.75f, true) {
@@ -322,7 +325,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			}
 		}
 	}
-
+	// 当前线程必须要有 Context
 	@Override
 	public void setup() {
 		Context ctx;
@@ -367,7 +370,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			m_logger.warn("CAT client is not enabled because it's not initialized yet");
 		}
 	}
-
+	// 当前线程ThreadLocal Context
 	class Context {
 		private MessageTree m_tree;
 
@@ -401,6 +404,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 
 		public void add(Message message) {
 			if (m_stack.isEmpty()) {
+				// 独立的Event消息
 				MessageTree tree = m_tree.copy();
 
 				tree.setMessage(message);
@@ -423,7 +427,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			transaction.addChild(message);
 			m_length++;
 		}
-
+		// 累加耗时
 		private void adjustForTruncatedTransaction(Transaction root) {
 			DefaultEvent next = new DefaultEvent("TruncatedTransaction", "TotalDuration");
 			long actualDurationInMicros = m_totalDurationInMicros + root.getDurationInMicros();
@@ -493,7 +497,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 				return m_stack.peek();
 			}
 		}
-
+		// 错误是不是被记录
 		public boolean shouldLog(Throwable e) {
 			if (m_knownExceptions == null) {
 				m_knownExceptions = new HashSet<Throwable>();
@@ -513,6 +517,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 				// Instead, we create a "soft" reference to forked transaction later, via linkAsRunAway()
 				// By doing so, there is no need for synchronization between parent and child threads.
 				// Both threads can complete() anytime despite the other thread.
+				// tag 加入tree
 				if (!(transaction instanceof ForkedTransaction)) {
 					Transaction parent = m_stack.peek();
 					addTransactionChild(transaction, parent);
@@ -530,8 +535,9 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			return timestamp - timestamp % (3600 * 1000L);
 		}
 	}
-	// Transaction Helper
+	// Transaction help:
 	class TransactionHelper {
+		// 建立关系
 		private void linkAsRunAway(DefaultForkedTransaction transaction) {
 			DefaultEvent event = new DefaultEvent("RemoteCall", "RunAway");
 
@@ -552,7 +558,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 			transaction.addChild(event);
 			transaction.setCompleted(true);
 		}
-
+		// Tagged 未完成
 		private void markAsRunAway(Transaction parent, DefaultTaggedTransaction transaction) {
 			if (!transaction.hasChildren()) {
 				transaction.addData("RunAway");
@@ -591,7 +597,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 				source.addChild(current);
 			}
 		}
-
+		// 消息太久 或者 超长，需要阶段树发送
 		public void truncateAndFlush(Context ctx, long timestamp) {
 			MessageTree tree = ctx.m_tree;
 			Stack<Transaction> stack = ctx.m_stack;

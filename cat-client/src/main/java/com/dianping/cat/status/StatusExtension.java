@@ -20,7 +20,7 @@ package com.dianping.cat.status;
 
 import java.util.Map;
 
-// status extension
+// 心跳状态
 public interface StatusExtension {
 
 	public String getId();

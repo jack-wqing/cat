@@ -35,6 +35,7 @@ import com.dianping.cat.configuration.client.entity.Server;
 /**
  * Default TransportManager
  */
+// 初始化 MessageSender
 @Named(type = TransportManager.class)
 public class DefaultTransportManager implements TransportManager, Initializable, LogEnabled {
 	@Inject

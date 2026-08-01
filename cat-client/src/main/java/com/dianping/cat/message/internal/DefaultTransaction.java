@@ -82,6 +82,7 @@ public class DefaultTransaction extends AbstractMessage implements Transaction {
 				if (m_durationInMicro == -1) {
 					m_durationInMicro = (System.nanoTime() - m_durationStart) / 1000L;
 				}
+				// 设置完成
 				setCompleted(true);
 				if (m_manager != null) {
 					m_manager.end(this);

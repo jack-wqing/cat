@@ -138,6 +138,7 @@ package com.dianping.cat.message;
 /**
  * message producer
  */
+// 消息生产者
 public interface MessageProducer {
 	/**
 		* Create rpc server message id.

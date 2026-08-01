@@ -24,12 +24,13 @@ import java.util.Properties;
 /**
  * 应用配置设置 app.properties
  */
+// 默认是queue = 5000,  tree_length=200
 public class ApplicationSettings {
 
 	private static final String PROPERTIES_FILE = "/META-INF/app.properties";
 
 	private static int s_queue_size = 5000;
-
+	// 单MessageTree的最大节点说
 	private static int s_tree_length_size = 2000;
 
 	static {

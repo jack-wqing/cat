@@ -21,6 +21,7 @@ package com.dianping.cat.message;
 /**
  * Tag Transaction
  */
+// 跨线程：通过tag字符串在注册表里查找  适合：线程池
 public interface TaggedTransaction extends Transaction {
 	public void bind(String tag, String childMessageId, String title);
 

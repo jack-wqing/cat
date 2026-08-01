@@ -26,6 +26,7 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
  * Message Sender: Tcp Socket Sender
  */
+// 消息发送者
 public interface MessageSender {
 	public void initialize(List<InetSocketAddress> addresses);
 

@@ -54,6 +54,7 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
  * This is the main entry point to the system.
  */
+// Cat 客户端入口类
 public class Cat {
 	private static Cat s_instance = new Cat();
 
@@ -536,6 +537,7 @@ public class Cat {
 	}
 
 	// this should be called when a thread starts to create some thread local data
+	// 这里没啥用 sessionToken
 	public static void setup(String sessionToken) {
 		try {
 			Cat.getManager().setup();

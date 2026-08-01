@@ -31,10 +31,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Default Event Aggregator
  */
+// Event本地聚合
 public class EventAggregator {
 
 	private static EventAggregator s_instance = new EventAggregator();
 
+	// type - name - data
 	private volatile ConcurrentHashMap<String, ConcurrentHashMap<String, EventData>> m_events = new ConcurrentHashMap<String, ConcurrentHashMap<String, EventData>>();
 
 	public static EventAggregator getInstance() {

@@ -29,7 +29,7 @@ import java.util.ServiceLoader;
  */
 
 /**
- * cat属性自动实现机制
+ * SPI
  */
 public interface CatPropertyProvider {
 	

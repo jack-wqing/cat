@@ -28,6 +28,7 @@ import com.dianping.cat.message.spi.MessageTree;
 /**
  * default message queue: Default Message Queue
  */
+// 默认是 5000 size 的 ArrayBlockingQueue
 public class DefaultMessageQueue implements MessageQueue {
 
 	private BlockingQueue<MessageTree> m_queue;

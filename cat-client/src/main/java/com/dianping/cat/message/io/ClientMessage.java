@@ -26,6 +26,7 @@ import com.dianping.cat.configuration.property.entity.Property;
 import com.dianping.cat.configuration.property.entity.PropertyConfig;
 import com.dianping.cat.util.json.JsonObject;
 
+// protocol + version + data
 public class ClientMessage {
 
 	/**

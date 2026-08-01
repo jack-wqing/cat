@@ -3,6 +3,7 @@ package com.dianping.cat.configuration.client.entity;
 import com.dianping.cat.configuration.client.BaseEntity;
 import com.dianping.cat.configuration.client.IVisitor;
 
+// ip+port： 预留暂时无用
 public class Bind extends BaseEntity<Bind> {
    private String m_ip;
 

@@ -6,6 +6,9 @@ import static com.dianping.cat.configuration.client.Constants.ENTITY_SERVER;
 import com.dianping.cat.configuration.client.BaseEntity;
 import com.dianping.cat.configuration.client.IVisitor;
 
+// Cat服务端地址
+// ip+port(2280)： 消息上报（MessageTree字节流）
+// httpPort(8080)： 拉路由/cat/s/router?op=json 返回routers/block/sample
 public class Server extends BaseEntity<Server> {
    private String m_ip;
 

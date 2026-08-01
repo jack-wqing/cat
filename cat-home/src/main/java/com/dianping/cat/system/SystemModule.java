@@ -21,7 +21,7 @@ package com.dianping.cat.system;
 import org.unidal.web.mvc.AbstractModule;
 import org.unidal.web.mvc.annotation.ModuleMeta;
 import org.unidal.web.mvc.annotation.ModulePagesMeta;
-// path -> handler
+// 系统模块路径：/cat/s/
 @ModuleMeta(name = "s", defaultInboundAction = "config", defaultTransition = "default", defaultErrorAction = "default")
 @ModulePagesMeta({
 

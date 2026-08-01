@@ -35,3 +35,18 @@ Analyzer模块:
 
 
 ReportManager: 报告管理器
+
+
+
+---------------------------------------------------
+ServerFilterConfig:
+    AtomicTreeConfig：支持“小事务”的匹配规则(start-types前缀 + match-types精确)，让CAT客户端把高频低价值的Transaction（如Cache、SQL）分流到
+                    独立队列上报，避免冲击主消息通道--CAT客户端流量整形的核心机制
+
+
+
+
+
+
+
+

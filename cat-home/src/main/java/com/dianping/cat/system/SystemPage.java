@@ -20,7 +20,7 @@ package com.dianping.cat.system;
 
 import org.unidal.web.mvc.Page;
 import org.unidal.web.mvc.annotation.ModuleMeta;
-// System Page
+// 系统所有的 Page
 public enum SystemPage implements Page {
 
 	LOGIN("login", "login", "Login", "Login", false),

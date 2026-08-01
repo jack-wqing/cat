@@ -6,9 +6,7 @@ import com.dianping.cat.configuration.client.entity.Domain;
 import com.dianping.cat.configuration.client.entity.Property;
 import com.dianping.cat.configuration.client.entity.Server;
 
-/**
- * 访问着模式
- */
+// 访问者模式
 public interface IVisitor {
 
    public void visitBind(Bind bind);

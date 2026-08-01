@@ -32,6 +32,7 @@ import com.dianping.cat.message.internal.MessageId;
 /**
  * Message Tree: 每个线程都有一个消息树
  */
+// 生产端只设置Message, 其它类型解码使用
 public interface MessageTree extends Cloneable {
 
 	public boolean canDiscard();

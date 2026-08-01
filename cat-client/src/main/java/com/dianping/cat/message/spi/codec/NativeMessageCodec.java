@@ -44,10 +44,12 @@ import com.dianping.cat.message.spi.internal.DefaultMessageTree;
 /**
  * Native Message: Sender codec
  */
+// RPC具体编解码
 public class NativeMessageCodec implements MessageCodec {
 
 	public static final String ID = "NT1"; // native message tree version 1
 
+	// 解码消息
 	@Override
 	public MessageTree decode(ByteBuf buf) {
 		buf.readInt(); // read the length of the message tree
@@ -62,7 +64,7 @@ public class NativeMessageCodec implements MessageCodec {
 
 		return tree;
 	}
-
+	// 解码消息
 	private Message decodeMessage(Context ctx, ByteBuf buf) {
 		Message msg = null;
 
@@ -114,7 +116,7 @@ public class NativeMessageCodec implements MessageCodec {
 
 		try {
 			Context ctx = new Context(tree);
-
+			// 长度站位
 			buf.writeInt(0); // place-holder
 
 			Codec.HEADER.encode(ctx, buf, null);
@@ -135,7 +137,7 @@ public class NativeMessageCodec implements MessageCodec {
 			throw e;
 		}
 	}
-
+	// 编码消息
 	private void encodeMessage(Context ctx, ByteBuf buf, Message msg) {
 		if (msg instanceof Transaction) {
 			Transaction transaction = (Transaction) msg;
@@ -168,6 +170,7 @@ public class NativeMessageCodec implements MessageCodec {
 	}
 
 	enum Codec {
+		// 头编解码
 		HEADER {
 			@Override
 			protected Message decode(Context ctx, ByteBuf buf) {
@@ -224,9 +227,11 @@ public class NativeMessageCodec implements MessageCodec {
 				DefaultTransaction t = new DefaultTransaction(type, name);
 
 				t.setTimestamp(timestamp);
+				// 栈顶
 				ctx.pushTransaction(t);
 
 				MessageTree tree = ctx.getMessageTree();
+				// 记录Transaction
 				if (tree instanceof DefaultMessageTree) {
 					tree.getTransactions().add(t);
 				}

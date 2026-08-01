@@ -48,6 +48,7 @@ import com.dianping.cat.message.internal.MessageIdFactory;
 /**
  * Netty Channel Manager
  */
+// 客户单链接管理器
 public class ChannelManager implements Task {
 
 	private ClientConfigManager m_configManager;
@@ -87,12 +88,13 @@ public class ChannelManager implements Task {
 		bootstrap.handler(new ChannelInitializer<Channel>() {
 			@Override
 			protected void initChannel(Channel ch) throws Exception {
+				// 治理没有什么操作，因为发送已经进行了编码
 			}
 		});
 		m_bootstrap = bootstrap;
 
 		String routerConfig = m_configManager.getRouters();
-
+		// 初始化链接
 		if (StringUtils.isNotEmpty(routerConfig)) {
 			List<InetSocketAddress> configedAddresses = parseSocketAddress(routerConfig);
 			ChannelHolder holder = initChannel(configedAddresses, routerConfig);
@@ -215,6 +217,7 @@ public class ChannelManager implements Task {
 		}
 	}
 
+	// Netty Channel
 	private ChannelFuture createChannel(InetSocketAddress address) {
 		m_logger.info("start connect server" + address.toString());
 		ChannelFuture future = null;
@@ -242,6 +245,7 @@ public class ChannelManager implements Task {
 
 	private void doubleCheckActiveServer(ChannelHolder channelHolder) {
 		try {
+			// 僵尸连接
 			if (isChannelStalled(channelHolder)) {
 				closeChannelHolder(m_activeChannelHolder);
 				channelHolder.setActiveIndex(-1);
@@ -256,6 +260,7 @@ public class ChannelManager implements Task {
 		return "TcpSocketSender-ChannelManager";
 	}
 
+	// 初始化channel
 	private ChannelHolder initChannel(List<InetSocketAddress> addresses, String serverConfig) {
 		try {
 			int len = addresses.size();
@@ -266,6 +271,7 @@ public class ChannelManager implements Task {
 				ChannelHolder holder = null;
 
 				if (m_activeChannelHolder != null && hostAddress.equals(m_activeChannelHolder.getIp())) {
+					// 已有channel存活
 					holder = new ChannelHolder();
 					holder.setActiveFuture(m_activeChannelHolder.getActiveFuture()).setConnectChanged(false);
 				} else {
@@ -335,7 +341,7 @@ public class ChannelManager implements Task {
 		}
 		return new ArrayList<InetSocketAddress>();
 	}
-
+	// 相同的应用都选第一个可用的机器
 	private void reconnectDefaultServer(ChannelFuture activeFuture, List<InetSocketAddress> serverAddresses) {
 		try {
 			int reconnectServers = m_activeChannelHolder.getActiveIndex();
@@ -369,18 +375,21 @@ public class ChannelManager implements Task {
 			return new Pair<Boolean, String>(false, routerConfig);
 		}
 	}
-
+	// 通过任务 定时判断链接存活： 服务端的domain hash 选择列表，然后用第一个成功链接的
 	@Override
 	public void run() {
 		while (m_active) {
 			// make save message id index asyc
+			//把当前 messageId 的计数器持久化到磁盘文件 cat-{domain}.mark,防止进程重启后生成重复的 messageId。
 			m_idFactory.saveMark();
+			// 服务端配置变化
 			checkServerChanged();
 
 			ChannelFuture activeFuture = m_activeChannelHolder.getActiveFuture();
 			List<InetSocketAddress> serverAddresses = m_activeChannelHolder.getServerAddresses();
 
 			doubleCheckActiveServer(m_activeChannelHolder);
+			// 重连策略
 			reconnectDefaultServer(activeFuture, serverAddresses);
 
 			try {

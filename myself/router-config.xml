@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 根节点：backup-server 为所有主路由均不可用时的兜底服务器 -->
+<router-config backup-server="10.1.1.1" backup-server-port="2280">
+
+    <!-- 1. default-server：CAT 集群全部可用服务器列表
+           - id     : 服务器 IP（group-server / domain/server 中的 id 必须在此出现，否则校验失败）
+           - weight : 负载均衡权重，按 (当前负载量 / weight) 选最小者路由
+           - port   : tcp 上报端口，默认 2280
+           - enable : 是否参与路由，必须至少有一个 enable=true，否则校验失败 -->
+    <default-server id="10.1.1.1" weight="1.0" port="2280" enable="false"/>
+    <default-server id="10.1.1.2" weight="1.0" port="2280" enable="true"/>
+    <default-server id="10.1.1.3" weight="2.0" port="2280" enable="true"/>
+    <default-server id="10.2.2.1" weight="1.0" port="2280" enable="true"/>
+    <default-server id="10.2.2.2" weight="1.0" port="2280" enable="true"/>
+
+    <!-- 2. network-policy：按客户端 IP 网段路由到指定 server-group
+           - id          : 策略 id（与 group id 对应，作为 domain/group 的 key）
+           - title       : 人类可读标题
+           - block       : true=黑名单直接丢弃，false=正常路由
+           - server-group: 命中该策略后使用的 server-group id
+           - network     : 子节点，id 为 CIDR 网段（用 SubnetUtils 解析）
+           注意：id="default" 的策略其 network 不会被解析为子网，仅作默认组占位 -->
+
+    <!-- 默认组：未命中任何子网策略的客户端走这里 -->
+    <network-policy id="default" title="默认机房" block="false" server-group="default_group">
+    </network-policy>
+
+    <!-- 黑名单：命中即丢弃消息 -->
+    <network-policy id="black_list" title="黑名单" block="true" server-group="black_group">
+        <network id="10.66.0.0/16"/>
+        <network id="192.168.99.0/24"/>
+    </network-policy>
+
+    <!-- 市北机房：网段 -> 市北机器组 -->
+    <network-policy id="shibei_room" title="市北机房" block="false" server-group="shibei_machine">
+        <network id="192.168.215.0/24"/>
+        <network id="10.1.1.0/24"/>
+    </network-policy>
+
+    <!-- 易园机房：网段 -> 易园机器组 -->
+    <network-policy id="yiyuan_room" title="易园机房" block="false" server-group="yiyuan_machine">
+        <network id="192.168.213.0/24"/>
+        <network id="10.2.2.0/24"/>
+    </network-policy>
+
+    <!-- 3. server-group：服务器分组，group-server 的 id 必须在 default-server 中存在 -->
+    <server-group id="default_group" title="默认机器组">
+        <group-server id="10.1.1.2"/>
+        <group-server id="10.1.1.3"/>
+        <group-server id="10.2.2.1"/>
+        <group-server id="10.2.2.2"/>
+    </server-group>
+
+    <server-group id="black_group" title="黑名单机器组">
+        <group-server id="10.1.1.1"/>
+    </server-group>
+
+    <server-group id="shibei_machine" title="市北机器组">
+        <group-server id="10.1.1.2"/>
+        <group-server id="10.1.1.3"/>
+    </server-group>
+
+    <server-group id="yiyuan_machine" title="易园机器组">
+        <group-server id="10.2.2.1"/>
+        <group-server id="10.2.2.2"/>
+    </server-group>
+
+    <!-- 4. domain：为单个应用定制路由（覆盖默认负载均衡策略）
+           - id     : 应用 domain 名
+           - sample : 该应用采样率 0.0~1.0（不写则默认 1.0）
+           - group  : 对应 network-policy 的 id，按组指定上报 server
+             - server: id 必须在 default-server 中存在；port/weight 可省略 -->
+
+    <!-- CAT 自身：全采样，按机房分流 -->
+    <domain id="cat">
+        <group id="default">
+            <server id="10.1.1.2" port="2280" weight="1.0"/>
+            <server id="10.1.1.3" port="2280" weight="2.0"/>
+        </group>
+        <group id="shibei_room">
+            <server id="10.1.1.2" port="2280" weight="1.0"/>
+            <server id="10.1.1.3" port="2280" weight="1.0"/>
+        </group>
+        <group id="yiyuan_room">
+            <server id="10.2.2.1" port="2280" weight="1.0"/>
+            <server id="10.2.2.2" port="2280" weight="1.0"/>
+        </group>
+    </domain>
+
+    <!-- 核心交易应用：仅走市北机房 -->
+    <domain id="trade-server">
+        <group id="default">
+            <server id="10.1.1.2" port="2280" weight="1.0"/>
+            <server id="10.1.1.3" port="2280" weight="1.0"/>
+        </group>
+        <group id="shibei_room">
+            <server id="10.1.1.2" port="2280" weight="1.0"/>
+            <server id="10.1.1.3" port="2280" weight="1.0"/>
+        </group>
+        <group id="yiyuan_room">
+            <server id="10.1.1.2" port="2280" weight="1.0"/>
+            <server id="10.1.1.3" port="2280" weight="1.0"/>
+        </group>
+    </domain>
+
+    <!-- 日志类应用：走易园机房 -->
+    <domain id="log-collector">
+        <group id="default">
+            <server id="10.2.2.1" port="2280" weight="1.0"/>
+            <server id="10.2.2.2" port="2280" weight="1.0"/>
+        </group>
+        <group id="shibei_room">
+            <server id="10.2.2.1" port="2280" weight="1.0"/>
+        </group>
+        <group id="yiyuan_room">
+            <server id="10.2.2.1" port="2280" weight="1.0"/>
+            <server id="10.2.2.2" port="2280" weight="1.0"/>
+        </group>
+    </domain>
+
+</router-config>
