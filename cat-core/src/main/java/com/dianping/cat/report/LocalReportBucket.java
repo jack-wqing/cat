@@ -43,9 +43,11 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.PathBuilder;
-// local report Bucket: 报告简单的 length:body的文件存储方式
+
+// local report Bucket: 报告简单的  length:body的文件存储方式
 @Named(type = ReportBucket.class, instantiationStrategy = Named.PER_LOOKUP)
 public class LocalReportBucket implements ReportBucket, LogEnabled {
+	// DefaultPathBuilder
 	@Inject
 	private PathBuilder m_pathBuilder;
 
@@ -54,7 +56,7 @@ public class LocalReportBucket implements ReportBucket, LogEnabled {
 
 	private String m_baseDir = "target/bucket/report";
 
-	// key => offset of record
+	// key => offset of record: domain 便宜
 	private Map<String, Long> m_idToOffsets = new HashMap<String, Long>();
 
 	// tag => list of ids
@@ -146,6 +148,8 @@ public class LocalReportBucket implements ReportBucket, LogEnabled {
 	public String getLogicalPath() {
 		return m_logicalPath;
 	}
+
+
 	// index为Analyzer的count 默认为2
 	@Override
 	public void initialize(String name, Date timestamp, int index) throws IOException {

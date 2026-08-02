@@ -20,7 +20,7 @@ package com.dianping.cat.analysis;
 
 import com.dianping.cat.message.spi.MessageTree;
 
-// Message Handler
+// MessageTree 处理
 public interface MessageHandler {
 	public void handle(MessageTree message);
 }

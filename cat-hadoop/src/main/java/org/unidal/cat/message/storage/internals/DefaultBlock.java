@@ -37,7 +37,7 @@ import org.xerial.snappy.SnappyOutputStream;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.internal.MessageId;
-//Default 数据文件的 默认Block存储长度
+//Default 数据文件的 默认Block存储长度: 先处处
 public class DefaultBlock implements Block {
 
 	private static final int MAX_SIZE = 256 * 1024;
@@ -49,7 +49,7 @@ public class DefaultBlock implements Block {
 	private ByteBuf m_data;
 
 	private int m_offset;
-
+	// MessageId -> Offset
 	private Map<MessageId, Integer> m_offsets = new LinkedHashMap<MessageId, Integer>();
 
 	private volatile OutputStream m_out;

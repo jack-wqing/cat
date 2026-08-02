@@ -20,6 +20,7 @@ package com.dianping.cat.report.task.reload;
 
 import java.util.List;
 
+// 小时报告
 public interface ReportReloader {
 
 	public List<ReportReloadEntity> loadReport(long time);

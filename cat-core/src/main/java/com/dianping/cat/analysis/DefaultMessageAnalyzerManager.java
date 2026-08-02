@@ -35,7 +35,7 @@ import org.unidal.lookup.annotation.Named;
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerConfigManager;
 
-// Default MessageAnalyzer Manager
+// CAT服务端实时分析器的工厂和注册中心，负责按需创建、缓存、销毁各个小时的11种Analyzer实例
 @Named(type = MessageAnalyzerManager.class)
 public class DefaultMessageAnalyzerManager extends ContainerHolder
 						implements MessageAnalyzerManager, Initializable,	LogEnabled {
@@ -49,6 +49,7 @@ public class DefaultMessageAnalyzerManager extends ContainerHolder
 
 	private List<String> m_analyzerNames;
 
+	// 小时，类型，MessageAnalyzer
 	private final Map<Long, Map<String, List<MessageAnalyzer>>> m_analyzers = new HashMap<Long, Map<String, List<MessageAnalyzer>>>();
 
 	@Override
@@ -97,7 +98,7 @@ public class DefaultMessageAnalyzerManager extends ContainerHolder
 					analyzers.add(analyzer);
 
 					int count = analyzer.getAnanlyzerCount(name);
-
+					// 默认是2
 					for (int i = 1; i < count; i++) {
 						MessageAnalyzer tempAnalyzer = lookup(MessageAnalyzer.class, name);
 

@@ -60,7 +60,7 @@ public class DefaultMessageProcessor implements MessageProcessor, MessageFinder 
 	private int m_index;
 
 	private BlockingQueue<MessageTree> m_queue;
-
+	// 先缓存Block
 	private ConcurrentHashMap<String, Block> m_blocks = new ConcurrentHashMap<String, Block>();
 
 	private int m_hour;

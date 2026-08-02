@@ -26,7 +26,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.message.spi.MessageTree;
 
-// Default Message Handler
+// 转发到MessageConsumer
 @Named(type = MessageHandler.class)
 public class DefaultMessageHandler extends ContainerHolder implements MessageHandler, LogEnabled {
 	@Inject

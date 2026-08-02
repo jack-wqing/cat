@@ -46,7 +46,7 @@ import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.message.internal.MessageId;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.statistic.ServerStatisticManager;
-//通过设置的process并行度，MessageDumper新建多个message processor每个都有自己的队列通过ip的hash映射
+//通过设置的 process并行度，MessageDumper新建多个message processor每个都有自己的队列通过ip的hash映射
 @Named(type = MessageDumper.class, instantiationStrategy = Named.PER_LOOKUP)
 public class DefaultMessageDumper extends ContainerHolder implements MessageDumper, LogEnabled {
 	@Inject
@@ -119,7 +119,7 @@ public class DefaultMessageDumper extends ContainerHolder implements MessageDump
 	public void enableLogging(Logger logger) {
 		m_logger = logger;
 	}
-
+	// ip 相同ip在一个里面
 	private int getIndex(String key) {
 		return (Math.abs(key.hashCode())) % (m_processThreads);
 	}

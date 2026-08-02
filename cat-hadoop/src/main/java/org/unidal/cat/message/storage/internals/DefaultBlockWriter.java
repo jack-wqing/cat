@@ -73,7 +73,7 @@ public class DefaultBlockWriter implements BlockWriter {
 		m_enabled = new AtomicBoolean(true);
 		m_latch = new CountDownLatch(1);
 	}
-
+	// 真是处理方法
 	private void processBlock(String ip, Block block) {
 		try {
 			Bucket bucket = m_bucketManager.getBucket(block.getDomain(), ip, block.getHour(), true);
@@ -83,6 +83,7 @@ public class DefaultBlockWriter implements BlockWriter {
 				Transaction t = Cat.newTransaction("Block", block.getDomain());
 
 				try {
+					// 数据和具体的数据，每个message的偏移信息
 					bucket.puts(block.getData(), block.getOffsets());
 				} catch (Exception e) {
 					Cat.logError(ip, e);

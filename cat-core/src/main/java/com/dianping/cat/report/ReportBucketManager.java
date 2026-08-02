@@ -19,7 +19,7 @@
 package com.dianping.cat.report;
 
 import java.io.IOException;
-// Report Bucket Manager
+//CAT服务端本地报告文件存储的管理器， 是ReportManager和底层文件系统之间的桥梁
 public interface ReportBucketManager {
 
 	public void closeBucket(ReportBucket bucket);

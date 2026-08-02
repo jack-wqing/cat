@@ -42,7 +42,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.List;
 
-// Tcp Socket Receiver
+// Netty Tcp服务器，接收客户端上报的消息并解码MessageHandler处理
 @Named(type = TcpSocketReceiver.class)
 public final class TcpSocketReceiver implements LogEnabled {
 
@@ -133,7 +133,7 @@ public final class TcpSocketReceiver implements LogEnabled {
 			m_logger.error("Started Netty Server Failed:" + port, e);
 		}
 	}
-
+	// 消息解码器
 	public class MessageDecoder extends ByteToMessageDecoder {
 		private long m_processCount;
 
@@ -145,6 +145,7 @@ public final class TcpSocketReceiver implements LogEnabled {
 			buffer.markReaderIndex();
 			int length = buffer.readInt();
 			buffer.resetReaderIndex();
+			// 字节必须足够
 			if (buffer.readableBytes() < length + 4) {
 				return;
 			}

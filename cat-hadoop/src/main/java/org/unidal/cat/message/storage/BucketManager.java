@@ -19,7 +19,7 @@
 package org.unidal.cat.message.storage;
 
 import java.io.IOException;
-//domain ip hour bucket manger
+//local bucket manager
 public interface BucketManager {
 	public void closeBuckets(int hour);
 

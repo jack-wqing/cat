@@ -28,6 +28,7 @@ import com.dianping.cat.message.spi.codec.PlainTextMessageCodec;
 /**
  * PT1 OR NT1
  */
+// NT1解码
 public class CodecHandler {
 
 	private static MessageCodec m_plainTextCodec = new PlainTextMessageCodec();

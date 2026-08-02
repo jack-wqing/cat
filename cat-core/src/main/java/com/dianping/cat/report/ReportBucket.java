@@ -21,7 +21,7 @@ package com.dianping.cat.report;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
-// Report Bucket
+// 报告桶
 public interface ReportBucket {
 	/**
 		* Close bucket and release component instance

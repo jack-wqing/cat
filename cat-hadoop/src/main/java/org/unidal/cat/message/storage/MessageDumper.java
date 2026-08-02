@@ -19,7 +19,8 @@
 package org.unidal.cat.message.storage;
 
 import com.dianping.cat.message.spi.MessageTree;
-// MessageDumper
+
+// 一个小时的 MessageTree存储
 public interface MessageDumper {
 	public void awaitTermination(int hour) throws InterruptedException;
 

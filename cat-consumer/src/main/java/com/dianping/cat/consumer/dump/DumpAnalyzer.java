@@ -37,6 +37,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.concurrent.TimeUnit;
 
+// 一个分析器，一个小时最多5000w, 默认是1亿
 @Named(type = MessageAnalyzer.class, value = DumpAnalyzer.ID, instantiationStrategy = Named.PER_LOOKUP)
 public class DumpAnalyzer extends AbstractMessageAnalyzer<Object> implements LogEnabled {
 	public static final String ID = "dump";

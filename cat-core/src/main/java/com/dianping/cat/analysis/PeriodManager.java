@@ -29,12 +29,13 @@ import org.unidal.lookup.annotation.Inject;
 import com.dianping.cat.Cat;
 import com.dianping.cat.statistic.ServerStatisticManager;
 
-// PeriodManager
+// 是服务端按小时管理分析周期的后台分析线程
 public class PeriodManager implements Task {
 	public static long EXTRATIME = 3 * 60 * 1000L;
 
 	private PeriodStrategy m_strategy;
 
+	// 每个小时的Period
 	private List<Period> m_periods = new ArrayList<Period>();
 
 	private boolean m_active;
@@ -130,6 +131,7 @@ public class PeriodManager implements Task {
 		period.start();
 	}
 
+	// 结束周期 所以遍历寻找其实很快
 	private class EndTaskThread implements Task {
 
 		private long m_startTime;

@@ -22,7 +22,7 @@ import java.util.List;
 
 import com.dianping.cat.message.spi.MessageTree;
 
-// Message Consumer
+// 消息消费接口
 public interface MessageConsumer {
 	public void consume(MessageTree tree);
 

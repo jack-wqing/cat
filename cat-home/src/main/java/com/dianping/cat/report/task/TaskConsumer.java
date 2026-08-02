@@ -23,7 +23,7 @@ import java.util.Calendar;
 import com.dianping.cat.Cat;
 import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.core.dal.Task;
-// TaskConsumer
+// 报告聚合任务的抽象消费基类
 public abstract class TaskConsumer implements org.unidal.helper.Threads.Task {
 
 	public static final int STATUS_TODO = 1;
@@ -42,6 +42,7 @@ public abstract class TaskConsumer implements org.unidal.helper.Threads.Task {
 
 	private volatile boolean m_stopped = false;
 
+	// 大于10分钟
 	public boolean checkTime() {
 		Calendar cal = Calendar.getInstance();
 		int minute = cal.get(Calendar.MINUTE);

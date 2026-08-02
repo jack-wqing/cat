@@ -39,6 +39,7 @@ import com.dianping.cat.report.task.reload.AbstractReportReloader;
 import com.dianping.cat.report.task.reload.ReportReloadEntity;
 import com.dianping.cat.report.task.reload.ReportReloader;
 
+// Event
 @Named(type = ReportReloader.class, value = EventAnalyzer.ID)
 public class EventReportReloader extends AbstractReportReloader {
 

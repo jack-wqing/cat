@@ -33,6 +33,7 @@ import com.dianping.cat.report.alert.AlarmManager;
 import com.dianping.cat.report.task.DefaultTaskConsumer;
 import com.dianping.cat.report.task.reload.ReportReloadTask;
 
+// Cat 控制模块启动
 @Named(type = Module.class, value = CatHomeModule.ID)
 public class CatHomeModule extends AbstractModule {
 	public static final String ID = "cat-home";
@@ -58,6 +59,7 @@ public class CatHomeModule extends AbstractModule {
 			alarmManager.startAlarm();
 		}
 
+		// 进程关闭回调钩子
 		final MessageConsumer consumer = ctx.lookup(MessageConsumer.class);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -76,7 +78,7 @@ public class CatHomeModule extends AbstractModule {
 	@Override
 	protected void setup(ModuleContext ctx) throws Exception {
 		final TcpSocketReceiver messageReceiver = ctx.lookup(TcpSocketReceiver.class);
-
+		// 启动TCP
 		messageReceiver.init();
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {

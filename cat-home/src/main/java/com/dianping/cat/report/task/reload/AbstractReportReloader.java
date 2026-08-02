@@ -30,6 +30,7 @@ import com.dianping.cat.core.dal.HourlyReportContent;
 import com.dianping.cat.core.dal.HourlyReportContentDao;
 import com.dianping.cat.core.dal.HourlyReportDao;
 
+// 加载保存
 public abstract class AbstractReportReloader implements ReportReloader {
 
 	@Inject

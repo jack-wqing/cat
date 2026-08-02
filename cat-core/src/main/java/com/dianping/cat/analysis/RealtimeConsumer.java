@@ -53,7 +53,7 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 	private PeriodManager m_periodManager;
 
 	private Logger m_logger;
-	// 时间戳: 是以客户端的时间戳为标准
+	// 时间戳: 是以客户端的时间戳为标准 小时周期
 	@Override
 	public void consume(MessageTree tree) {
 		long timestamp = tree.getMessage().getTimestamp();
@@ -62,6 +62,7 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 		if (period != null) {
 			period.distribute(tree);
 		} else {
+			// 网络延迟
 			m_serverStateManager.addNetworkTimeError(1);
 		}
 	}
@@ -121,7 +122,7 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 
 		return now - now % HOUR;
 	}
-
+	// 上一个小时的分析器
 	@Override
 	public List<MessageAnalyzer> getLastAnalyzer(String name) {
 		long lastStartTime = getCurrentStartTime() - HOUR;

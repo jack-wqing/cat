@@ -54,6 +54,7 @@ public abstract class AbstractMessageAnalyzer<R> extends ContainerHolder impleme
 
 	private AtomicBoolean m_active = new AtomicBoolean(true);
 
+	// 死循环处理
 	@Override
 	public void analyze(MessageQueue queue) {
 		while (!isTimeout() && isActive()) {

@@ -1,33 +1,71 @@
-TcpSocketReceiver:
-    功能:接受cat-client发送消息，进行转发；根据os类型选择:Epoll,Nio; boss/work都是24个线程
-MessageHandler:
-    功能: 简单的将消息转到MessageConsumer
+聚合小时报告： 各个机器入库自己的（本地报告）
+    ReportReloadTask：后台定时任务，作用是把实时分析器在内存中产生的小时级报告(HourlyReport)从内存持久化到数据库
 
-MessageConsumer[RealTimeConsumer]:
-    功能: 1、初始化:PeriodManager
-         2、获取当前小时的Period进行处理
-Period模块:
-    PeriodManager: 管理每个小时的Period,每秒一次计算当前的Period，并结束过期的上一个小时
-    PeriodStrategy: Cat以小时进行分析，该类用于计算当前小时
-    Period: 控制每个小时得各种PeriodTask
-        每个小时一个Period，每个Period管理当前每种类型的Analyzer
-        启动每个PeriodTask 任务线程执行
-    PeriodTask:管理Analyzer.analyze去处理消息队列
-    每个MessageAnalyzer绑定的队列是3w的容量
+    ReportManager: CAT服务端管理某一类报告在内存中聚合和持久化的核心组件，每个实时分析器都有一个ReportManager
+        AbstractReportReloader数量：默认2
+            Event,
+    ReportBucketManager：获取本地文件桶
 
-DefaultMessageAnalyzerManager:
-    功能: 管理每个小时，每种类型的MessageAnalyzer: 每种Analyzer默认当前小时候有两个同时处理Message
-        对于Analyzer的排序：
+定时聚合任务：会轮询Task表获取任务， 天，周，月
+    TaskConsumer：DefaultTaskConsumer
+        ReportFacade：任务类型分发
+            TaskBuilder：各种业务指标的具体聚合操作，小时报告由ReportReloadTask生成
+    TaskManager： 写入任务管理
 
-Analyzer模块:
-    AbstractMessageAnalyzer:
-        initialize: loadReports
-        循环处理队列中的消息
-    -----------------------------------------------
-    StorageAnalyzer[Transaction类型]: 处理Cache, RPC, SQL
-        Cache: type必须以Cache.或Squirrel.开头；name以":"结尾的为method名称
-        SQL: Type等于SQL, 通过child Event解析处理id ip type method建立存储信息
-        RPC: Type等于 PigeonCall或者Call，通过Event解析出 id ip
+告警管理：
+    AlarmManager: CAT告警系统的启动器，负责启动5个维度的告警检测线程
+        BusinessAlert: 业务指标告警检测器
+        TransactionAlert + EventAlert + ExceptionAlert + ExceptionAlert
+    AlertManager：告警发送管理器
+    SendManager: 发送管理器
+        alarm-machine + send-machine：必须在一个机器启动，因为告警队列是内存缓存
+
+
+服务端消息接收：
+
+    TcpSocketReceiver:
+        功能:接受cat-client发送消息，进行转发；根据os类型选择:Epoll,Nio; boss/work都是24个线程
+
+    MessageHandler:
+        功能: 简单的将消息转到MessageConsumer
+
+    MessageConsumer[RealTimeConsumer]:
+        功能: 1、初始化:PeriodManager
+             2、获取当前小时的Period进行处理
+
+    Period模块:
+        PeriodManager: 管理每个小时的Period,每秒一次计算当前的Period，并结束过期的上一个小时
+        PeriodStrategy: Cat以小时进行分析，该类用于计算当前小时
+        Period: 控制每个小时得各种PeriodTask
+            每个小时一个Period，每个Period管理当前每种类型的Analyzer
+            启动每个PeriodTask 任务线程执行
+        PeriodTask: 管理Analyzer.analyze去处理消息队列
+        每个MessageAnalyzer绑定的队列是3w的容量
+
+    DefaultMessageAnalyzerManager:
+        功能: 管理每个小时，每种类型的MessageAnalyzer: 每种Analyzer默认当前小时候有两个同时处理Message
+             对于Analyzer的排序：
+
+    Analyzer模块: 每个处理器都有一个队列 3W容量
+        AbstractMessageAnalyzer:
+            initialize: loadReports
+            循环处理队列中的消息
+
+        -----------------------------------------------
+        StorageAnalyzer[Transaction类型]: 处理Cache, RPC, SQL
+            Cache: type必须以Cache.或Squirrel.开头；name以":"结尾的为method名称
+            SQL: Type等于SQL, 通过child Event解析处理id ip type method建立存储信息
+            RPC: Type等于 PigeonCall或者Call，通过Event解析出 id ip
+
+
+    checkPoint触发存储报告：
+        触发ReportManager存储的数据，存储到本地文件桶桶中（此时各个Analyzer自己的分片）
+        1. doCheckpoint：保证"小时结束立即可查"
+        小时结束后，Analyzer 立即把内存报告入库，控制台查询历史报告时不用等 ReportReloadTask 就能查到数据。
+        如果只靠 ReportReloadTask，小时结束后还要等它跑完才能查，延迟较大。
+        2. ReportReloadTask：保证"完整性和兜底"
+
+
 
 
 

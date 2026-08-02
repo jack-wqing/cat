@@ -19,7 +19,7 @@
 package org.unidal.cat.message.storage;
 
 import java.io.IOException;
-//Block Dumper
+// Block存入磁盘
 public interface BlockDumper {
 	public void awaitTermination() throws InterruptedException;
 

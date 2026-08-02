@@ -59,6 +59,8 @@ public class PeriodStrategy {
 		}
 
 		// last period is over
+		// 这个控制周期结束 现在记录上次结束以及过了 对上次事件进行技术
+		// 系统启动地刺进行重置，第二进入进行结束周期
 		if (now - m_lastEndTime >= m_duration + m_extraTime) {
 			long lastEndTime = m_lastEndTime;
 			m_lastEndTime = startTime;

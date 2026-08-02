@@ -39,6 +39,7 @@ import org.unidal.lookup.annotation.Named;
 
 import com.dianping.cat.Cat;
 
+//Bucket Manager
 @Named(type = BucketManager.class, value = "local")
 public class LocalBucketManager extends ContainerHolder implements BucketManager, LogEnabled {
 

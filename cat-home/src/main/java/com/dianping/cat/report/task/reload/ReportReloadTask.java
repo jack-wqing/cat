@@ -34,6 +34,7 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.config.ReportReloadConfigManager;
 import com.dianping.cat.helper.TimeHelper;
 
+// 后台定时任务，作用是把实时分析器在内存中产生的小时级报告(HourlyReport)从内存持久化到数据库，供历史报告查询和长期存储使用
 @Named
 public class ReportReloadTask extends ContainerHolder implements Initializable, Task {
 

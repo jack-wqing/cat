@@ -1,0 +1,32 @@
+整体框架总览
+    CAT文件存储分为两套独立的子系统，对应两类数据，都有本地实现（cat-core/consumer）和 Hadoop实现， 前者实时本地落盘，后者用于历史归档迁移到HDFS
+
+    Report存储：聚合报告XML, 接口ReportBucket, LocalReportBucket, 各个Analyzer每小时罗盘的聚合报告
+        采用：数据文件 + 索引文件
+        数据文件：length + \n + body + \n 的存储方式
+        索引文件：id(domain) + \t + offset(domain报告内容偏移)
+
+    Message存储: 原始MessageTree(二进制)， MessageDumper, DefaultMessageDumper, LocalBucketManager, LocalBucket; Dump模块保存原始消息流水(logview)
+        DefaultMessageDumper: 通过 message-processor-thread(20) 设置并行数量
+            并行20：MessageProcessor + ArrayBlockingQueue(1W)
+
+        DefaultBlock（domain + hour）:  pack()：直接写入Netty读入的ByteBuf
+            MessageTree临时存放位置
+
+        BlockDumper: 存储Block 到磁盘
+            message-dumper-thread控制并行 Block + BlockWriter
+
+        LocalBucket: local文件存储， 魔术都是 -1
+            数据文件： length + data(DefaultBlock)
+            索引文件：分段（Segment） + 两级索引
+                Header: ip + segmentIndex
+                dataSegment: blockAddress, blockOffset决定消息
+            每个Segment都是存储着同一个ip上传的消息
+
+
+
+
+
+
+
+

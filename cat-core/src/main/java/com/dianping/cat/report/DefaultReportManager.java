@@ -199,7 +199,7 @@ public class DefaultReportManager<T> extends ContainerHolder implements ReportMa
 		}
 		return reports;
 	}
-
+	// 聚合各个报告
 	@Override
 	public Map<String, T> loadLocalReports(long startTime, int index) {
 		Transaction t = Cat.newTransaction("ReloadLocalTask", m_name);

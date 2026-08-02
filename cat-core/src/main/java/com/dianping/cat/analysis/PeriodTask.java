@@ -31,7 +31,7 @@ import com.dianping.cat.CatConstants;
 import com.dianping.cat.message.spi.MessageQueue;
 import com.dianping.cat.message.spi.MessageTree;
 
-// PeriodTask
+// 每个分析器的任务队列
 public class PeriodTask implements Task, LogEnabled {
 
 	private MessageAnalyzer m_analyzer;

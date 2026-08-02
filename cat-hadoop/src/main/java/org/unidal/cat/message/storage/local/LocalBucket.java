@@ -187,7 +187,7 @@ public class LocalBucket implements Bucket {
 			m_file = new RandomAccessFile(m_path, "rw"); // read-write
 			m_offset = m_path.length();
 			m_out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(m_path, true), (int) SEGMENT_SIZE));
-
+			// 默认第一行“-1”
 			if (m_offset == 0) {
 				m_out.writeInt(-1);
 				m_offset += 4;
@@ -359,6 +359,8 @@ public class LocalBucket implements Bucket {
 		}
 
 		private class Header {
+
+			// ip, 每个ip消息的第几个 4096 条区间, 存在真是文件的第几个segment
 			private Map<Integer, Map<Integer, Integer>> m_table = new LinkedHashMap<Integer, Map<Integer, Integer>>();
 
 			private int m_nextSegment;

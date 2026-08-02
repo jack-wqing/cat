@@ -32,7 +32,7 @@ import org.unidal.cat.message.storage.MessageDumper;
 import org.unidal.cat.message.storage.MessageDumperManager;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Named;
-//message dumper 处理
+// Logview 存储管理， 一个小时一个MessageDumper
 @Named(type = MessageDumperManager.class)
 public class DefaultMessageDumperManager extends ContainerHolder
 						implements LogEnabled, MessageDumperManager,	Initializable {

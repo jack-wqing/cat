@@ -28,7 +28,7 @@ import org.unidal.lookup.annotation.Named;
 
 import java.util.Calendar;
 import java.util.Date;
-// TaskManager
+// 报告聚合任务管理
 @Named
 public class TaskManager {
 

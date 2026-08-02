@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.dianping.cat.report.DefaultReportManager.StoragePolicy;
-//ReportManager
+// 管理某一类报告在内存中聚合与持久化
 public interface ReportManager<T> {
 
 	public void destory();

@@ -96,7 +96,7 @@ public class Period {
 			int length = tasks.size();
 			int index = 0;
 			boolean manyTasks = length > 1;
-
+			// 有多个域名hash, 没有直接进入
 			if (manyTasks) {
 				index = Math.abs(domain.hashCode()) % length;
 			}

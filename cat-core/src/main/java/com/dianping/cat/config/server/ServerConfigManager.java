@@ -383,6 +383,7 @@ public class ServerConfigManager implements LogEnabled, Initializable {
 		return Boolean.parseBoolean(getProperty("storage-nio-enable", "true"));
 	}
 
+	// realtime count = 2
 	public int getThreadsOfRealtimeAnalyzer(String name) {
 		return Integer.parseInt(getProperty(name + "-analyzer-threads", "2"));
 	}
